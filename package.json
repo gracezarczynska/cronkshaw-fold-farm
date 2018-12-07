@@ -6,16 +6,16 @@
   "dependencies": {
     "gh-pages": "^2.0.1",
     "next": "^7.0.2",
+    "nprogress": "^0.2.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-scripts": "2.1.1"
+    "react-scripts": "2.1.1",
+    "styled-components": "^4.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
+    "dev": "next -p 8080",
+    "build": "next build",
+    "start": "next start",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
