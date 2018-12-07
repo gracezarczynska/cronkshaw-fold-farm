@@ -1,0 +1,80 @@
+{
+  "modules": {
+    "byIdentifier": {
+      "external \"react\"": 0,
+      "external \"styled-components\"": 1,
+      "external \"next/link\"": 2,
+      "external \"nprogress\"": 3,
+      "external \"next/router\"": 4,
+      "external \"@babel/runtime/regenerator\"": 5,
+      "external \"next/app\"": 6,
+      "external \"next/head\"": 7,
+      "multi ./pages/_app.js": 8,
+      "multi ./pages/index.js": 9,
+      "node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/index.js": 10,
+      "multi ./pages/serviceWorker.js": 11,
+      "node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/serviceWorker.js": 12,
+      "multi node_modules/next/dist/pages/_error.js": 13,
+      "node_modules/next/dist/pages/_error.js": 14,
+      "external \"next/error\"": 15,
+      "multi node_modules/next/dist/pages/_document.js": 16,
+      "node_modules/next/dist/pages/_document.js": 17,
+      "external \"next/document\"": 18,
+      "node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/_app.js ab1adccccc0f23c4af769ce2491c73c7": 19
+    },
+    "usedIds": {
+      "0": 0,
+      "1": 1,
+      "2": 2,
+      "3": 3,
+      "4": 4,
+      "5": 5,
+      "6": 6,
+      "7": 7,
+      "8": 8,
+      "9": 9,
+      "10": 10,
+      "11": 11,
+      "12": 12,
+      "13": 13,
+      "14": 14,
+      "15": 15,
+      "16": 16,
+      "17": 17,
+      "18": 18,
+      "19": 19
+    }
+  },
+  "chunks": {
+    "byName": {
+      "static/otk5rcdNL16PLQXRcU50o/pages/_app.js": 0,
+      "static/otk5rcdNL16PLQXRcU50o/pages/index.js": 1,
+      "static/otk5rcdNL16PLQXRcU50o/pages/serviceWorker.js": 2,
+      "static/otk5rcdNL16PLQXRcU50o/pages/_error.js": 3,
+      "static/otk5rcdNL16PLQXRcU50o/pages/_document.js": 4,
+      "static/g7XOEdZ2oSAC8RVHViQFv/pages/_app.js": 5,
+      "static/g7XOEdZ2oSAC8RVHViQFv/pages/index.js": 6,
+      "static/g7XOEdZ2oSAC8RVHViQFv/pages/serviceWorker.js": 7,
+      "static/g7XOEdZ2oSAC8RVHViQFv/pages/_error.js": 8,
+      "static/g7XOEdZ2oSAC8RVHViQFv/pages/_document.js": 9,
+      "static/9I3M47MBJ0o4s3UKFcHFf/pages/_app.js": 0,
+      "static/9I3M47MBJ0o4s3UKFcHFf/pages/index.js": 1,
+      "static/9I3M47MBJ0o4s3UKFcHFf/pages/serviceWorker.js": 2,
+      "static/9I3M47MBJ0o4s3UKFcHFf/pages/_error.js": 3,
+      "static/9I3M47MBJ0o4s3UKFcHFf/pages/_document.js": 4,
+      "static/6IPCx08pslaLgrR4iKIxC/pages/_app.js": 5,
+      "static/6IPCx08pslaLgrR4iKIxC/pages/index.js": 6,
+      "static/6IPCx08pslaLgrR4iKIxC/pages/serviceWorker.js": 7,
+      "static/6IPCx08pslaLgrR4iKIxC/pages/_error.js": 8,
+      "static/6IPCx08pslaLgrR4iKIxC/pages/_document.js": 9
+    },
+    "bySource": {},
+    "usedIds": [
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  }
+}
