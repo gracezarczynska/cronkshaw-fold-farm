@@ -21,15 +21,12 @@ const StyledHeader = styled.header`
     grid-template-columns: auto 1fr;
     justify-content: space-between;
     align-items: stretch;
+    background-color: ${props => props.theme.orange};
+    height: 80px;
     @media (max-width: 1300px) {
       grid-template-columns: 1fr;
       justify-content: center;
     }
-  }
-  .sub-bar {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    border-bottom: 1px solid ${props => props.theme.lightgrey};
   }
 `;
 

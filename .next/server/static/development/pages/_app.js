@@ -115,7 +115,7 @@ var _jsxFileName = "/Users/mza11/dev/cronkshaw-fold-farm/components/Header.js";
 
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n  .bar {\n    border-bottom: 10px solid ", ";\n    display: grid;\n    grid-template-columns: auto 1fr;\n    justify-content: space-between;\n    align-items: stretch;\n    @media (max-width: 1300px) {\n      grid-template-columns: 1fr;\n      justify-content: center;\n    }\n  }\n  .sub-bar {\n    display: grid;\n    grid-template-columns: 1fr auto;\n    border-bottom: 1px solid ", ";\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  .bar {\n    border-bottom: 10px solid ", ";\n    display: grid;\n    grid-template-columns: auto 1fr;\n    justify-content: space-between;\n    align-items: stretch;\n    background-color: ", ";\n    height: 80px;\n    @media (max-width: 1300px) {\n      grid-template-columns: 1fr;\n      justify-content: center;\n    }\n  }\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -146,27 +146,27 @@ next_router__WEBPACK_IMPORTED_MODULE_3___default.a.onRouteChangeError = function
 var StyledHeader = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.header(_templateObject(), function (props) {
   return props.theme.black;
 }, function (props) {
-  return props.theme.lightgrey;
+  return props.theme.orange;
 });
 
 var Header = function Header() {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(StyledHeader, {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 37
+      lineNumber: 34
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "bar",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 38
+      lineNumber: 35
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Nav__WEBPACK_IMPORTED_MODULE_4__["default"], {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 39
+      lineNumber: 36
     },
     __self: this
   })));
@@ -238,7 +238,7 @@ var Meta = function Meta() {
       lineNumber: 9
     },
     __self: this
-  }, "Sick Fits!"));
+  }, "Cronkshaw Fold Farm"));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Meta);
@@ -363,6 +363,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _templateObject3() {
+  var data = _taggedTemplateLiteral(["\n  html {\n    background: ", ";\n    box-sizing: border-box;\n    font-size: 10px;\n  }\n  *, *:before, *:after {\n    box-sizing: inherit;\n  }\n  body {\n    padding: 0;\n    margin: 0;\n    font-size: 1.5rem;\n    line-height: 2;\n    font-family: 'radnika_next';\n  }\n  a {\n    text-decoration: none;\n    color: ", ";\n  }\n  button {  font-family: 'radnika_next'; }\n"]);
+
+  _templateObject3 = function _templateObject3() {
+    return data;
+  };
+
+  return data;
+}
+
 function _templateObject2() {
   var data = _taggedTemplateLiteral(["\n  max-width: ", ";\n  margin: 0 auto;\n  padding: 2rem;\n"]);
 
@@ -374,7 +384,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n  background: white;\n  color: ", ";\n"]);
+  var data = _taggedTemplateLiteral(["\n  background: ", ";\n  color: ", ";\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -390,40 +400,25 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 var theme = {
-  red: '#FF0000',
-  black: '#393939',
-  grey: '#3A3A3A',
+  orange: '#f29d12',
+  black: '#222222',
+  grey: '#2f2e2e',
   lightgrey: '#E1E1E1',
   offWhite: '#EDEDED',
   maxWidth: '1000px',
   bs: '0 12px 24px 0 rgba(0, 0, 0, 0.09)'
 };
 var StyledPage = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div(_templateObject(), function (props) {
-  return props.theme.black;
+  return props.theme.grey;
+}, function (props) {
+  return props.theme.offWhite;
 });
 var Inner = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div(_templateObject2(), function (props) {
   return props.theme.maxWidth;
-}); // injectGlobal`
-//   html {
-//     box-sizing: border-box;
-//     font-size: 10px;
-//   }
-//   *, *:before, *:after {
-//     box-sizing: inherit;
-//   }
-//   body {
-//     padding: 0;
-//     margin: 0;
-//     font-size: 1.5rem;
-//     line-height: 2;
-//     font-family: 'radnika_next';
-//   }
-//   a {
-//     text-decoration: none;
-//     color: ${theme.black};
-//   }
-//   button {  font-family: 'radnika_next'; }
-// `;
+});
+Object(styled_components__WEBPACK_IMPORTED_MODULE_1__["injectGlobal"])(_templateObject3(), function (props) {
+  return props.theme.grey;
+}, theme.black);
 
 var Page =
 /*#__PURE__*/
@@ -443,31 +438,31 @@ function (_Component) {
         theme: theme,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 52
+          lineNumber: 53
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(StyledPage, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 53
+          lineNumber: 54
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Meta__WEBPACK_IMPORTED_MODULE_3__["default"], {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 54
+          lineNumber: 55
         },
         __self: this
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Header__WEBPACK_IMPORTED_MODULE_2__["default"], {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 55
+          lineNumber: 56
         },
         __self: this
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Inner, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 56
+          lineNumber: 57
         },
         __self: this
       }, this.props.children)));

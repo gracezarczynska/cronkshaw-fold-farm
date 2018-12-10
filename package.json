@@ -10,13 +10,14 @@
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-scripts": "2.1.1",
-    "styled-components": "^4.1.2"
+    "styled-components": "3.4.9"
   },
   "scripts": {
     "dev": "next -p 8080",
     "build": "next build",
     "start": "next start",
-    "deploy": "gh-pages -d build"
+    "export": "npm run build && next export",
+    "deploy": "gh-pages -d out"
   },
   "eslintConfig": {
     "extends": "react-app"

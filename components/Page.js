@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider, injectGlobal } from 'styled-components';
 import Header from './Header';
 import Meta from './Meta';
 
 const theme = {
-  red: '#FF0000',
-  black: '#393939',
-  grey: '#3A3A3A',
+  orange: '#f29d12',
+  black: '#222222',
+  grey: '#2f2e2e',
   lightgrey: '#E1E1E1',
   offWhite: '#EDEDED',
   maxWidth: '1000px',
@@ -14,8 +14,8 @@ const theme = {
 };
 
 const StyledPage = styled.div`
-  background: white;
-  color: ${props => props.theme.black};
+  background: ${props => props.theme.grey};
+  color: ${props => props.theme.offWhite};
 `;
 
 const Inner = styled.div`
@@ -24,27 +24,28 @@ const Inner = styled.div`
   padding: 2rem;
 `;
 
-// injectGlobal`
-//   html {
-//     box-sizing: border-box;
-//     font-size: 10px;
-//   }
-//   *, *:before, *:after {
-//     box-sizing: inherit;
-//   }
-//   body {
-//     padding: 0;
-//     margin: 0;
-//     font-size: 1.5rem;
-//     line-height: 2;
-//     font-family: 'radnika_next';
-//   }
-//   a {
-//     text-decoration: none;
-//     color: ${theme.black};
-//   }
-//   button {  font-family: 'radnika_next'; }
-// `;
+injectGlobal`
+  html {
+    background: ${props => props.theme.grey};
+    box-sizing: border-box;
+    font-size: 10px;
+  }
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+  body {
+    padding: 0;
+    margin: 0;
+    font-size: 1.5rem;
+    line-height: 2;
+    font-family: 'radnika_next';
+  }
+  a {
+    text-decoration: none;
+    color: ${theme.black};
+  }
+  button {  font-family: 'radnika_next'; }
+`;
 
 class Page extends Component {
   render() {
