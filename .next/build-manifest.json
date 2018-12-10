@@ -3,23 +3,43 @@
   "pages": {
     "/_app": [
       "static/runtime/webpack-42652fa8b82c329c0559.js",
-      "static/chunks/commons.0d0e604c9d5fd423b322.js",
-      "static/runtime/main-0e9adf486f6457f745eb.js"
+      "static/chunks/commons.b4cdb1aaaab435bfaa74.js",
+      "static/runtime/main-69f5eeeb4988d6155350.js"
+    ],
+    "/about": [
+      "static/runtime/webpack-42652fa8b82c329c0559.js",
+      "static/chunks/commons.b4cdb1aaaab435bfaa74.js",
+      "static/runtime/main-69f5eeeb4988d6155350.js"
+    ],
+    "/farms": [
+      "static/runtime/webpack-42652fa8b82c329c0559.js",
+      "static/chunks/commons.b4cdb1aaaab435bfaa74.js",
+      "static/runtime/main-69f5eeeb4988d6155350.js"
     ],
     "/index": [
       "static/runtime/webpack-42652fa8b82c329c0559.js",
-      "static/chunks/commons.0d0e604c9d5fd423b322.js",
-      "static/runtime/main-0e9adf486f6457f745eb.js"
+      "static/chunks/commons.b4cdb1aaaab435bfaa74.js",
+      "static/runtime/main-69f5eeeb4988d6155350.js"
+    ],
+    "/sign-in": [
+      "static/runtime/webpack-42652fa8b82c329c0559.js",
+      "static/chunks/commons.b4cdb1aaaab435bfaa74.js",
+      "static/runtime/main-69f5eeeb4988d6155350.js"
+    ],
+    "/sign-up": [
+      "static/runtime/webpack-42652fa8b82c329c0559.js",
+      "static/chunks/commons.b4cdb1aaaab435bfaa74.js",
+      "static/runtime/main-69f5eeeb4988d6155350.js"
     ],
     "/_error": [
       "static/runtime/webpack-42652fa8b82c329c0559.js",
-      "static/chunks/commons.0d0e604c9d5fd423b322.js",
-      "static/runtime/main-0e9adf486f6457f745eb.js"
+      "static/chunks/commons.b4cdb1aaaab435bfaa74.js",
+      "static/runtime/main-69f5eeeb4988d6155350.js"
     ],
     "/": [
       "static/runtime/webpack-42652fa8b82c329c0559.js",
-      "static/chunks/commons.0d0e604c9d5fd423b322.js",
-      "static/runtime/main-0e9adf486f6457f745eb.js"
+      "static/chunks/commons.b4cdb1aaaab435bfaa74.js",
+      "static/runtime/main-69f5eeeb4988d6155350.js"
     ]
   }
 }

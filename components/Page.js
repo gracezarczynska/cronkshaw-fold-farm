@@ -14,7 +14,7 @@ const theme = {
 };
 
 const StyledPage = styled.div`
-  background: ${props => props.theme.grey};
+  background-color: ${props => props.theme.grey};
   color: ${props => props.theme.offWhite};
 `;
 
@@ -26,9 +26,9 @@ const Inner = styled.div`
 
 injectGlobal`
   html {
-    background: ${props => props.theme.grey};
     box-sizing: border-box;
     font-size: 10px;
+    background-color: ${theme.grey};
   }
   *, *:before, *:after {
     box-sizing: inherit;

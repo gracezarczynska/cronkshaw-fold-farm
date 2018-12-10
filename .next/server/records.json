@@ -13,12 +13,20 @@
       "multi ./pages/_app.js": 9,
       "multi ./pages/_document.js": 10,
       "node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/_document.js": 11,
-      "multi ./pages/index.js": 12,
-      "node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/index.js": 13,
-      "multi node_modules/next/dist/pages/_error.js": 14,
-      "node_modules/next/dist/pages/_error.js": 15,
-      "external \"next/error\"": 16,
-      "node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/_app.js ab1adccccc0f23c4af769ce2491c73c7": 17
+      "multi ./pages/about.js": 12,
+      "node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/about.js": 13,
+      "multi ./pages/farms.js": 14,
+      "node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/farms.js": 15,
+      "multi ./pages/index.js": 16,
+      "node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/index.js": 17,
+      "multi ./pages/sign-in.js": 18,
+      "node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/sign-in.js": 19,
+      "multi ./pages/sign-up.js": 20,
+      "node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/sign-up.js": 21,
+      "multi node_modules/next/dist/pages/_error.js": 22,
+      "node_modules/next/dist/pages/_error.js": 23,
+      "external \"next/error\"": 24,
+      "node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/_app.js fc04bc043a34bea03fc2f807c77e3d3f": 25
     },
     "usedIds": {
       "0": 0,
@@ -38,22 +46,46 @@
       "14": 14,
       "15": 15,
       "16": 16,
-      "17": 17
+      "17": 17,
+      "18": 18,
+      "19": 19,
+      "20": 20,
+      "21": 21,
+      "22": 22,
+      "23": 23,
+      "24": 24,
+      "25": 25
     }
   },
   "chunks": {
     "byName": {
-      "static/qRiEQO2SCmEopt_j0r~TL/pages/_app.js": 0,
-      "static/qRiEQO2SCmEopt_j0r~TL/pages/_document.js": 1,
-      "static/qRiEQO2SCmEopt_j0r~TL/pages/index.js": 2,
-      "static/qRiEQO2SCmEopt_j0r~TL/pages/_error.js": 3
+      "static/oZvwe2oPND8qU81adB0Yo/pages/_app.js": 0,
+      "static/oZvwe2oPND8qU81adB0Yo/pages/_document.js": 1,
+      "static/oZvwe2oPND8qU81adB0Yo/pages/about.js": 2,
+      "static/oZvwe2oPND8qU81adB0Yo/pages/farms.js": 3,
+      "static/oZvwe2oPND8qU81adB0Yo/pages/index.js": 4,
+      "static/oZvwe2oPND8qU81adB0Yo/pages/sign-in.js": 5,
+      "static/oZvwe2oPND8qU81adB0Yo/pages/sign-up.js": 6,
+      "static/oZvwe2oPND8qU81adB0Yo/pages/_error.js": 7,
+      "static/wUVEaqDbU2nChoL__5QEQ/pages/_app.js": 8,
+      "static/wUVEaqDbU2nChoL__5QEQ/pages/_document.js": 9,
+      "static/wUVEaqDbU2nChoL__5QEQ/pages/about.js": 10,
+      "static/wUVEaqDbU2nChoL__5QEQ/pages/farms.js": 11,
+      "static/wUVEaqDbU2nChoL__5QEQ/pages/index.js": 12,
+      "static/wUVEaqDbU2nChoL__5QEQ/pages/sign-in.js": 13,
+      "static/wUVEaqDbU2nChoL__5QEQ/pages/sign-up.js": 14,
+      "static/wUVEaqDbU2nChoL__5QEQ/pages/_error.js": 15
     },
     "bySource": {},
     "usedIds": [
-      0,
-      1,
-      2,
-      3
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      8,
+      9
     ]
   }
 }
