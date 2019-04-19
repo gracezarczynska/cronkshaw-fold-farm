@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import SignIn from '../components/Signin';
-import Register from '../components/Register';
-import RequestReset from '../components/RequestReset';
+import SignIn from '../components/Authorisation/Signin';
+import Register from '../components/Authorisation/Register';
+import RequestReset from '../components/Authorisation/RequestReset';
 import styled from 'styled-components';
 
 const Columns = styled.div`

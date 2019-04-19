@@ -32,7 +32,6 @@ export default class ProducePreview extends Component {
                         let subscription = [];
                         const alreadySubscribed = me && me.subscriptions && me.subscriptions.filter(existingSubscription => existingSubscription.product.id === product.id).length > 0;
                         if (alreadySubscribed) {
-                            console.log(me.subscriptions.filter(existingSubscription => existingSubscription.product.id === product.id));
                             subscription = me.subscriptions.filter(existingSubscription => existingSubscription.product.id === product.id);
                         }
                         return (
