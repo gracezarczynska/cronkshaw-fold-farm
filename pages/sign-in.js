@@ -1,13 +1,26 @@
 import React, { Component } from 'react';
+import SignIn from '../components/Signin';
+import Register from '../components/Register';
+import RequestReset from '../components/RequestReset';
+import styled from 'styled-components';
 
-class SignIn extends Component {
+const Columns = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
+  grid-auto-rows: auto;
+`;
+
+class SignInPage extends Component {
     render() {
         return (
-            <div>
-                
-            </div>
+            <Columns>
+                <SignIn />
+                <Register />
+                <RequestReset />
+            </Columns>
         );
     }
 }
 
-export default SignIn;
+export default SignInPage;

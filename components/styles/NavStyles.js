@@ -6,6 +6,16 @@ const NavStyles = styled.ul`
   display: flex;
   justify-self: end;
   font-size: 2rem;
+  p {
+    color: ${props => props.theme.black};
+    padding: 1rem 3rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 1em;
+  }
   a,
   button {
     padding: 1rem 3rem;
@@ -13,13 +23,12 @@ const NavStyles = styled.ul`
     align-items: center;
     position: relative;
     text-transform: uppercase;
-    font-weight: 900;
+    font-weight: 400;
     font-size: 1em;
     background: none;
     border: 0;
     cursor: pointer;
     color: ${props => props.theme.black};
-    font-weight: 800;
     @media (max-width: 700px) {
       font-size: 10px;
       padding: 0 10px;
@@ -45,7 +54,6 @@ const NavStyles = styled.ul`
     }
   }
   @media (max-width: 1300px) {
-    border-top: 1px solid ${props => props.theme.lightgrey};
     width: 100%;
     justify-content: center;
     font-size: 1.5rem;

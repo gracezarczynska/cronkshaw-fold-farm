@@ -1,0 +1,62 @@
+enum Permission {
+  ADMIN
+  USER
+  FARMER
+  ITEMCREATE
+  ITEMUPDATE
+  ITEMDELETE
+  PERMISSIONUPDATE
+}
+
+type Product {
+  id: ID! @unique
+  name: String!
+  frequencyStock: Int!
+  availableStock: Int
+  price: Float!
+  unit: String!
+  description: String
+  image: String
+  farm: Farm!
+  deliveryDays: [Int]!
+  deliveryFrequency: String
+  startDate: DateTime
+}
+
+type User {
+  id: ID! @unique
+  name: String!
+  email: String! @unique
+  password: String!
+  resetToken: String
+  resetTokenExpiry: String
+  permissions: [Permission]
+  address1: String
+  address2: String
+  postcode: String
+  city: String
+  housePicture: String
+  dropOffPicture: String
+  subscriptions: [Subscription!]!
+  deliveryInstructions: String
+}
+
+type Subscription {
+  id: ID! @unique
+  quantity: Int! @default(value: 1)
+  subscriptionFrequency: String
+  subscriptionStartDate: DateTime
+  overrides: [DateTime]
+  product: Product # relationship to Item
+  user: User! # relationship to User
+}
+
+type Farm {
+  id: ID! @unique
+  name: String!
+  description: String
+  address: String!
+  postcode: String!
+  products: [Product!]
+  image: String!
+}

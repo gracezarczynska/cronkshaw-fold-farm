@@ -5,15 +5,35 @@
   "main": "index.js",
   "homepage": "https://gracezarczynska.github.io/cronkshaw-fold-farm/",
   "dependencies": {
+    "@zeit/next-css": "^1.0.1",
+    "@zeit/next-typescript": "^1.1.1",
+    "apollo-boost": "^0.1.16",
+    "apollo-client": "^2.4.8",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-plugin-styled-components": "^1.7.1",
+    "date-fns": "^1.30.1",
     "gh-pages": "^2.0.1",
+    "graphql": "^14.0.2",
+    "graphql-tag": "^2.9.2",
+    "later": "^1.2.0",
+    "moment": "^2.24.0",
+    "moment-calendar": "0.0.4",
+    "moment-recur": "^1.0.7",
     "next": "^7.0.2",
+    "next-with-apollo": "^3.3.1",
     "nprogress": "^0.2.0",
+    "prop-types": "^15.6.2",
     "react": "^16.6.3",
+    "react-adopt": "^0.6.0",
+    "react-apollo": "^2.2.1",
+    "react-big-calendar": "^0.20.4",
+    "react-calendar": "^2.18.1",
     "react-dom": "^16.6.3",
     "react-scripts": "2.1.1",
+    "react-stripe-checkout": "^2.6.3",
+    "react-transition-group": "^2.5.0",
     "styled-components": "3.4.9",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-plugin-styled-components": "^1.7.1"
+    "waait": "^1.0.2"
   },
   "scripts": {
     "dev": "next -p 8080",
@@ -81,5 +101,6 @@
         ]
       }
     }
-  }
+  },
+  "devDependencies": {}
 }

@@ -9,13 +9,14 @@ const theme = {
   grey: '#2f2e2e',
   lightgrey: '#E1E1E1',
   offWhite: '#EDEDED',
-  maxWidth: '1000px',
+  maxWidth: '1200px',
   bs: '0 12px 24px 0 rgba(0, 0, 0, 0.09)',
 };
 
 const StyledPage = styled.div`
   background-color: ${props => props.theme.grey};
   color: ${props => props.theme.offWhite};
+  font-family: 'Helvetica';
 `;
 
 const Inner = styled.div`
