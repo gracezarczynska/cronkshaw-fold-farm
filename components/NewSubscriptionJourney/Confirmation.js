@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { ButtonStyles } from './styles/ButtonStyles';
-import Error from './ErrorMessage';
-import User from './User';
+import { ButtonStyles } from '../styles/ButtonStyles';
+import Error from '../ErrorMessage';
+import User from '../User';
 
 const ADD_INFO_USER = gql`
     mutation ADD_INFO_MUTATION($id: ID!, $address1: String!, $address2: String, $postcode: String!, $city: String!, $housePicture: String, $dropOffPicture: String, $productId: ID!, $subscriptionFrequency: String!, $subscriptionStartDate: DateTime!, $deliveryInstructions: String, $quantity: Int!) {
@@ -12,7 +12,7 @@ const ADD_INFO_USER = gql`
             email
             name
         }
-        createSubscription(id: $productId, subscriptionFrequency: $subscriptionFrequency, subscriptionStartDate: $subscriptionStartDate, quantity: $quantity) {
+        createEnrollment(id: $productId, subscriptionFrequency: $subscriptionFrequency, subscriptionStartDate: $subscriptionStartDate, quantity: $quantity) {
             user {
                 subscriptions {
                     id

@@ -1,15 +1,19 @@
 # source: https://eu1.prisma.sh/malgorzata-zarczynska/cronkshaw-fold-farm/dev
-# timestamp: Wed Apr 03 2019 14:26:26 GMT+0100 (British Summer Time)
+# timestamp: Sun Apr 28 2019 19:11:39 GMT+0100 (British Summer Time)
+
+type AggregateEnrollment {
+  count: Int!
+}
 
 type AggregateFarm {
   count: Int!
 }
 
-type AggregateProduct {
+type AggregateOverride {
   count: Int!
 }
 
-type AggregateSubscription {
+type AggregateProduct {
   count: Int!
 }
 
@@ -24,6 +28,486 @@ type BatchPayload {
 
 scalar DateTime
 
+type Enrollment implements Node {
+  id: ID!
+  quantity: Int!
+  subscriptionFrequency: String
+  subscriptionStartDate: DateTime
+  overrides(where: OverrideWhereInput, orderBy: OverrideOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Override!]
+  product: Product!
+  user: User!
+}
+
+"""A connection to a list of items."""
+type EnrollmentConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [EnrollmentEdge]!
+  aggregate: AggregateEnrollment!
+}
+
+input EnrollmentCreateInput {
+  id: ID
+  quantity: Int
+  subscriptionFrequency: String
+  subscriptionStartDate: DateTime
+  overrides: OverrideCreateManyWithoutSubscriptionsInput
+  product: ProductCreateOneInput!
+  user: UserCreateOneWithoutSubscriptionsInput!
+}
+
+input EnrollmentCreateManyWithoutUserInput {
+  create: [EnrollmentCreateWithoutUserInput!]
+  connect: [EnrollmentWhereUniqueInput!]
+}
+
+input EnrollmentCreateOneWithoutOverridesInput {
+  create: EnrollmentCreateWithoutOverridesInput
+  connect: EnrollmentWhereUniqueInput
+}
+
+input EnrollmentCreateWithoutOverridesInput {
+  id: ID
+  quantity: Int
+  subscriptionFrequency: String
+  subscriptionStartDate: DateTime
+  product: ProductCreateOneInput!
+  user: UserCreateOneWithoutSubscriptionsInput!
+}
+
+input EnrollmentCreateWithoutUserInput {
+  id: ID
+  quantity: Int
+  subscriptionFrequency: String
+  subscriptionStartDate: DateTime
+  overrides: OverrideCreateManyWithoutSubscriptionsInput
+  product: ProductCreateOneInput!
+}
+
+"""An edge in a connection."""
+type EnrollmentEdge {
+  """The item at the end of the edge."""
+  node: Enrollment!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum EnrollmentOrderByInput {
+  id_ASC
+  id_DESC
+  quantity_ASC
+  quantity_DESC
+  subscriptionFrequency_ASC
+  subscriptionFrequency_DESC
+  subscriptionStartDate_ASC
+  subscriptionStartDate_DESC
+}
+
+type EnrollmentPreviousValues {
+  id: ID!
+  quantity: Int!
+  subscriptionFrequency: String
+  subscriptionStartDate: DateTime
+}
+
+input EnrollmentScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [EnrollmentScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [EnrollmentScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [EnrollmentScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  quantity: Int
+
+  """All values that are not equal to given value."""
+  quantity_not: Int
+
+  """All values that are contained in given list."""
+  quantity_in: [Int!]
+
+  """All values that are not contained in given list."""
+  quantity_not_in: [Int!]
+
+  """All values less than the given value."""
+  quantity_lt: Int
+
+  """All values less than or equal the given value."""
+  quantity_lte: Int
+
+  """All values greater than the given value."""
+  quantity_gt: Int
+
+  """All values greater than or equal the given value."""
+  quantity_gte: Int
+  subscriptionFrequency: String
+
+  """All values that are not equal to given value."""
+  subscriptionFrequency_not: String
+
+  """All values that are contained in given list."""
+  subscriptionFrequency_in: [String!]
+
+  """All values that are not contained in given list."""
+  subscriptionFrequency_not_in: [String!]
+
+  """All values less than the given value."""
+  subscriptionFrequency_lt: String
+
+  """All values less than or equal the given value."""
+  subscriptionFrequency_lte: String
+
+  """All values greater than the given value."""
+  subscriptionFrequency_gt: String
+
+  """All values greater than or equal the given value."""
+  subscriptionFrequency_gte: String
+
+  """All values containing the given string."""
+  subscriptionFrequency_contains: String
+
+  """All values not containing the given string."""
+  subscriptionFrequency_not_contains: String
+
+  """All values starting with the given string."""
+  subscriptionFrequency_starts_with: String
+
+  """All values not starting with the given string."""
+  subscriptionFrequency_not_starts_with: String
+
+  """All values ending with the given string."""
+  subscriptionFrequency_ends_with: String
+
+  """All values not ending with the given string."""
+  subscriptionFrequency_not_ends_with: String
+  subscriptionStartDate: DateTime
+
+  """All values that are not equal to given value."""
+  subscriptionStartDate_not: DateTime
+
+  """All values that are contained in given list."""
+  subscriptionStartDate_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  subscriptionStartDate_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  subscriptionStartDate_lt: DateTime
+
+  """All values less than or equal the given value."""
+  subscriptionStartDate_lte: DateTime
+
+  """All values greater than the given value."""
+  subscriptionStartDate_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  subscriptionStartDate_gte: DateTime
+}
+
+type EnrollmentSubscriptionPayload {
+  mutation: MutationType!
+  node: Enrollment
+  updatedFields: [String!]
+  previousValues: EnrollmentPreviousValues
+}
+
+input EnrollmentSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [EnrollmentSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [EnrollmentSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [EnrollmentSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: EnrollmentWhereInput
+}
+
+input EnrollmentUpdateInput {
+  quantity: Int
+  subscriptionFrequency: String
+  subscriptionStartDate: DateTime
+  overrides: OverrideUpdateManyWithoutSubscriptionsInput
+  product: ProductUpdateOneRequiredInput
+  user: UserUpdateOneRequiredWithoutSubscriptionsInput
+}
+
+input EnrollmentUpdateManyDataInput {
+  quantity: Int
+  subscriptionFrequency: String
+  subscriptionStartDate: DateTime
+}
+
+input EnrollmentUpdateManyMutationInput {
+  quantity: Int
+  subscriptionFrequency: String
+  subscriptionStartDate: DateTime
+}
+
+input EnrollmentUpdateManyWithoutUserInput {
+  create: [EnrollmentCreateWithoutUserInput!]
+  connect: [EnrollmentWhereUniqueInput!]
+  set: [EnrollmentWhereUniqueInput!]
+  disconnect: [EnrollmentWhereUniqueInput!]
+  delete: [EnrollmentWhereUniqueInput!]
+  update: [EnrollmentUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [EnrollmentUpdateManyWithWhereNestedInput!]
+  deleteMany: [EnrollmentScalarWhereInput!]
+  upsert: [EnrollmentUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input EnrollmentUpdateManyWithWhereNestedInput {
+  where: EnrollmentScalarWhereInput!
+  data: EnrollmentUpdateManyDataInput!
+}
+
+input EnrollmentUpdateOneRequiredWithoutOverridesInput {
+  create: EnrollmentCreateWithoutOverridesInput
+  connect: EnrollmentWhereUniqueInput
+  update: EnrollmentUpdateWithoutOverridesDataInput
+  upsert: EnrollmentUpsertWithoutOverridesInput
+}
+
+input EnrollmentUpdateWithoutOverridesDataInput {
+  quantity: Int
+  subscriptionFrequency: String
+  subscriptionStartDate: DateTime
+  product: ProductUpdateOneRequiredInput
+  user: UserUpdateOneRequiredWithoutSubscriptionsInput
+}
+
+input EnrollmentUpdateWithoutUserDataInput {
+  quantity: Int
+  subscriptionFrequency: String
+  subscriptionStartDate: DateTime
+  overrides: OverrideUpdateManyWithoutSubscriptionsInput
+  product: ProductUpdateOneRequiredInput
+}
+
+input EnrollmentUpdateWithWhereUniqueWithoutUserInput {
+  where: EnrollmentWhereUniqueInput!
+  data: EnrollmentUpdateWithoutUserDataInput!
+}
+
+input EnrollmentUpsertWithoutOverridesInput {
+  update: EnrollmentUpdateWithoutOverridesDataInput!
+  create: EnrollmentCreateWithoutOverridesInput!
+}
+
+input EnrollmentUpsertWithWhereUniqueWithoutUserInput {
+  where: EnrollmentWhereUniqueInput!
+  update: EnrollmentUpdateWithoutUserDataInput!
+  create: EnrollmentCreateWithoutUserInput!
+}
+
+input EnrollmentWhereInput {
+  """Logical AND on all given filters."""
+  AND: [EnrollmentWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [EnrollmentWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [EnrollmentWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  quantity: Int
+
+  """All values that are not equal to given value."""
+  quantity_not: Int
+
+  """All values that are contained in given list."""
+  quantity_in: [Int!]
+
+  """All values that are not contained in given list."""
+  quantity_not_in: [Int!]
+
+  """All values less than the given value."""
+  quantity_lt: Int
+
+  """All values less than or equal the given value."""
+  quantity_lte: Int
+
+  """All values greater than the given value."""
+  quantity_gt: Int
+
+  """All values greater than or equal the given value."""
+  quantity_gte: Int
+  subscriptionFrequency: String
+
+  """All values that are not equal to given value."""
+  subscriptionFrequency_not: String
+
+  """All values that are contained in given list."""
+  subscriptionFrequency_in: [String!]
+
+  """All values that are not contained in given list."""
+  subscriptionFrequency_not_in: [String!]
+
+  """All values less than the given value."""
+  subscriptionFrequency_lt: String
+
+  """All values less than or equal the given value."""
+  subscriptionFrequency_lte: String
+
+  """All values greater than the given value."""
+  subscriptionFrequency_gt: String
+
+  """All values greater than or equal the given value."""
+  subscriptionFrequency_gte: String
+
+  """All values containing the given string."""
+  subscriptionFrequency_contains: String
+
+  """All values not containing the given string."""
+  subscriptionFrequency_not_contains: String
+
+  """All values starting with the given string."""
+  subscriptionFrequency_starts_with: String
+
+  """All values not starting with the given string."""
+  subscriptionFrequency_not_starts_with: String
+
+  """All values ending with the given string."""
+  subscriptionFrequency_ends_with: String
+
+  """All values not ending with the given string."""
+  subscriptionFrequency_not_ends_with: String
+  subscriptionStartDate: DateTime
+
+  """All values that are not equal to given value."""
+  subscriptionStartDate_not: DateTime
+
+  """All values that are contained in given list."""
+  subscriptionStartDate_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  subscriptionStartDate_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  subscriptionStartDate_lt: DateTime
+
+  """All values less than or equal the given value."""
+  subscriptionStartDate_lte: DateTime
+
+  """All values greater than the given value."""
+  subscriptionStartDate_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  subscriptionStartDate_gte: DateTime
+  overrides_every: OverrideWhereInput
+  overrides_some: OverrideWhereInput
+  overrides_none: OverrideWhereInput
+  product: ProductWhereInput
+  user: UserWhereInput
+}
+
+input EnrollmentWhereUniqueInput {
+  id: ID
+}
+
 type Farm implements Node {
   id: ID!
   name: String!
@@ -32,6 +516,8 @@ type Farm implements Node {
   postcode: String!
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product!]
   image: String!
+  updatedAt: DateTime!
+  createdAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -94,6 +580,56 @@ enum FarmOrderByInput {
   updatedAt_DESC
   createdAt_ASC
   createdAt_DESC
+}
+
+type FarmPreviousValues {
+  id: ID!
+  name: String!
+  description: String
+  address: String!
+  postcode: String!
+  image: String!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+}
+
+type FarmSubscriptionPayload {
+  mutation: MutationType!
+  node: Farm
+  updatedFields: [String!]
+  previousValues: FarmPreviousValues
+}
+
+input FarmSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [FarmSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [FarmSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [FarmSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: FarmWhereInput
 }
 
 input FarmUpdateInput {
@@ -382,6 +918,50 @@ input FarmWhereInput {
 
   """All values not ending with the given string."""
   image_not_ends_with: String
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
   products_every: ProductWhereInput
   products_some: ProductWhereInput
   products_none: ProductWhereInput
@@ -399,35 +979,461 @@ scalar Long
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
-  createSubscription(data: SubscriptionCreateInput!): Subscription!
+  createEnrollment(data: EnrollmentCreateInput!): Enrollment!
   createFarm(data: FarmCreateInput!): Farm!
+  createOverride(data: OverrideCreateInput!): Override!
   createProduct(data: ProductCreateInput!): Product!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateSubscription(data: SubscriptionUpdateInput!, where: SubscriptionWhereUniqueInput!): Subscription
+  updateEnrollment(data: EnrollmentUpdateInput!, where: EnrollmentWhereUniqueInput!): Enrollment
   updateFarm(data: FarmUpdateInput!, where: FarmWhereUniqueInput!): Farm
+  updateOverride(data: OverrideUpdateInput!, where: OverrideWhereUniqueInput!): Override
   updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   deleteUser(where: UserWhereUniqueInput!): User
-  deleteSubscription(where: SubscriptionWhereUniqueInput!): Subscription
+  deleteEnrollment(where: EnrollmentWhereUniqueInput!): Enrollment
   deleteFarm(where: FarmWhereUniqueInput!): Farm
+  deleteOverride(where: OverrideWhereUniqueInput!): Override
   deleteProduct(where: ProductWhereUniqueInput!): Product
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  upsertSubscription(where: SubscriptionWhereUniqueInput!, create: SubscriptionCreateInput!, update: SubscriptionUpdateInput!): Subscription!
+  upsertEnrollment(where: EnrollmentWhereUniqueInput!, create: EnrollmentCreateInput!, update: EnrollmentUpdateInput!): Enrollment!
   upsertFarm(where: FarmWhereUniqueInput!, create: FarmCreateInput!, update: FarmUpdateInput!): Farm!
+  upsertOverride(where: OverrideWhereUniqueInput!, create: OverrideCreateInput!, update: OverrideUpdateInput!): Override!
   upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
-  updateManySubscriptions(data: SubscriptionUpdateManyMutationInput!, where: SubscriptionWhereInput): BatchPayload!
+  updateManyEnrollments(data: EnrollmentUpdateManyMutationInput!, where: EnrollmentWhereInput): BatchPayload!
   updateManyFarms(data: FarmUpdateManyMutationInput!, where: FarmWhereInput): BatchPayload!
+  updateManyOverrides(data: OverrideUpdateManyMutationInput!, where: OverrideWhereInput): BatchPayload!
   updateManyProducts(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
-  deleteManySubscriptions(where: SubscriptionWhereInput): BatchPayload!
+  deleteManyEnrollments(where: EnrollmentWhereInput): BatchPayload!
   deleteManyFarms(where: FarmWhereInput): BatchPayload!
+  deleteManyOverrides(where: OverrideWhereInput): BatchPayload!
   deleteManyProducts(where: ProductWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
 }
 
 """An object with an ID"""
 interface Node {
   """The id of the object."""
   id: ID!
+}
+
+type Override implements Node {
+  id: ID!
+  subscriptions: Enrollment!
+  startDate: DateTime!
+  endDate: DateTime
+  quantity: Int
+  cancel: Boolean
+}
+
+"""A connection to a list of items."""
+type OverrideConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [OverrideEdge]!
+  aggregate: AggregateOverride!
+}
+
+input OverrideCreateInput {
+  id: ID
+  startDate: DateTime!
+  endDate: DateTime
+  quantity: Int
+  cancel: Boolean
+  subscriptions: EnrollmentCreateOneWithoutOverridesInput!
+}
+
+input OverrideCreateManyWithoutSubscriptionsInput {
+  create: [OverrideCreateWithoutSubscriptionsInput!]
+  connect: [OverrideWhereUniqueInput!]
+}
+
+input OverrideCreateWithoutSubscriptionsInput {
+  id: ID
+  startDate: DateTime!
+  endDate: DateTime
+  quantity: Int
+  cancel: Boolean
+}
+
+"""An edge in a connection."""
+type OverrideEdge {
+  """The item at the end of the edge."""
+  node: Override!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum OverrideOrderByInput {
+  id_ASC
+  id_DESC
+  startDate_ASC
+  startDate_DESC
+  endDate_ASC
+  endDate_DESC
+  quantity_ASC
+  quantity_DESC
+  cancel_ASC
+  cancel_DESC
+}
+
+type OverridePreviousValues {
+  id: ID!
+  startDate: DateTime!
+  endDate: DateTime
+  quantity: Int
+  cancel: Boolean
+}
+
+input OverrideScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [OverrideScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [OverrideScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [OverrideScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  startDate: DateTime
+
+  """All values that are not equal to given value."""
+  startDate_not: DateTime
+
+  """All values that are contained in given list."""
+  startDate_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  startDate_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  startDate_lt: DateTime
+
+  """All values less than or equal the given value."""
+  startDate_lte: DateTime
+
+  """All values greater than the given value."""
+  startDate_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  startDate_gte: DateTime
+  endDate: DateTime
+
+  """All values that are not equal to given value."""
+  endDate_not: DateTime
+
+  """All values that are contained in given list."""
+  endDate_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  endDate_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  endDate_lt: DateTime
+
+  """All values less than or equal the given value."""
+  endDate_lte: DateTime
+
+  """All values greater than the given value."""
+  endDate_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  endDate_gte: DateTime
+  quantity: Int
+
+  """All values that are not equal to given value."""
+  quantity_not: Int
+
+  """All values that are contained in given list."""
+  quantity_in: [Int!]
+
+  """All values that are not contained in given list."""
+  quantity_not_in: [Int!]
+
+  """All values less than the given value."""
+  quantity_lt: Int
+
+  """All values less than or equal the given value."""
+  quantity_lte: Int
+
+  """All values greater than the given value."""
+  quantity_gt: Int
+
+  """All values greater than or equal the given value."""
+  quantity_gte: Int
+  cancel: Boolean
+
+  """All values that are not equal to given value."""
+  cancel_not: Boolean
+}
+
+type OverrideSubscriptionPayload {
+  mutation: MutationType!
+  node: Override
+  updatedFields: [String!]
+  previousValues: OverridePreviousValues
+}
+
+input OverrideSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [OverrideSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [OverrideSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [OverrideSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: OverrideWhereInput
+}
+
+input OverrideUpdateInput {
+  startDate: DateTime
+  endDate: DateTime
+  quantity: Int
+  cancel: Boolean
+  subscriptions: EnrollmentUpdateOneRequiredWithoutOverridesInput
+}
+
+input OverrideUpdateManyDataInput {
+  startDate: DateTime
+  endDate: DateTime
+  quantity: Int
+  cancel: Boolean
+}
+
+input OverrideUpdateManyMutationInput {
+  startDate: DateTime
+  endDate: DateTime
+  quantity: Int
+  cancel: Boolean
+}
+
+input OverrideUpdateManyWithoutSubscriptionsInput {
+  create: [OverrideCreateWithoutSubscriptionsInput!]
+  connect: [OverrideWhereUniqueInput!]
+  set: [OverrideWhereUniqueInput!]
+  disconnect: [OverrideWhereUniqueInput!]
+  delete: [OverrideWhereUniqueInput!]
+  update: [OverrideUpdateWithWhereUniqueWithoutSubscriptionsInput!]
+  updateMany: [OverrideUpdateManyWithWhereNestedInput!]
+  deleteMany: [OverrideScalarWhereInput!]
+  upsert: [OverrideUpsertWithWhereUniqueWithoutSubscriptionsInput!]
+}
+
+input OverrideUpdateManyWithWhereNestedInput {
+  where: OverrideScalarWhereInput!
+  data: OverrideUpdateManyDataInput!
+}
+
+input OverrideUpdateWithoutSubscriptionsDataInput {
+  startDate: DateTime
+  endDate: DateTime
+  quantity: Int
+  cancel: Boolean
+}
+
+input OverrideUpdateWithWhereUniqueWithoutSubscriptionsInput {
+  where: OverrideWhereUniqueInput!
+  data: OverrideUpdateWithoutSubscriptionsDataInput!
+}
+
+input OverrideUpsertWithWhereUniqueWithoutSubscriptionsInput {
+  where: OverrideWhereUniqueInput!
+  update: OverrideUpdateWithoutSubscriptionsDataInput!
+  create: OverrideCreateWithoutSubscriptionsInput!
+}
+
+input OverrideWhereInput {
+  """Logical AND on all given filters."""
+  AND: [OverrideWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [OverrideWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [OverrideWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  startDate: DateTime
+
+  """All values that are not equal to given value."""
+  startDate_not: DateTime
+
+  """All values that are contained in given list."""
+  startDate_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  startDate_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  startDate_lt: DateTime
+
+  """All values less than or equal the given value."""
+  startDate_lte: DateTime
+
+  """All values greater than the given value."""
+  startDate_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  startDate_gte: DateTime
+  endDate: DateTime
+
+  """All values that are not equal to given value."""
+  endDate_not: DateTime
+
+  """All values that are contained in given list."""
+  endDate_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  endDate_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  endDate_lt: DateTime
+
+  """All values less than or equal the given value."""
+  endDate_lte: DateTime
+
+  """All values greater than the given value."""
+  endDate_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  endDate_gte: DateTime
+  quantity: Int
+
+  """All values that are not equal to given value."""
+  quantity_not: Int
+
+  """All values that are contained in given list."""
+  quantity_in: [Int!]
+
+  """All values that are not contained in given list."""
+  quantity_not_in: [Int!]
+
+  """All values less than the given value."""
+  quantity_lt: Int
+
+  """All values less than or equal the given value."""
+  quantity_lte: Int
+
+  """All values greater than the given value."""
+  quantity_gt: Int
+
+  """All values greater than or equal the given value."""
+  quantity_gte: Int
+  cancel: Boolean
+
+  """All values that are not equal to given value."""
+  cancel_not: Boolean
+  subscriptions: EnrollmentWhereInput
+}
+
+input OverrideWhereUniqueInput {
+  id: ID
 }
 
 """Information about pagination in a connection."""
@@ -468,6 +1474,8 @@ type Product implements Node {
   deliveryDays: [Int!]!
   deliveryFrequency: String
   startDate: DateTime
+  updatedAt: DateTime!
+  createdAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -557,6 +1565,22 @@ enum ProductOrderByInput {
   updatedAt_DESC
   createdAt_ASC
   createdAt_DESC
+}
+
+type ProductPreviousValues {
+  id: ID!
+  name: String!
+  frequencyStock: Int!
+  availableStock: Int
+  price: Float!
+  unit: String!
+  description: String
+  image: String
+  deliveryDays: [Int!]!
+  deliveryFrequency: String
+  startDate: DateTime
+  updatedAt: DateTime!
+  createdAt: DateTime!
 }
 
 input ProductScalarWhereInput {
@@ -896,6 +1920,89 @@ input ProductScalarWhereInput {
 
   """All values greater than or equal the given value."""
   startDate_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+}
+
+type ProductSubscriptionPayload {
+  mutation: MutationType!
+  node: Product
+  updatedFields: [String!]
+  previousValues: ProductPreviousValues
+}
+
+input ProductSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ProductSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ProductSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ProductSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ProductWhereInput
 }
 
 input ProductUpdateDataInput {
@@ -973,11 +2080,9 @@ input ProductUpdateManyWithWhereNestedInput {
   data: ProductUpdateManyDataInput!
 }
 
-input ProductUpdateOneInput {
+input ProductUpdateOneRequiredInput {
   create: ProductCreateInput
   connect: ProductWhereUniqueInput
-  disconnect: Boolean
-  delete: Boolean
   update: ProductUpdateDataInput
   upsert: ProductUpsertNestedInput
 }
@@ -1348,6 +2453,50 @@ input ProductWhereInput {
 
   """All values greater than or equal the given value."""
   startDate_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
   farm: FarmWhereInput
 }
 
@@ -1357,16 +2506,19 @@ input ProductWhereUniqueInput {
 
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  subscriptions(where: SubscriptionWhereInput, orderBy: SubscriptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Subscription]!
+  enrollments(where: EnrollmentWhereInput, orderBy: EnrollmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Enrollment]!
   farms(where: FarmWhereInput, orderBy: FarmOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Farm]!
+  overrides(where: OverrideWhereInput, orderBy: OverrideOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Override]!
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
   user(where: UserWhereUniqueInput!): User
-  subscription(where: SubscriptionWhereUniqueInput!): Subscription
+  enrollment(where: EnrollmentWhereUniqueInput!): Enrollment
   farm(where: FarmWhereUniqueInput!): Farm
+  override(where: OverrideWhereUniqueInput!): Override
   product(where: ProductWhereUniqueInput!): Product
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  subscriptionsConnection(where: SubscriptionWhereInput, orderBy: SubscriptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SubscriptionConnection!
+  enrollmentsConnection(where: EnrollmentWhereInput, orderBy: EnrollmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EnrollmentConnection!
   farmsConnection(where: FarmWhereInput, orderBy: FarmOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FarmConnection!
+  overridesConnection(where: OverrideWhereInput, orderBy: OverrideOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OverrideConnection!
   productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
 
   """Fetches an object given its ID"""
@@ -1376,415 +2528,12 @@ type Query {
   ): Node
 }
 
-type Subscription implements Node {
-  id: ID!
-  quantity: Int!
-  subscriptionFrequency: String
-  subscriptionStartDate: DateTime
-  overrides: [DateTime!]!
-  product: Product
-  user: User!
-}
-
-"""A connection to a list of items."""
-type SubscriptionConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [SubscriptionEdge]!
-  aggregate: AggregateSubscription!
-}
-
-input SubscriptionCreateInput {
-  id: ID
-  quantity: Int
-  subscriptionFrequency: String
-  subscriptionStartDate: DateTime
-  overrides: SubscriptionCreateoverridesInput
-  product: ProductCreateOneInput
-  user: UserCreateOneWithoutSubscriptionsInput!
-}
-
-input SubscriptionCreateManyWithoutUserInput {
-  create: [SubscriptionCreateWithoutUserInput!]
-  connect: [SubscriptionWhereUniqueInput!]
-}
-
-input SubscriptionCreateoverridesInput {
-  set: [DateTime!]
-}
-
-input SubscriptionCreateWithoutUserInput {
-  id: ID
-  quantity: Int
-  subscriptionFrequency: String
-  subscriptionStartDate: DateTime
-  overrides: SubscriptionCreateoverridesInput
-  product: ProductCreateOneInput
-}
-
-"""An edge in a connection."""
-type SubscriptionEdge {
-  """The item at the end of the edge."""
-  node: Subscription!
-
-  """A cursor for use in pagination."""
-  cursor: String!
-}
-
-enum SubscriptionOrderByInput {
-  id_ASC
-  id_DESC
-  quantity_ASC
-  quantity_DESC
-  subscriptionFrequency_ASC
-  subscriptionFrequency_DESC
-  subscriptionStartDate_ASC
-  subscriptionStartDate_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  createdAt_ASC
-  createdAt_DESC
-}
-
-input SubscriptionScalarWhereInput {
-  """Logical AND on all given filters."""
-  AND: [SubscriptionScalarWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [SubscriptionScalarWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [SubscriptionScalarWhereInput!]
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  quantity: Int
-
-  """All values that are not equal to given value."""
-  quantity_not: Int
-
-  """All values that are contained in given list."""
-  quantity_in: [Int!]
-
-  """All values that are not contained in given list."""
-  quantity_not_in: [Int!]
-
-  """All values less than the given value."""
-  quantity_lt: Int
-
-  """All values less than or equal the given value."""
-  quantity_lte: Int
-
-  """All values greater than the given value."""
-  quantity_gt: Int
-
-  """All values greater than or equal the given value."""
-  quantity_gte: Int
-  subscriptionFrequency: String
-
-  """All values that are not equal to given value."""
-  subscriptionFrequency_not: String
-
-  """All values that are contained in given list."""
-  subscriptionFrequency_in: [String!]
-
-  """All values that are not contained in given list."""
-  subscriptionFrequency_not_in: [String!]
-
-  """All values less than the given value."""
-  subscriptionFrequency_lt: String
-
-  """All values less than or equal the given value."""
-  subscriptionFrequency_lte: String
-
-  """All values greater than the given value."""
-  subscriptionFrequency_gt: String
-
-  """All values greater than or equal the given value."""
-  subscriptionFrequency_gte: String
-
-  """All values containing the given string."""
-  subscriptionFrequency_contains: String
-
-  """All values not containing the given string."""
-  subscriptionFrequency_not_contains: String
-
-  """All values starting with the given string."""
-  subscriptionFrequency_starts_with: String
-
-  """All values not starting with the given string."""
-  subscriptionFrequency_not_starts_with: String
-
-  """All values ending with the given string."""
-  subscriptionFrequency_ends_with: String
-
-  """All values not ending with the given string."""
-  subscriptionFrequency_not_ends_with: String
-  subscriptionStartDate: DateTime
-
-  """All values that are not equal to given value."""
-  subscriptionStartDate_not: DateTime
-
-  """All values that are contained in given list."""
-  subscriptionStartDate_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  subscriptionStartDate_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  subscriptionStartDate_lt: DateTime
-
-  """All values less than or equal the given value."""
-  subscriptionStartDate_lte: DateTime
-
-  """All values greater than the given value."""
-  subscriptionStartDate_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  subscriptionStartDate_gte: DateTime
-}
-
-input SubscriptionUpdateInput {
-  quantity: Int
-  subscriptionFrequency: String
-  subscriptionStartDate: DateTime
-  overrides: SubscriptionUpdateoverridesInput
-  product: ProductUpdateOneInput
-  user: UserUpdateOneRequiredWithoutSubscriptionsInput
-}
-
-input SubscriptionUpdateManyDataInput {
-  quantity: Int
-  subscriptionFrequency: String
-  subscriptionStartDate: DateTime
-  overrides: SubscriptionUpdateoverridesInput
-}
-
-input SubscriptionUpdateManyMutationInput {
-  quantity: Int
-  subscriptionFrequency: String
-  subscriptionStartDate: DateTime
-  overrides: SubscriptionUpdateoverridesInput
-}
-
-input SubscriptionUpdateManyWithoutUserInput {
-  create: [SubscriptionCreateWithoutUserInput!]
-  connect: [SubscriptionWhereUniqueInput!]
-  set: [SubscriptionWhereUniqueInput!]
-  disconnect: [SubscriptionWhereUniqueInput!]
-  delete: [SubscriptionWhereUniqueInput!]
-  update: [SubscriptionUpdateWithWhereUniqueWithoutUserInput!]
-  updateMany: [SubscriptionUpdateManyWithWhereNestedInput!]
-  deleteMany: [SubscriptionScalarWhereInput!]
-  upsert: [SubscriptionUpsertWithWhereUniqueWithoutUserInput!]
-}
-
-input SubscriptionUpdateManyWithWhereNestedInput {
-  where: SubscriptionScalarWhereInput!
-  data: SubscriptionUpdateManyDataInput!
-}
-
-input SubscriptionUpdateoverridesInput {
-  set: [DateTime!]
-}
-
-input SubscriptionUpdateWithoutUserDataInput {
-  quantity: Int
-  subscriptionFrequency: String
-  subscriptionStartDate: DateTime
-  overrides: SubscriptionUpdateoverridesInput
-  product: ProductUpdateOneInput
-}
-
-input SubscriptionUpdateWithWhereUniqueWithoutUserInput {
-  where: SubscriptionWhereUniqueInput!
-  data: SubscriptionUpdateWithoutUserDataInput!
-}
-
-input SubscriptionUpsertWithWhereUniqueWithoutUserInput {
-  where: SubscriptionWhereUniqueInput!
-  update: SubscriptionUpdateWithoutUserDataInput!
-  create: SubscriptionCreateWithoutUserInput!
-}
-
-input SubscriptionWhereInput {
-  """Logical AND on all given filters."""
-  AND: [SubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [SubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [SubscriptionWhereInput!]
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  quantity: Int
-
-  """All values that are not equal to given value."""
-  quantity_not: Int
-
-  """All values that are contained in given list."""
-  quantity_in: [Int!]
-
-  """All values that are not contained in given list."""
-  quantity_not_in: [Int!]
-
-  """All values less than the given value."""
-  quantity_lt: Int
-
-  """All values less than or equal the given value."""
-  quantity_lte: Int
-
-  """All values greater than the given value."""
-  quantity_gt: Int
-
-  """All values greater than or equal the given value."""
-  quantity_gte: Int
-  subscriptionFrequency: String
-
-  """All values that are not equal to given value."""
-  subscriptionFrequency_not: String
-
-  """All values that are contained in given list."""
-  subscriptionFrequency_in: [String!]
-
-  """All values that are not contained in given list."""
-  subscriptionFrequency_not_in: [String!]
-
-  """All values less than the given value."""
-  subscriptionFrequency_lt: String
-
-  """All values less than or equal the given value."""
-  subscriptionFrequency_lte: String
-
-  """All values greater than the given value."""
-  subscriptionFrequency_gt: String
-
-  """All values greater than or equal the given value."""
-  subscriptionFrequency_gte: String
-
-  """All values containing the given string."""
-  subscriptionFrequency_contains: String
-
-  """All values not containing the given string."""
-  subscriptionFrequency_not_contains: String
-
-  """All values starting with the given string."""
-  subscriptionFrequency_starts_with: String
-
-  """All values not starting with the given string."""
-  subscriptionFrequency_not_starts_with: String
-
-  """All values ending with the given string."""
-  subscriptionFrequency_ends_with: String
-
-  """All values not ending with the given string."""
-  subscriptionFrequency_not_ends_with: String
-  subscriptionStartDate: DateTime
-
-  """All values that are not equal to given value."""
-  subscriptionStartDate_not: DateTime
-
-  """All values that are contained in given list."""
-  subscriptionStartDate_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  subscriptionStartDate_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  subscriptionStartDate_lt: DateTime
-
-  """All values less than or equal the given value."""
-  subscriptionStartDate_lte: DateTime
-
-  """All values greater than the given value."""
-  subscriptionStartDate_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  subscriptionStartDate_gte: DateTime
-  product: ProductWhereInput
-  user: UserWhereInput
-}
-
-input SubscriptionWhereUniqueInput {
-  id: ID
+type Subscription {
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  enrollment(where: EnrollmentSubscriptionWhereInput): EnrollmentSubscriptionPayload
+  farm(where: FarmSubscriptionWhereInput): FarmSubscriptionPayload
+  override(where: OverrideSubscriptionWhereInput): OverrideSubscriptionPayload
+  product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
 }
 
 type User implements Node {
@@ -1801,8 +2550,10 @@ type User implements Node {
   city: String
   housePicture: String
   dropOffPicture: String
-  subscriptions(where: SubscriptionWhereInput, orderBy: SubscriptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Subscription!]
+  subscriptions(where: EnrollmentWhereInput, orderBy: EnrollmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Enrollment!]
   deliveryInstructions: String
+  updatedAt: DateTime!
+  createdAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -1830,7 +2581,7 @@ input UserCreateInput {
   dropOffPicture: String
   deliveryInstructions: String
   permissions: UserCreatepermissionsInput
-  subscriptions: SubscriptionCreateManyWithoutUserInput
+  subscriptions: EnrollmentCreateManyWithoutUserInput
 }
 
 input UserCreateOneWithoutSubscriptionsInput {
@@ -1901,6 +2652,64 @@ enum UserOrderByInput {
   createdAt_DESC
 }
 
+type UserPreviousValues {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+  resetToken: String
+  resetTokenExpiry: String
+  permissions: [Permission!]!
+  address1: String
+  address2: String
+  postcode: String
+  city: String
+  housePicture: String
+  dropOffPicture: String
+  deliveryInstructions: String
+  updatedAt: DateTime!
+  createdAt: DateTime!
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  updatedFields: [String!]
+  previousValues: UserPreviousValues
+}
+
+input UserSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: UserWhereInput
+}
+
 input UserUpdateInput {
   name: String
   email: String
@@ -1915,7 +2724,7 @@ input UserUpdateInput {
   dropOffPicture: String
   deliveryInstructions: String
   permissions: UserUpdatepermissionsInput
-  subscriptions: SubscriptionUpdateManyWithoutUserInput
+  subscriptions: EnrollmentUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
@@ -2495,9 +3304,53 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   deliveryInstructions_not_ends_with: String
-  subscriptions_every: SubscriptionWhereInput
-  subscriptions_some: SubscriptionWhereInput
-  subscriptions_none: SubscriptionWhereInput
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  subscriptions_every: EnrollmentWhereInput
+  subscriptions_some: EnrollmentWhereInput
+  subscriptions_none: EnrollmentWhereInput
 }
 
 input UserWhereUniqueInput {

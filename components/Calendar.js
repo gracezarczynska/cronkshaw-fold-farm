@@ -1,9 +1,6 @@
 import React from "react";
-import dateFns, { isAfter } from "date-fns";
-const moment = require('moment');
-require('moment-recur');
-
-const flag = true;
+import dateFns from "date-fns";
+import { isItSubscriptionDay, firstDeliveryAfterStartDate } from '../lib/subscriptionDates';
 
 class Calendar extends React.Component {
   state = {
@@ -54,33 +51,7 @@ class Calendar extends React.Component {
     const monthEnd = dateFns.endOfMonth(monthStart);
     const startDate = dateFns.startOfWeek(monthStart);
     const endDate = dateFns.endOfWeek(monthEnd);
-
-    const isItSubscriptionDay = (values, day, deliveryDays) => {
-      const { subscriptionFrequency, subscriptionStartDate } = values;
-      let subStartDate = subscriptionStartDate;
-
-      if (subStartDate === undefined) {
-        subStartDate = dateFns.startOfToday()
-      }
-      let monthWeek = moment(subStartDate).monthWeek();
-      if(monthWeek === 4) {
-          monthWeek = 3;
-      }
-      // it is a first deliveryDays after subStartDate
-      const weeklyOcurrence = moment.recur().every(deliveryDays).daysOfWeek().startDate(subStartDate);
-      const monthlyOccurrence = moment.recur().every(deliveryDays).daysOfWeek().every([monthWeek]).weeksOfMonthByDay().fromDate(subStartDate);
-      if (subscriptionFrequency === 'weekly' && weeklyOcurrence.matches(day)) {
-        return true;
-      } else if(subscriptionFrequency === 'biweekly' && weeklyOcurrence.matches(day)) {
-        const startDay  = dateFns.getDay(subStartDate);
-        const difference = dateFns.differenceInDays(day, subStartDate);
-        if (difference < 7 || ((difference + (startDay - dateFns.getDay(day)) - 7) % 14 === 0)) {
-          return true;
-        }
-      } else if(subscriptionFrequency === 'monthly' && monthlyOccurrence.matches(day)){
-        return true;
-      }
-    }
+    const firstDeliveryDate = firstDeliveryAfterStartDate(deliveryDays, values.subscriptionStartDate);
 
     const dateFormat = "D";
     const rows = [];
@@ -93,6 +64,7 @@ class Calendar extends React.Component {
       for (let i = 0; i < 7; i++) {
         formattedDate = dateFns.format(day, dateFormat);
         const cloneDay = day;
+        const subscriptionDay = isItSubscriptionDay(values, day, deliveryDays, firstDeliveryDate);
         days.push(
           <div
             className={`col cell ${
@@ -102,10 +74,10 @@ class Calendar extends React.Component {
             } ${
               deliveryDays.indexOf(dateFns.getDay(day)) !== -1 ? "delivery-day" : ""
             } ${
-              isItSubscriptionDay(values, day, deliveryDays) ? "subscription-day" : ""
+              subscriptionDay ? "subscription-day" : ""
             }`}
             key={day}
-            onClick={() => this.onDateClick(dateFns.parse(cloneDay))}
+            onClick={() => this.onDateClick(cloneDay, subscriptionDay)}
           >
             <span className="number">{formattedDate}</span>
           </div>
@@ -122,10 +94,8 @@ class Calendar extends React.Component {
     return <div className="body">{rows}</div>;
   }
 
-  onDateClick = day => {
-    this.setState({
-      selectedDate: day
-    });
+  onDateClick = (day, isItSubscriptionDayResult) => {
+    isItSubscriptionDayResult ? this.props.amendFunctions.openModal(day) : null;
   };
 
   nextMonth = () => {

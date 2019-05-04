@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import Calendar from './Calendar'
-import CalendarStyles from './styles/CalendarStyles';
-import { ButtonStyles } from './styles/ButtonStyles';
+import Calendar from '../Calendar'
+import CalendarStyles from '../styles/CalendarStyles';
+import { ButtonStyles } from '../styles/ButtonStyles';
 
 const Center = styled.div`
     display: flex;

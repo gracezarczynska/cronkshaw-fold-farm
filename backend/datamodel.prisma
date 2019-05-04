@@ -9,7 +9,7 @@ enum Permission {
 }
 
 type Product {
-  id: ID! @unique
+  id: ID! @id @unique
   name: String!
   frequencyStock: Int!
   availableStock: Int
@@ -17,46 +17,61 @@ type Product {
   unit: String!
   description: String
   image: String
-  farm: Farm!
-  deliveryDays: [Int]!
+  farm: Farm! # relationship to Farm
+  deliveryDays: [Int] @scalarList(strategy:RELATION)
   deliveryFrequency: String
   startDate: DateTime
+  updatedAt: DateTime! @updatedAt
+  createdAt: DateTime! @createdAt
 }
 
 type User {
-  id: ID! @unique
+  id: ID! @id @unique
   name: String!
   email: String! @unique
   password: String!
   resetToken: String
   resetTokenExpiry: String
-  permissions: [Permission]
+  permissions: [Permission] @scalarList(strategy:RELATION)
   address1: String
   address2: String
   postcode: String
   city: String
   housePicture: String
   dropOffPicture: String
-  subscriptions: [Subscription!]!
+  subscriptions: [Enrollment!]! @relation(name: "UserSubscription")
   deliveryInstructions: String
+  updatedAt: DateTime! @updatedAt
+  createdAt: DateTime! @createdAt
 }
 
-type Subscription {
-  id: ID! @unique
+type Enrollment {
+  id: ID! @id @unique
   quantity: Int! @default(value: 1)
   subscriptionFrequency: String
   subscriptionStartDate: DateTime
-  overrides: [DateTime]
-  product: Product # relationship to Item
-  user: User! # relationship to User
+  overrides: [Override]
+  product: Product! @relation(name: "ProdSubscription")
+  user: User! @relation(name: "UserSubscription")
 }
 
 type Farm {
-  id: ID! @unique
+  id: ID! @id @unique
   name: String!
   description: String
   address: String!
   postcode: String!
   products: [Product!]
   image: String!
+  updatedAt: DateTime! @updatedAt
+  createdAt: DateTime! @createdAt
+}
+
+type Override {
+  id: ID! @id @unique
+  subscriptions: Enrollment! # relationship to Enrollment
+  startDate: DateTime!
+  endDate: DateTime
+  quantity: Int
+  cancel: Boolean
 }

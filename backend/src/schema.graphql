@@ -12,7 +12,8 @@ type Mutation {
   resetPassword(resetToken: String!, password: String!, confirmPassword: String!): User!
   updateProduct(id: ID!, availableStock: Int): Product
   updateUser(id: ID!, address1: String!, address2: String, postcode: String!, city: String!, housePicture: String, dropOffPicture: String, subscriptions: [ID!], deliveryInstructions: String): User!
-  createSubscription(id: ID!, subscriptionFrequency: String!, subscriptionStartDate: DateTime!, quantity: Int!): Subscription
+  createEnrollment(id: ID!, subscriptionFrequency: String!, subscriptionStartDate: DateTime!, quantity: Int!): Enrollment
+  createOverride(id: ID!, startDate: DateTime!, enrollment: ID!, endDate: DateTime, cancel: Boolean!): Override
 }
 
 type Query {
@@ -21,5 +22,5 @@ type Query {
   farm(where: FarmWhereUniqueInput!): Farm
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, first: Int): [Product]!
   product(where: ProductWhereUniqueInput!): Product
-  subscription(where: SubscriptionWhereUniqueInput!): Subscription
+  enrollment(where: EnrollmentWhereUniqueInput!): Enrollment
 }

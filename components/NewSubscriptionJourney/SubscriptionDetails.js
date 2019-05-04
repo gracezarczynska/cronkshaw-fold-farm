@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
+const moment = require('moment');
 import gql from 'graphql-tag';
-import { ButtonStyles, NumberInput } from './styles/ButtonStyles';
+import { ButtonStyles, NumberInput } from '../styles/ButtonStyles';
 import styled from 'styled-components';
-import formatMoney from '../lib/formatMoney';
+import formatMoney from '../../lib/formatMoney';
+import { nextSubscriptionDay } from '../../lib/subscriptionDates';
+import { buildDropdown } from '../../lib/buildDropdown';
 
 const Center = styled.div`
     display: flex;
@@ -16,6 +19,10 @@ const SubscriptionDetailsStyles = styled.div`
 
     div {
         flex-basis: 50%;
+
+        img {
+            width: 100%;
+        }
     }
 `;
 
@@ -29,6 +36,7 @@ const SINGLE_PRODUCE_QUERY = gql`
             price
             unit
             availableStock
+            deliveryDays
             farm {
                 id
                 name
@@ -39,22 +47,16 @@ const SINGLE_PRODUCE_QUERY = gql`
 
 class SubscriptionDetails extends Component {
     saveAndContinue = (e) => {
-        e.preventDefault()
-        this.props.nextStep()
+        e.preventDefault();
+        this.props.nextStep();
     }
 
-    buildOptions(availableStock, unit) {
-        var arr = [];
-        for (let i = 1; i <= availableStock; i++) {
-            arr.push(<option key={i} value={i}>{i} of {unit}</option>)
-        }
-
-        return arr; 
+    amendSubscription = (e) => {
+        e.preventDefault();
+        this.props.nextStep(1);
     }
 
     render() {
-        const { values } = this.props;
-        console.log(this.props);
         return (
             <>
                 <Query query={SINGLE_PRODUCE_QUERY} variables={{ id: this.props.produceId }}>
@@ -63,6 +65,8 @@ class SubscriptionDetails extends Component {
                         if(loading) return <p>Loading...</p>;
                         if(!data.product) return <p>No Item Found</p>;
                         const product = data.product;
+                        let nextDelivery;
+                        this.props.subscription ? nextDelivery = nextSubscriptionDay(this.props.subscription.subscriptionFrequency, this.props.subscription.subscriptionStartDate, product.deliveryDays) : nextDelivery = '';
                         return (
                             <SubscriptionDetailsStyles>
                                 <div>
@@ -77,9 +81,17 @@ class SubscriptionDetails extends Component {
                                     </div>
                                     <div>
                                         <p>Price: {formatMoney(product.price)} per {product.unit}</p>
-                                        <NumberInput onChange={this.props.handleChange('quantity')}>
-                                            {this.buildOptions(product.availableStock, product.unit)}
-                                        </NumberInput>
+                                        { this.props.isManage && this.props.subscription &&
+                                            <>
+                                                <p>Your delivery quantity is {this.props.subscription.quantity} of {this.props.subscription.product.unit}{this.props.subscription.quantity > 1 ? 's' : ''}</p>
+                                                <p>Your next delivery is {nextDelivery.map(deliveryDay => <span>{moment(deliveryDay).format("Do MMM YYYY")}</span>)}</p>
+                                            </>
+                                        } 
+                                        { !this.props.isManage &&
+                                            <NumberInput onChange={this.props.handleChange('quantity')}>
+                                                {buildDropdown(product.availableStock, product.unit)}
+                                            </NumberInput>
+                                        }
                                     </div>
                                 </div>
                                 <div>
@@ -89,9 +101,17 @@ class SubscriptionDetails extends Component {
                         )
                     }}
                 </Query>
-                <Center>
-                    <ButtonStyles onClick={this.saveAndContinue}>Save and continue </ButtonStyles>
-                </Center>
+                { !this.props.isManage &&
+                    <Center>
+                        <ButtonStyles onClick={this.saveAndContinue}>Save and continue </ButtonStyles>
+                    </Center>
+                }
+                { this.props.isManage &&
+                    <Center>
+                        <ButtonStyles onClick={this.cancelSubscription}>Cancel Subscription</ButtonStyles>
+                        <ButtonStyles onClick={this.amendSubscription}>Amend Subscription</ButtonStyles>
+                    </Center>
+                }
             </>
         );
     }

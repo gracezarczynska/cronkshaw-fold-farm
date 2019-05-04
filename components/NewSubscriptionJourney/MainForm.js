@@ -5,7 +5,7 @@ import dateFns from "date-fns";
 const moment = require('moment');
 require('moment-recur');
 
-import Error from './ErrorMessage';
+import Error from '../ErrorMessage';
 import UserDetails from './UserDetails';
 import Confirmation from './Confirmation';
 import Success from './Success';

@@ -1,8 +1,8 @@
-import SubscriptionManagement from '../components/SubscriptionManagement';
+import SubscriptionManagement from '../components/ManageSubscriptionJourney/SubscriptionManagement';
 
 const Manage = props => (
     <div>
-      <SubscriptionManagement subscription={props.query.id} />
+      <SubscriptionManagement enrollment={props.query.id} />
     </div>
 );
   

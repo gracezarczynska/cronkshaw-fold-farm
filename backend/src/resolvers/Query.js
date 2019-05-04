@@ -5,7 +5,7 @@ const Query = {
   farm: forwardTo('db'),
   products: forwardTo('db'),
   product: forwardTo('db'),
-  subscription: forwardTo('db'),
+  enrollment: forwardTo('db'),
   me(parent, args, ctx, info) {
     // check if there is a current user ID
     if (!ctx.request.userId) {

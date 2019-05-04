@@ -7,13 +7,16 @@ const { transport, makeANiceEmail } = require('../mail');
 const Mutations = {
 
   async signup(parent, args, ctx, info) {
-    if(args.password !== args.confirmPassword) {
-      throw new Error('Yo Passwords don\'t match!');
-    }
 
-    if(args.email.toLowerCase() !== args.confirmEmail.toLowerCase()) {
-      throw new Error('Yo Emails don\'t match!');
-    }
+    // TODO
+    // console.log(args);
+    // if(args.password !== args.confirmPassword) {
+    //   throw new Error('Yo Passwords don\'t match!');
+    // }
+
+    // if(args.email.toLowerCase() !== args.confirmEmail.toLowerCase()) {
+    //   throw new Error('Yo Emails don\'t match!');
+    // }
     // lowercase their email
     args.email = args.email.toLowerCase();
     // hash their password
@@ -72,14 +75,13 @@ const Mutations = {
     );
   },
 
-  async createSubscription(parent, args, ctx, info) {
+  async createEnrollment(parent, args, ctx, info) {
     // 1. Make sure they are signed in
     const { userId } = ctx.request;
     if (!userId) {
       throw new Error('You must be signed in soooon');
     }
     // 2. Query the users current cart
-    console.log(args);
     const product = await ctx.db.query.product( { where: { id: args.id }} );
 
     const availableStock = product.availableStock - args.quantity;
@@ -100,26 +102,26 @@ const Mutations = {
       info
     );
 
-    const [existingSubscription] = await ctx.db.query.subscriptions({
-      where: {
-        user: { id: userId },
-        product: { id: args.id },
-      },
-    });
+    // const [existingSubscription] = await ctx.db.query.enrollment({
+    //   where: {
+    //     user: { id: userId },
+    //     product: { id: args.id },
+    //   },
+    // });
     
     // 3. Check if that item is already in their cart and increment by 1 if it is
-    if (existingSubscription) {
-      console.log('This item is already in their cart');
-      return ctx.db.mutation.updateSubscription(
-        {
-          where: { id: existingSubscription.id },
-          data: { quantity: existingSubscription.quantity + 1 },
-        },
-        info
-      );
-    }
+    // if (existingSubscription) {
+    //   console.log('This item is already in their cart');
+    //   return ctx.db.mutation.updateEnrollment(
+    //     {
+    //       where: { id: existingSubscription.id },
+    //       data: { quantity: existingSubscription.quantity + 1 },
+    //     },
+    //     info
+    //   );
+    // }
 
-    return ctx.db.mutation.createSubscription(
+    return ctx.db.mutation.createEnrollment(
       {
         data: {
           user: {
@@ -131,6 +133,29 @@ const Mutations = {
           subscriptionStartDate: args.subscriptionStartDate,
           subscriptionFrequency: args.subscriptionFrequency,
           quantity: args.quantity
+        },
+      },
+      info
+    );
+  },
+
+  async createOverride(parent, args, ctx, info) {
+    // 1. Make sure they are signed in
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error('You must be signed in soooon');
+    }
+
+    return ctx.db.mutation.createOverride(
+      {
+        data: {
+          subscription: {
+            connect: { id: args.id },
+          },
+          startDate: args.startDate,
+          endDate: args.endDate,
+          quantity: args.quantity,
+          cancel: args.cancel
         },
       },
       info

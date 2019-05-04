@@ -3,16 +3,15 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import dateFns from "date-fns";
 
-import Error from './ErrorMessage';
-import UserDetails from './UserDetails';
-import Confirmation from './Confirmation';
-import Success from './Success';
-import SubscriptionSetup from './SubscriptionSetup';
-import SubscriptionDetails from './SubscriptionDetails';
+import Error from '../ErrorMessage';
+import Confirmation from '../NewSubscriptionJourney/Confirmation';
+import Success from '../NewSubscriptionJourney/Success';
+import AmendCalendar from './AmendCalendar';
+import SubscriptionDetails from '../NewSubscriptionJourney/SubscriptionDetails';
 
 const SINGLE_SUBSCRIPTION_QUERY = gql`
     query SINGLE_SUBSCRIPTION_QUERY($id: ID!) {
-        subscription(where: { id: $id }) {
+        enrollment(where: { id: $id }) {
             product {
                 id
                 name
@@ -20,6 +19,9 @@ const SINGLE_SUBSCRIPTION_QUERY = gql`
                 description
                 unit
                 image
+                deliveryDays
+                deliveryFrequency
+                availableStock
                 farm {
                     id
                     name
@@ -50,23 +52,22 @@ class SubscriptionManagement extends Component {
         subscriptionStartDate: dateFns.startOfToday()
     }
 
-    nextStep = () => {
+    nextStep = (value = 1) => {
         const { step } = this.state
         this.setState({
-            step : step + 1
+            step : step + value
         })
     }
 
-    prevStep = () => {
+    prevStep = (value = 1) => {
         const { step } = this.state
         this.setState({
-            step : step - 1
+            step : step - value
         })
     }
 
     handleChange = input => event => {
         this.setState({ [input] : event.target.value })
-        console.log(this.state);
     }
     
     handleImage = (value, src) => {
@@ -78,14 +79,14 @@ class SubscriptionManagement extends Component {
         const { address1, address2, postcode, city, phone, housePicture, dropOffPicture, subscriptionFrequency, subscriptionStartDate, deliveryInstructions, quantity } = this.state;
         const values = { address1, address2, postcode, city, phone, housePicture, dropOffPicture, subscriptionFrequency, subscriptionStartDate, deliveryInstructions, quantity };
         return (
-            <Query query={SINGLE_SUBSCRIPTION_QUERY} variables={{ id: this.props.subscription }}>
+            <Query query={SINGLE_SUBSCRIPTION_QUERY} variables={{ id: this.props.enrollment }}>
                 {({error, loading, data}) => {
                     if(error) return <Error error={error} />;
                     if(loading) return <p>Loading...</p>;
                     if(!data) return <p>No Item Found</p>;
                     return (
                         <div>
-                            <h2>You are amending a subscription of {data.subscription.product.name} from {data.subscription.product.farm.name}</h2>
+                            <h2>You are amending a subscription of {data.enrollment.product.name} from {data.enrollment.product.farm.name}</h2>
                             {(() => {
                                 switch(step) {
                                     case 1: 
@@ -93,20 +94,21 @@ class SubscriptionManagement extends Component {
                                                 nextStep = {this.nextStep}
                                                 handleChange = {this.handleChange}
                                                 values = {values}
-                                                produceId={data.subscription.product.id}
-                                                subscription={data.subscription}
+                                                produceId={data.enrollment.product.id}
+                                                subscription={data.enrollment}
                                                 isManage
                                                 />
-                                    case 3:
-                                        return <SubscriptionSetup
+                                    case 2:
+                                        return <AmendCalendar
                                                 nextStep={this.nextStep}
                                                 prevStep={this.prevStep}
                                                 handleChange = {this.handleChange}
                                                 values={values}
                                                 produceId={this.props.produceId}
-                                                deliveryDays={data.product.deliveryDays}
-                                                deliveryFrequency={data.product.deliveryFrequency}
-                                                startDate={data.product.startDate}
+                                                deliveryDays={data.enrollment.product.deliveryDays}
+                                                deliveryFrequency={data.enrollment.product.deliveryFrequency}
+                                                startDate={data.enrollment.product.startDate}
+                                                subscription={data.enrollment}
                                                 />
                                     case 4:
                                         return <Confirmation 

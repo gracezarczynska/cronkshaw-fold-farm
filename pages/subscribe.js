@@ -1,4 +1,4 @@
-import MainForm from '../components/MainForm';
+import MainForm from '../components/NewSubscriptionJourney/MainForm';
 
 const Subscribe = props => (
   <div>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Form from './styles/Form';
+import Form from '../styles/Form';
 import styled from 'styled-components';
 
 const Center = styled.div`
