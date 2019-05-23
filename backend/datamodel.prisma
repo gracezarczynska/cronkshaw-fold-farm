@@ -15,6 +15,7 @@ type Product {
   availableStock: Int
   price: Float!
   unit: String!
+  pluralUnit: String
   description: String
   image: String
   farm: Farm! # relationship to Farm
@@ -73,5 +74,5 @@ type Override {
   startDate: DateTime!
   endDate: DateTime
   quantity: Int
-  cancel: Boolean
+  status: String
 }

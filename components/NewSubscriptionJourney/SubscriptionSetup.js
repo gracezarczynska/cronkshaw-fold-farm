@@ -58,6 +58,7 @@ const MapKey = styled.div`
     .subscription-day {
         background-color: ${props => props.theme.orange};
         padding: 7px 3px;
+        border-radius: 50%;
     }
 `;
 

@@ -47,6 +47,11 @@ const CalendarStyles = styled.div`
   border: 1px solid ${props => props.theme.grey};;
 }
 
+.calendar .body .cell.popup-opened {
+  overflow: visible;
+  position: relative;
+}
+
 .calendar .header {
   text-transform: uppercase;
   font-weight: 700;
@@ -89,7 +94,7 @@ const CalendarStyles = styled.div`
   border-right: 1px solid ${props => props.theme.grey};
   overflow: hidden;
   cursor: pointer;
-  background: #202020;
+  background: ${props => props.theme.darkgrey};
   transition: 0.25s ease-out;
 }
 
@@ -126,6 +131,10 @@ const CalendarStyles = styled.div`
   transform: translate(-50%, -50%);
 }
 
+.calendar .body .cell.override-day {
+  background-color: #603e07;
+}
+
 .calendar .body .cell.delivery-day .number {
   height: 3em;
   width: 3em;
@@ -146,6 +155,31 @@ const CalendarStyles = styled.div`
 
 .calendar .body .cell.subscription-day.disabled {
   background-color: ${props => props.theme.black};
+}
+
+.calendar .body .cell.canceled-day .number {
+  background-color: ${props => props.theme.black};
+
+   &:before, &:after {
+      position: absolute;
+      content: '';
+      background: ${props => props.theme.orange};
+      display: block;
+      width: 100%;
+      height: 5px;
+      -webkit-transform: rotate(-45deg);
+      transform: rotate(-45deg);
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+  }
+
+  &:after {
+      -webkit-transform: rotate(45deg);    
+      transform: rotate(45deg);
+  }
 }
 
 .calendar .body .disabled {

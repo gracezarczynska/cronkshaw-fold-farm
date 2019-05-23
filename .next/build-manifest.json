@@ -11,11 +11,11 @@
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
-    "/produce": [
+    "/manage": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
-    "/manage": [
+    "/my-subscriptions": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ]

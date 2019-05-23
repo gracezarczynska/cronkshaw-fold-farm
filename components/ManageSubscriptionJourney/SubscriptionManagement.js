@@ -6,18 +6,20 @@ import dateFns from "date-fns";
 import Error from '../ErrorMessage';
 import Confirmation from '../NewSubscriptionJourney/Confirmation';
 import Success from '../NewSubscriptionJourney/Success';
-import AmendCalendar from './AmendCalendar';
+import AmendPage from './AmendPage';
 import SubscriptionDetails from '../NewSubscriptionJourney/SubscriptionDetails';
 
 const SINGLE_SUBSCRIPTION_QUERY = gql`
     query SINGLE_SUBSCRIPTION_QUERY($id: ID!) {
         enrollment(where: { id: $id }) {
+            id
             product {
                 id
                 name
                 price
                 description
                 unit
+                pluralUnit
                 image
                 deliveryDays
                 deliveryFrequency
@@ -99,7 +101,7 @@ class SubscriptionManagement extends Component {
                                                 isManage
                                                 />
                                     case 2:
-                                        return <AmendCalendar
+                                        return <AmendPage
                                                 nextStep={this.nextStep}
                                                 prevStep={this.prevStep}
                                                 handleChange = {this.handleChange}

@@ -141,21 +141,43 @@ const Mutations = {
 
   async createOverride(parent, args, ctx, info) {
     // 1. Make sure they are signed in
+    let status = 'approved'; 
     const { userId } = ctx.request;
     if (!userId) {
       throw new Error('You must be signed in soooon');
     }
 
+    const subscription = await ctx.db.query.enrollment({
+      where: {
+        id: args.subscriptionId,
+      },
+    });
+
+    if (subscription.quantity === args.quantity) {
+      throw new Error('You did not change the quantity');
+    } else if (subscription.quantity < args.quantity) {
+      const mailRes = await transport.sendMail({
+        from: 'info@graceful-designs.co.uk',
+        to: 'dot@cronkshawfoldfarm.co.uk',
+        subject: 'Subscription Amendment Review Request',
+        html: makeANiceEmail(`Someone Requested more of your delicious produce!
+        \n\n
+        <a href="${process.env
+          .FRONTEND_URL}/review?reviewToken=hello">Click here to review the request</a>`),
+      });
+      status = 'pending';
+    }
+
     return ctx.db.mutation.createOverride(
       {
         data: {
-          subscription: {
-            connect: { id: args.id },
+          subscriptions: {
+            connect: { id: args.subscriptionId },
           },
           startDate: args.startDate,
           endDate: args.endDate,
           quantity: args.quantity,
-          cancel: args.cancel
+          status
         },
       },
       info

@@ -83,7 +83,7 @@ class SubscriptionDetails extends Component {
                                         <p>Price: {formatMoney(product.price)} per {product.unit}</p>
                                         { this.props.isManage && this.props.subscription &&
                                             <>
-                                                <p>Your delivery quantity is {this.props.subscription.quantity} of {this.props.subscription.product.unit}{this.props.subscription.quantity > 1 ? 's' : ''}</p>
+                                                <p>Your delivery quantity is {this.props.subscription.quantity} {this.props.subscription.quantity > 1 ? this.props.subscription.product.pluralUnit || this.props.subscription.product.unit  :  this.props.subscription.product.unit}</p>
                                                 <p>Your next delivery is {nextDelivery.map(deliveryDay => <span>{moment(deliveryDay).format("Do MMM YYYY")}</span>)}</p>
                                             </>
                                         } 

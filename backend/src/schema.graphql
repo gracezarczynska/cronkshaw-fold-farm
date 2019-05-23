@@ -13,7 +13,7 @@ type Mutation {
   updateProduct(id: ID!, availableStock: Int): Product
   updateUser(id: ID!, address1: String!, address2: String, postcode: String!, city: String!, housePicture: String, dropOffPicture: String, subscriptions: [ID!], deliveryInstructions: String): User!
   createEnrollment(id: ID!, subscriptionFrequency: String!, subscriptionStartDate: DateTime!, quantity: Int!): Enrollment
-  createOverride(id: ID!, startDate: DateTime!, enrollment: ID!, endDate: DateTime, cancel: Boolean!): Override
+  createOverride(subscriptionId: ID!, startDate: DateTime!, endDate: DateTime, quantity: Int!): Override
 }
 
 type Query {

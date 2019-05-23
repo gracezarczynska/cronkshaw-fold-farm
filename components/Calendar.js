@@ -45,7 +45,7 @@ class Calendar extends React.Component {
     return <div className="days row">{days}</div>;
   }
 
-  renderCells(deliveryDays, deliveryFrequency, deliveryStartDate, values) {
+  renderCells(deliveryDays, values, overrideStartDate, overrideEndDate) {
     const { currentMonth, selectedDate } = this.state;
     const monthStart = dateFns.startOfMonth(currentMonth);
     const monthEnd = dateFns.endOfMonth(monthStart);
@@ -65,6 +65,7 @@ class Calendar extends React.Component {
         formattedDate = dateFns.format(day, dateFormat);
         const cloneDay = day;
         const subscriptionDay = isItSubscriptionDay(values, day, deliveryDays, firstDeliveryDate);
+        const isBetweenOverrideDates = dateFns.isAfter(day, overrideStartDate) && dateFns.isBefore(day, overrideEndDate) || dateFns.isEqual(day, overrideEndDate) || dateFns.isEqual(day, overrideStartDate);
         days.push(
           <div
             className={`col cell ${
@@ -73,6 +74,8 @@ class Calendar extends React.Component {
                 : dateFns.isSameDay(day, selectedDate) ? "selected" : ""
             } ${
               deliveryDays.indexOf(dateFns.getDay(day)) !== -1 ? "delivery-day" : ""
+            } ${
+              isBetweenOverrideDates ? "override-day" : ""
             } ${
               subscriptionDay ? "subscription-day" : ""
             }`}
@@ -111,12 +114,12 @@ class Calendar extends React.Component {
   };
 
   render() {
-    const { deliveryDays, deliveryFrequency, startDate, values } = this.props;
+    const { deliveryDays, values, overrideStartDate, overrideEndDate } = this.props;
     return (
       <div className="calendar">
         {this.renderHeader()}
         {this.renderDays()}
-        {this.renderCells(deliveryDays, deliveryFrequency, startDate, values)}
+        {this.renderCells(deliveryDays, values, overrideStartDate, overrideEndDate)}
       </div>
     );
   }

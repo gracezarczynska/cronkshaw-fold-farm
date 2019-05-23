@@ -8,6 +8,8 @@ const theme = {
   black: '#222222',
   grey: '#2f2e2e',
   lightgrey: '#E1E1E1',
+  darkgrey: '#202020',
+  transparentGrey: 'rgba(47, 46, 46, 0.5)',
   offWhite: '#EDEDED',
   maxWidth: '1200px',
   bs: '0 12px 24px 0 rgba(0, 0, 0, 0.09)',

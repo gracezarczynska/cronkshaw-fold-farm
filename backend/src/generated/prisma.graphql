@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/malgorzata-zarczynska/cronkshaw-fold-farm/dev
-# timestamp: Sun Apr 28 2019 19:11:39 GMT+0100 (British Summer Time)
+# timestamp: Sat May 04 2019 16:22:48 GMT+0100 (British Summer Time)
 
 type AggregateEnrollment {
   count: Int!
@@ -1028,7 +1028,7 @@ type Override implements Node {
   startDate: DateTime!
   endDate: DateTime
   quantity: Int
-  cancel: Boolean
+  status: String
 }
 
 """A connection to a list of items."""
@@ -1046,7 +1046,7 @@ input OverrideCreateInput {
   startDate: DateTime!
   endDate: DateTime
   quantity: Int
-  cancel: Boolean
+  status: String
   subscriptions: EnrollmentCreateOneWithoutOverridesInput!
 }
 
@@ -1060,7 +1060,7 @@ input OverrideCreateWithoutSubscriptionsInput {
   startDate: DateTime!
   endDate: DateTime
   quantity: Int
-  cancel: Boolean
+  status: String
 }
 
 """An edge in a connection."""
@@ -1081,8 +1081,8 @@ enum OverrideOrderByInput {
   endDate_DESC
   quantity_ASC
   quantity_DESC
-  cancel_ASC
-  cancel_DESC
+  status_ASC
+  status_DESC
 }
 
 type OverridePreviousValues {
@@ -1090,7 +1090,7 @@ type OverridePreviousValues {
   startDate: DateTime!
   endDate: DateTime
   quantity: Int
-  cancel: Boolean
+  status: String
 }
 
 input OverrideScalarWhereInput {
@@ -1208,10 +1208,46 @@ input OverrideScalarWhereInput {
 
   """All values greater than or equal the given value."""
   quantity_gte: Int
-  cancel: Boolean
+  status: String
 
   """All values that are not equal to given value."""
-  cancel_not: Boolean
+  status_not: String
+
+  """All values that are contained in given list."""
+  status_in: [String!]
+
+  """All values that are not contained in given list."""
+  status_not_in: [String!]
+
+  """All values less than the given value."""
+  status_lt: String
+
+  """All values less than or equal the given value."""
+  status_lte: String
+
+  """All values greater than the given value."""
+  status_gt: String
+
+  """All values greater than or equal the given value."""
+  status_gte: String
+
+  """All values containing the given string."""
+  status_contains: String
+
+  """All values not containing the given string."""
+  status_not_contains: String
+
+  """All values starting with the given string."""
+  status_starts_with: String
+
+  """All values not starting with the given string."""
+  status_not_starts_with: String
+
+  """All values ending with the given string."""
+  status_ends_with: String
+
+  """All values not ending with the given string."""
+  status_not_ends_with: String
 }
 
 type OverrideSubscriptionPayload {
@@ -1257,7 +1293,7 @@ input OverrideUpdateInput {
   startDate: DateTime
   endDate: DateTime
   quantity: Int
-  cancel: Boolean
+  status: String
   subscriptions: EnrollmentUpdateOneRequiredWithoutOverridesInput
 }
 
@@ -1265,14 +1301,14 @@ input OverrideUpdateManyDataInput {
   startDate: DateTime
   endDate: DateTime
   quantity: Int
-  cancel: Boolean
+  status: String
 }
 
 input OverrideUpdateManyMutationInput {
   startDate: DateTime
   endDate: DateTime
   quantity: Int
-  cancel: Boolean
+  status: String
 }
 
 input OverrideUpdateManyWithoutSubscriptionsInput {
@@ -1296,7 +1332,7 @@ input OverrideUpdateWithoutSubscriptionsDataInput {
   startDate: DateTime
   endDate: DateTime
   quantity: Int
-  cancel: Boolean
+  status: String
 }
 
 input OverrideUpdateWithWhereUniqueWithoutSubscriptionsInput {
@@ -1425,10 +1461,46 @@ input OverrideWhereInput {
 
   """All values greater than or equal the given value."""
   quantity_gte: Int
-  cancel: Boolean
+  status: String
 
   """All values that are not equal to given value."""
-  cancel_not: Boolean
+  status_not: String
+
+  """All values that are contained in given list."""
+  status_in: [String!]
+
+  """All values that are not contained in given list."""
+  status_not_in: [String!]
+
+  """All values less than the given value."""
+  status_lt: String
+
+  """All values less than or equal the given value."""
+  status_lte: String
+
+  """All values greater than the given value."""
+  status_gt: String
+
+  """All values greater than or equal the given value."""
+  status_gte: String
+
+  """All values containing the given string."""
+  status_contains: String
+
+  """All values not containing the given string."""
+  status_not_contains: String
+
+  """All values starting with the given string."""
+  status_starts_with: String
+
+  """All values not starting with the given string."""
+  status_not_starts_with: String
+
+  """All values ending with the given string."""
+  status_ends_with: String
+
+  """All values not ending with the given string."""
+  status_not_ends_with: String
   subscriptions: EnrollmentWhereInput
 }
 
@@ -1468,6 +1540,7 @@ type Product implements Node {
   availableStock: Int
   price: Float!
   unit: String!
+  pluralUnit: String
   description: String
   image: String
   farm: Farm!
@@ -1499,6 +1572,7 @@ input ProductCreateInput {
   availableStock: Int
   price: Float!
   unit: String!
+  pluralUnit: String
   description: String
   image: String
   deliveryFrequency: String
@@ -1524,6 +1598,7 @@ input ProductCreateWithoutFarmInput {
   availableStock: Int
   price: Float!
   unit: String!
+  pluralUnit: String
   description: String
   image: String
   deliveryFrequency: String
@@ -1553,6 +1628,8 @@ enum ProductOrderByInput {
   price_DESC
   unit_ASC
   unit_DESC
+  pluralUnit_ASC
+  pluralUnit_DESC
   description_ASC
   description_DESC
   image_ASC
@@ -1574,6 +1651,7 @@ type ProductPreviousValues {
   availableStock: Int
   price: Float!
   unit: String!
+  pluralUnit: String
   description: String
   image: String
   deliveryDays: [Int!]!
@@ -1778,6 +1856,46 @@ input ProductScalarWhereInput {
 
   """All values not ending with the given string."""
   unit_not_ends_with: String
+  pluralUnit: String
+
+  """All values that are not equal to given value."""
+  pluralUnit_not: String
+
+  """All values that are contained in given list."""
+  pluralUnit_in: [String!]
+
+  """All values that are not contained in given list."""
+  pluralUnit_not_in: [String!]
+
+  """All values less than the given value."""
+  pluralUnit_lt: String
+
+  """All values less than or equal the given value."""
+  pluralUnit_lte: String
+
+  """All values greater than the given value."""
+  pluralUnit_gt: String
+
+  """All values greater than or equal the given value."""
+  pluralUnit_gte: String
+
+  """All values containing the given string."""
+  pluralUnit_contains: String
+
+  """All values not containing the given string."""
+  pluralUnit_not_contains: String
+
+  """All values starting with the given string."""
+  pluralUnit_starts_with: String
+
+  """All values not starting with the given string."""
+  pluralUnit_not_starts_with: String
+
+  """All values ending with the given string."""
+  pluralUnit_ends_with: String
+
+  """All values not ending with the given string."""
+  pluralUnit_not_ends_with: String
   description: String
 
   """All values that are not equal to given value."""
@@ -2011,6 +2129,7 @@ input ProductUpdateDataInput {
   availableStock: Int
   price: Float
   unit: String
+  pluralUnit: String
   description: String
   image: String
   deliveryFrequency: String
@@ -2029,6 +2148,7 @@ input ProductUpdateInput {
   availableStock: Int
   price: Float
   unit: String
+  pluralUnit: String
   description: String
   image: String
   deliveryFrequency: String
@@ -2043,6 +2163,7 @@ input ProductUpdateManyDataInput {
   availableStock: Int
   price: Float
   unit: String
+  pluralUnit: String
   description: String
   image: String
   deliveryFrequency: String
@@ -2056,6 +2177,7 @@ input ProductUpdateManyMutationInput {
   availableStock: Int
   price: Float
   unit: String
+  pluralUnit: String
   description: String
   image: String
   deliveryFrequency: String
@@ -2093,6 +2215,7 @@ input ProductUpdateWithoutFarmDataInput {
   availableStock: Int
   price: Float
   unit: String
+  pluralUnit: String
   description: String
   image: String
   deliveryFrequency: String
@@ -2311,6 +2434,46 @@ input ProductWhereInput {
 
   """All values not ending with the given string."""
   unit_not_ends_with: String
+  pluralUnit: String
+
+  """All values that are not equal to given value."""
+  pluralUnit_not: String
+
+  """All values that are contained in given list."""
+  pluralUnit_in: [String!]
+
+  """All values that are not contained in given list."""
+  pluralUnit_not_in: [String!]
+
+  """All values less than the given value."""
+  pluralUnit_lt: String
+
+  """All values less than or equal the given value."""
+  pluralUnit_lte: String
+
+  """All values greater than the given value."""
+  pluralUnit_gt: String
+
+  """All values greater than or equal the given value."""
+  pluralUnit_gte: String
+
+  """All values containing the given string."""
+  pluralUnit_contains: String
+
+  """All values not containing the given string."""
+  pluralUnit_not_contains: String
+
+  """All values starting with the given string."""
+  pluralUnit_starts_with: String
+
+  """All values not starting with the given string."""
+  pluralUnit_not_starts_with: String
+
+  """All values ending with the given string."""
+  pluralUnit_ends_with: String
+
+  """All values not ending with the given string."""
+  pluralUnit_not_ends_with: String
   description: String
 
   """All values that are not equal to given value."""
