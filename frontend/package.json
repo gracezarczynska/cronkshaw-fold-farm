@@ -38,9 +38,19 @@
   "scripts": {
     "dev": "next -p 7777",
     "build": "next build",
-    "start": "next start",
+    "start:heroku": "npm run start:prod",
     "test": "NODE_ENV=test jest --watch",
     "heroku-postbuild": "next build"
+  },
+  "start:prod": {
+    "command": "next start",
+    "command": "PORT=${PORT:-8080} next start",
+    "env": {
+      "NODE_HOST": "0.0.0.0",
+      "NODE_ENV": "production",
+      "PORT": 8080,
+      "BROWSER": "none"
+    }
   },
   "browserslist": [
     ">0.2%",
