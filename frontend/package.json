@@ -36,11 +36,10 @@
     "waait": "^1.0.2"
   },
   "scripts": {
-    "dev": "next -p 8080",
+    "dev": "next -p 7777",
     "build": "next build",
     "start": "next start",
-    "export": "npm run build && next export",
-    "deploy": "gh-pages -d out",
+    "test": "NODE_ENV=test jest --watch",
     "heroku-postbuild": "next build"
   },
   "browserslist": [
