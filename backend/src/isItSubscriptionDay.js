@@ -4,6 +4,7 @@ const dateFns = require('date-fns');
 
 const isItSubscriptionDay = (values, day, deliveryDays) => {
   const { subscriptionFrequency, subscriptionStartDate } = values;
+  // TODO
   const firstDeliveryDate = firstDeliveryAfterStartDate(
     deliveryDays,
     subscriptionStartDate
