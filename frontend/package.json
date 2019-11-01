@@ -40,7 +40,8 @@
     "build": "next build",
     "start": "next start",
     "export": "npm run build && next export",
-    "deploy": "gh-pages -d out"
+    "deploy": "gh-pages -d out",
+    "heroku-postbuild": "next build"
   },
   "browserslist": [
     ">0.2%",
