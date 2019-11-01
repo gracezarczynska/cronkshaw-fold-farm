@@ -29,6 +29,7 @@ type Product {
 type User {
   id: ID! @id @unique
   name: String!
+  surname: String!
   email: String! @unique
   password: String!
   resetToken: String
@@ -42,6 +43,7 @@ type User {
   dropOffPicture: String
   subscriptions: [Enrollment!]! @relation(name: "UserSubscription")
   deliveryInstructions: String
+  stripeId: String @unique
   updatedAt: DateTime! @updatedAt
   createdAt: DateTime! @createdAt
 }
@@ -54,6 +56,10 @@ type Enrollment {
   overrides: [Override]
   product: Product! @relation(name: "ProdSubscription")
   user: User! @relation(name: "UserSubscription")
+  monthlyPrice: Int!
+  charge: String!
+  subscriptionId: String
+  subscriptionDates: [DateTime!]! @scalarList(strategy:RELATION)
 }
 
 type Farm {
@@ -71,7 +77,7 @@ type Farm {
 type Override {
   id: ID! @id @unique
   subscriptions: Enrollment! # relationship to Enrollment
-  startDate: DateTime!
+  startDate: DateTime
   endDate: DateTime
   quantity: Int
   status: String

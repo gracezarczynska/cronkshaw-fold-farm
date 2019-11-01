@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/malgorzata-zarczynska/cronkshaw-fold-farm/dev
-# timestamp: Sat May 04 2019 16:22:48 GMT+0100 (British Summer Time)
+# timestamp: Fri Nov 01 2019 16:16:23 GMT+0000 (Greenwich Mean Time)
 
 type AggregateEnrollment {
   count: Int!
@@ -36,6 +36,10 @@ type Enrollment implements Node {
   overrides(where: OverrideWhereInput, orderBy: OverrideOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Override!]
   product: Product!
   user: User!
+  monthlyPrice: Int!
+  charge: String!
+  subscriptionId: String
+  subscriptionDates: [DateTime!]!
 }
 
 """A connection to a list of items."""
@@ -53,6 +57,10 @@ input EnrollmentCreateInput {
   quantity: Int
   subscriptionFrequency: String
   subscriptionStartDate: DateTime
+  monthlyPrice: Int!
+  charge: String!
+  subscriptionId: String
+  subscriptionDates: EnrollmentCreatesubscriptionDatesInput
   overrides: OverrideCreateManyWithoutSubscriptionsInput
   product: ProductCreateOneInput!
   user: UserCreateOneWithoutSubscriptionsInput!
@@ -68,11 +76,19 @@ input EnrollmentCreateOneWithoutOverridesInput {
   connect: EnrollmentWhereUniqueInput
 }
 
+input EnrollmentCreatesubscriptionDatesInput {
+  set: [DateTime!]
+}
+
 input EnrollmentCreateWithoutOverridesInput {
   id: ID
   quantity: Int
   subscriptionFrequency: String
   subscriptionStartDate: DateTime
+  monthlyPrice: Int!
+  charge: String!
+  subscriptionId: String
+  subscriptionDates: EnrollmentCreatesubscriptionDatesInput
   product: ProductCreateOneInput!
   user: UserCreateOneWithoutSubscriptionsInput!
 }
@@ -82,6 +98,10 @@ input EnrollmentCreateWithoutUserInput {
   quantity: Int
   subscriptionFrequency: String
   subscriptionStartDate: DateTime
+  monthlyPrice: Int!
+  charge: String!
+  subscriptionId: String
+  subscriptionDates: EnrollmentCreatesubscriptionDatesInput
   overrides: OverrideCreateManyWithoutSubscriptionsInput
   product: ProductCreateOneInput!
 }
@@ -104,6 +124,12 @@ enum EnrollmentOrderByInput {
   subscriptionFrequency_DESC
   subscriptionStartDate_ASC
   subscriptionStartDate_DESC
+  monthlyPrice_ASC
+  monthlyPrice_DESC
+  charge_ASC
+  charge_DESC
+  subscriptionId_ASC
+  subscriptionId_DESC
 }
 
 type EnrollmentPreviousValues {
@@ -111,6 +137,10 @@ type EnrollmentPreviousValues {
   quantity: Int!
   subscriptionFrequency: String
   subscriptionStartDate: DateTime
+  monthlyPrice: Int!
+  charge: String!
+  subscriptionId: String
+  subscriptionDates: [DateTime!]!
 }
 
 input EnrollmentScalarWhereInput {
@@ -246,6 +276,108 @@ input EnrollmentScalarWhereInput {
 
   """All values greater than or equal the given value."""
   subscriptionStartDate_gte: DateTime
+  monthlyPrice: Int
+
+  """All values that are not equal to given value."""
+  monthlyPrice_not: Int
+
+  """All values that are contained in given list."""
+  monthlyPrice_in: [Int!]
+
+  """All values that are not contained in given list."""
+  monthlyPrice_not_in: [Int!]
+
+  """All values less than the given value."""
+  monthlyPrice_lt: Int
+
+  """All values less than or equal the given value."""
+  monthlyPrice_lte: Int
+
+  """All values greater than the given value."""
+  monthlyPrice_gt: Int
+
+  """All values greater than or equal the given value."""
+  monthlyPrice_gte: Int
+  charge: String
+
+  """All values that are not equal to given value."""
+  charge_not: String
+
+  """All values that are contained in given list."""
+  charge_in: [String!]
+
+  """All values that are not contained in given list."""
+  charge_not_in: [String!]
+
+  """All values less than the given value."""
+  charge_lt: String
+
+  """All values less than or equal the given value."""
+  charge_lte: String
+
+  """All values greater than the given value."""
+  charge_gt: String
+
+  """All values greater than or equal the given value."""
+  charge_gte: String
+
+  """All values containing the given string."""
+  charge_contains: String
+
+  """All values not containing the given string."""
+  charge_not_contains: String
+
+  """All values starting with the given string."""
+  charge_starts_with: String
+
+  """All values not starting with the given string."""
+  charge_not_starts_with: String
+
+  """All values ending with the given string."""
+  charge_ends_with: String
+
+  """All values not ending with the given string."""
+  charge_not_ends_with: String
+  subscriptionId: String
+
+  """All values that are not equal to given value."""
+  subscriptionId_not: String
+
+  """All values that are contained in given list."""
+  subscriptionId_in: [String!]
+
+  """All values that are not contained in given list."""
+  subscriptionId_not_in: [String!]
+
+  """All values less than the given value."""
+  subscriptionId_lt: String
+
+  """All values less than or equal the given value."""
+  subscriptionId_lte: String
+
+  """All values greater than the given value."""
+  subscriptionId_gt: String
+
+  """All values greater than or equal the given value."""
+  subscriptionId_gte: String
+
+  """All values containing the given string."""
+  subscriptionId_contains: String
+
+  """All values not containing the given string."""
+  subscriptionId_not_contains: String
+
+  """All values starting with the given string."""
+  subscriptionId_starts_with: String
+
+  """All values not starting with the given string."""
+  subscriptionId_not_starts_with: String
+
+  """All values ending with the given string."""
+  subscriptionId_ends_with: String
+
+  """All values not ending with the given string."""
+  subscriptionId_not_ends_with: String
 }
 
 type EnrollmentSubscriptionPayload {
@@ -291,6 +423,10 @@ input EnrollmentUpdateInput {
   quantity: Int
   subscriptionFrequency: String
   subscriptionStartDate: DateTime
+  monthlyPrice: Int
+  charge: String
+  subscriptionId: String
+  subscriptionDates: EnrollmentUpdatesubscriptionDatesInput
   overrides: OverrideUpdateManyWithoutSubscriptionsInput
   product: ProductUpdateOneRequiredInput
   user: UserUpdateOneRequiredWithoutSubscriptionsInput
@@ -300,12 +436,20 @@ input EnrollmentUpdateManyDataInput {
   quantity: Int
   subscriptionFrequency: String
   subscriptionStartDate: DateTime
+  monthlyPrice: Int
+  charge: String
+  subscriptionId: String
+  subscriptionDates: EnrollmentUpdatesubscriptionDatesInput
 }
 
 input EnrollmentUpdateManyMutationInput {
   quantity: Int
   subscriptionFrequency: String
   subscriptionStartDate: DateTime
+  monthlyPrice: Int
+  charge: String
+  subscriptionId: String
+  subscriptionDates: EnrollmentUpdatesubscriptionDatesInput
 }
 
 input EnrollmentUpdateManyWithoutUserInput {
@@ -332,10 +476,18 @@ input EnrollmentUpdateOneRequiredWithoutOverridesInput {
   upsert: EnrollmentUpsertWithoutOverridesInput
 }
 
+input EnrollmentUpdatesubscriptionDatesInput {
+  set: [DateTime!]
+}
+
 input EnrollmentUpdateWithoutOverridesDataInput {
   quantity: Int
   subscriptionFrequency: String
   subscriptionStartDate: DateTime
+  monthlyPrice: Int
+  charge: String
+  subscriptionId: String
+  subscriptionDates: EnrollmentUpdatesubscriptionDatesInput
   product: ProductUpdateOneRequiredInput
   user: UserUpdateOneRequiredWithoutSubscriptionsInput
 }
@@ -344,6 +496,10 @@ input EnrollmentUpdateWithoutUserDataInput {
   quantity: Int
   subscriptionFrequency: String
   subscriptionStartDate: DateTime
+  monthlyPrice: Int
+  charge: String
+  subscriptionId: String
+  subscriptionDates: EnrollmentUpdatesubscriptionDatesInput
   overrides: OverrideUpdateManyWithoutSubscriptionsInput
   product: ProductUpdateOneRequiredInput
 }
@@ -497,6 +653,108 @@ input EnrollmentWhereInput {
 
   """All values greater than or equal the given value."""
   subscriptionStartDate_gte: DateTime
+  monthlyPrice: Int
+
+  """All values that are not equal to given value."""
+  monthlyPrice_not: Int
+
+  """All values that are contained in given list."""
+  monthlyPrice_in: [Int!]
+
+  """All values that are not contained in given list."""
+  monthlyPrice_not_in: [Int!]
+
+  """All values less than the given value."""
+  monthlyPrice_lt: Int
+
+  """All values less than or equal the given value."""
+  monthlyPrice_lte: Int
+
+  """All values greater than the given value."""
+  monthlyPrice_gt: Int
+
+  """All values greater than or equal the given value."""
+  monthlyPrice_gte: Int
+  charge: String
+
+  """All values that are not equal to given value."""
+  charge_not: String
+
+  """All values that are contained in given list."""
+  charge_in: [String!]
+
+  """All values that are not contained in given list."""
+  charge_not_in: [String!]
+
+  """All values less than the given value."""
+  charge_lt: String
+
+  """All values less than or equal the given value."""
+  charge_lte: String
+
+  """All values greater than the given value."""
+  charge_gt: String
+
+  """All values greater than or equal the given value."""
+  charge_gte: String
+
+  """All values containing the given string."""
+  charge_contains: String
+
+  """All values not containing the given string."""
+  charge_not_contains: String
+
+  """All values starting with the given string."""
+  charge_starts_with: String
+
+  """All values not starting with the given string."""
+  charge_not_starts_with: String
+
+  """All values ending with the given string."""
+  charge_ends_with: String
+
+  """All values not ending with the given string."""
+  charge_not_ends_with: String
+  subscriptionId: String
+
+  """All values that are not equal to given value."""
+  subscriptionId_not: String
+
+  """All values that are contained in given list."""
+  subscriptionId_in: [String!]
+
+  """All values that are not contained in given list."""
+  subscriptionId_not_in: [String!]
+
+  """All values less than the given value."""
+  subscriptionId_lt: String
+
+  """All values less than or equal the given value."""
+  subscriptionId_lte: String
+
+  """All values greater than the given value."""
+  subscriptionId_gt: String
+
+  """All values greater than or equal the given value."""
+  subscriptionId_gte: String
+
+  """All values containing the given string."""
+  subscriptionId_contains: String
+
+  """All values not containing the given string."""
+  subscriptionId_not_contains: String
+
+  """All values starting with the given string."""
+  subscriptionId_starts_with: String
+
+  """All values not starting with the given string."""
+  subscriptionId_not_starts_with: String
+
+  """All values ending with the given string."""
+  subscriptionId_ends_with: String
+
+  """All values not ending with the given string."""
+  subscriptionId_not_ends_with: String
   overrides_every: OverrideWhereInput
   overrides_some: OverrideWhereInput
   overrides_none: OverrideWhereInput
@@ -1025,7 +1283,7 @@ interface Node {
 type Override implements Node {
   id: ID!
   subscriptions: Enrollment!
-  startDate: DateTime!
+  startDate: DateTime
   endDate: DateTime
   quantity: Int
   status: String
@@ -1043,7 +1301,7 @@ type OverrideConnection {
 
 input OverrideCreateInput {
   id: ID
-  startDate: DateTime!
+  startDate: DateTime
   endDate: DateTime
   quantity: Int
   status: String
@@ -1057,7 +1315,7 @@ input OverrideCreateManyWithoutSubscriptionsInput {
 
 input OverrideCreateWithoutSubscriptionsInput {
   id: ID
-  startDate: DateTime!
+  startDate: DateTime
   endDate: DateTime
   quantity: Int
   status: String
@@ -1087,7 +1345,7 @@ enum OverrideOrderByInput {
 
 type OverridePreviousValues {
   id: ID!
-  startDate: DateTime!
+  startDate: DateTime
   endDate: DateTime
   quantity: Int
   status: String
@@ -2702,6 +2960,7 @@ type Subscription {
 type User implements Node {
   id: ID!
   name: String!
+  surname: String!
   email: String!
   password: String!
   resetToken: String
@@ -2715,6 +2974,7 @@ type User implements Node {
   dropOffPicture: String
   subscriptions(where: EnrollmentWhereInput, orderBy: EnrollmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Enrollment!]
   deliveryInstructions: String
+  stripeId: String
   updatedAt: DateTime!
   createdAt: DateTime!
 }
@@ -2732,6 +2992,7 @@ type UserConnection {
 input UserCreateInput {
   id: ID
   name: String!
+  surname: String!
   email: String!
   password: String!
   resetToken: String
@@ -2743,6 +3004,7 @@ input UserCreateInput {
   housePicture: String
   dropOffPicture: String
   deliveryInstructions: String
+  stripeId: String
   permissions: UserCreatepermissionsInput
   subscriptions: EnrollmentCreateManyWithoutUserInput
 }
@@ -2759,6 +3021,7 @@ input UserCreatepermissionsInput {
 input UserCreateWithoutSubscriptionsInput {
   id: ID
   name: String!
+  surname: String!
   email: String!
   password: String!
   resetToken: String
@@ -2770,6 +3033,7 @@ input UserCreateWithoutSubscriptionsInput {
   housePicture: String
   dropOffPicture: String
   deliveryInstructions: String
+  stripeId: String
   permissions: UserCreatepermissionsInput
 }
 
@@ -2787,6 +3051,8 @@ enum UserOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  surname_ASC
+  surname_DESC
   email_ASC
   email_DESC
   password_ASC
@@ -2809,6 +3075,8 @@ enum UserOrderByInput {
   dropOffPicture_DESC
   deliveryInstructions_ASC
   deliveryInstructions_DESC
+  stripeId_ASC
+  stripeId_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -2818,6 +3086,7 @@ enum UserOrderByInput {
 type UserPreviousValues {
   id: ID!
   name: String!
+  surname: String!
   email: String!
   password: String!
   resetToken: String
@@ -2830,6 +3099,7 @@ type UserPreviousValues {
   housePicture: String
   dropOffPicture: String
   deliveryInstructions: String
+  stripeId: String
   updatedAt: DateTime!
   createdAt: DateTime!
 }
@@ -2875,6 +3145,7 @@ input UserSubscriptionWhereInput {
 
 input UserUpdateInput {
   name: String
+  surname: String
   email: String
   password: String
   resetToken: String
@@ -2886,12 +3157,14 @@ input UserUpdateInput {
   housePicture: String
   dropOffPicture: String
   deliveryInstructions: String
+  stripeId: String
   permissions: UserUpdatepermissionsInput
   subscriptions: EnrollmentUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
   name: String
+  surname: String
   email: String
   password: String
   resetToken: String
@@ -2903,6 +3176,7 @@ input UserUpdateManyMutationInput {
   housePicture: String
   dropOffPicture: String
   deliveryInstructions: String
+  stripeId: String
   permissions: UserUpdatepermissionsInput
 }
 
@@ -2919,6 +3193,7 @@ input UserUpdatepermissionsInput {
 
 input UserUpdateWithoutSubscriptionsDataInput {
   name: String
+  surname: String
   email: String
   password: String
   resetToken: String
@@ -2930,6 +3205,7 @@ input UserUpdateWithoutSubscriptionsDataInput {
   housePicture: String
   dropOffPicture: String
   deliveryInstructions: String
+  stripeId: String
   permissions: UserUpdatepermissionsInput
 }
 
@@ -3027,6 +3303,46 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+  surname: String
+
+  """All values that are not equal to given value."""
+  surname_not: String
+
+  """All values that are contained in given list."""
+  surname_in: [String!]
+
+  """All values that are not contained in given list."""
+  surname_not_in: [String!]
+
+  """All values less than the given value."""
+  surname_lt: String
+
+  """All values less than or equal the given value."""
+  surname_lte: String
+
+  """All values greater than the given value."""
+  surname_gt: String
+
+  """All values greater than or equal the given value."""
+  surname_gte: String
+
+  """All values containing the given string."""
+  surname_contains: String
+
+  """All values not containing the given string."""
+  surname_not_contains: String
+
+  """All values starting with the given string."""
+  surname_starts_with: String
+
+  """All values not starting with the given string."""
+  surname_not_starts_with: String
+
+  """All values ending with the given string."""
+  surname_ends_with: String
+
+  """All values not ending with the given string."""
+  surname_not_ends_with: String
   email: String
 
   """All values that are not equal to given value."""
@@ -3467,6 +3783,46 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   deliveryInstructions_not_ends_with: String
+  stripeId: String
+
+  """All values that are not equal to given value."""
+  stripeId_not: String
+
+  """All values that are contained in given list."""
+  stripeId_in: [String!]
+
+  """All values that are not contained in given list."""
+  stripeId_not_in: [String!]
+
+  """All values less than the given value."""
+  stripeId_lt: String
+
+  """All values less than or equal the given value."""
+  stripeId_lte: String
+
+  """All values greater than the given value."""
+  stripeId_gt: String
+
+  """All values greater than or equal the given value."""
+  stripeId_gte: String
+
+  """All values containing the given string."""
+  stripeId_contains: String
+
+  """All values not containing the given string."""
+  stripeId_not_contains: String
+
+  """All values starting with the given string."""
+  stripeId_starts_with: String
+
+  """All values not starting with the given string."""
+  stripeId_not_starts_with: String
+
+  """All values ending with the given string."""
+  stripeId_ends_with: String
+
+  """All values not ending with the given string."""
+  stripeId_not_ends_with: String
   updatedAt: DateTime
 
   """All values that are not equal to given value."""
@@ -3519,4 +3875,5 @@ input UserWhereInput {
 input UserWhereUniqueInput {
   id: ID
   email: String
+  stripeId: String
 }

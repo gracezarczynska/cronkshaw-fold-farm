@@ -3,32 +3,40 @@ const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 const { randomBytes } = require('crypto');
 const { transport, makeANiceEmail } = require('../mail');
+const { hasPermission, calcTotal, getEnrollmentDates } = require('../utils');
+const stripe = require('../stripe');
 
 const Mutations = {
-
   async signup(parent, args, ctx, info) {
+    if (args.password !== args.confirmPassword) {
+      throw new Error("Yo Passwords don't match!");
+    }
 
-    // TODO
-    // console.log(args);
-    // if(args.password !== args.confirmPassword) {
-    //   throw new Error('Yo Passwords don\'t match!');
-    // }
-
-    // if(args.email.toLowerCase() !== args.confirmEmail.toLowerCase()) {
-    //   throw new Error('Yo Emails don\'t match!');
-    // }
-    // lowercase their email
+    if (args.email.toLowerCase() !== args.confirmEmail.toLowerCase()) {
+      throw new Error("Yo Emails don't match!");
+    }
     args.email = args.email.toLowerCase();
-    // hash their password
     const password = await bcrypt.hash(args.password, 10);
+    let stripeUser;
+
+    try {
+      stripeUser = await stripe.customers.create({
+        email: args.email
+      });
+    } catch (e) {
+      console.log(e);
+    }
     // create the user in the database
     const user = await ctx.db.mutation.createUser(
       {
         data: {
-          ...args,
+          email: args.email,
+          surname: args.surname,
+          name: args.name,
           password,
           permissions: { set: ['USER'] },
-        },
+          stripeId: stripeUser.id
+        }
       },
       info
     );
@@ -37,7 +45,7 @@ const Mutations = {
     // We set the jwt as a cookie on the response
     ctx.response.cookie('token', token, {
       httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
+      maxAge: 1000 * 60 * 60 * 24 * 365 // 1 year cookie
     });
     // Finalllllly we return the user to the browser
     return user;
@@ -53,8 +61,8 @@ const Mutations = {
       {
         data: updates,
         where: {
-          id: args.id,
-        },
+          id: args.id
+        }
       },
       info
     );
@@ -68,27 +76,80 @@ const Mutations = {
       {
         data: updates,
         where: {
-          id: args.id,
-        },
+          id: args.id
+        }
       },
       info
     );
+  },
+
+  async sendEmailAllEnrollments(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error('You must be signed in soooon');
+    }
+
+    // check if they have the right permissions
+    //
+    const enrollments = await ctx.db.query.enrollments({
+      where: { user: { id: args.id } }
+    });
+    enrollments.map(async enrollment => {
+      const email = await transport.sendMail({
+        from: 'dot@cronkshawfoldfarm.co.uk',
+        to: enrollment.user.email,
+        subject: 'Note from your farmer',
+        html: makeANiceEmail(args.emailText)
+      });
+
+      return email;
+    });
+
+    return { message: 'Success' };
   },
 
   async createEnrollment(parent, args, ctx, info) {
     // 1. Make sure they are signed in
     const { userId } = ctx.request;
     if (!userId) {
-      throw new Error('You must be signed in soooon');
+      throw new Error('You must be signed in');
     }
-    // 2. Query the users current cart
-    const product = await ctx.db.query.product( { where: { id: args.id }} );
+
+    const user = await ctx.db.query.user({ where: { id: userId } });
+    const product = await ctx.db.query.product({ where: { id: args.id } });
+
+    const amount = calcTotal({
+      subscriptionFrequency: args.subscriptionFrequency,
+      quantity: args.quantity,
+      price: product.price
+    });
 
     const availableStock = product.availableStock - args.quantity;
 
-    if(availableStock < 0) {
-      throw new Error(`There is not enough stock for your purchase, there is ${product.availableStock} left available`);
+    if (availableStock < 0) {
+      throw new Error(
+        `There is not enough stock for your purchase, there is ${product.availableStock} left available`
+      );
     }
+
+    // get user from Stripe or create one if doesnt exist
+
+    let stripeUser;
+
+    try {
+      stripeUser = await stripe.customers.retrieve(user.stripeId);
+    } catch (e) {
+      console.log(e);
+    }
+
+    const charge = await stripe.subscriptions.create({
+      customer: stripeUser.id,
+      items: [
+        {
+          plan: 'plan_FvkK2GG4B3CX9h'
+        }
+      ]
+    });
 
     ctx.db.mutation.updateProduct(
       {
@@ -96,44 +157,35 @@ const Mutations = {
           availableStock
         },
         where: {
-          id: args.id,
-        },
+          id: args.id
+        }
       },
       info
     );
 
-    // const [existingSubscription] = await ctx.db.query.enrollment({
-    //   where: {
-    //     user: { id: userId },
-    //     product: { id: args.id },
-    //   },
-    // });
-    
-    // 3. Check if that item is already in their cart and increment by 1 if it is
-    // if (existingSubscription) {
-    //   console.log('This item is already in their cart');
-    //   return ctx.db.mutation.updateEnrollment(
-    //     {
-    //       where: { id: existingSubscription.id },
-    //       data: { quantity: existingSubscription.quantity + 1 },
-    //     },
-    //     info
-    //   );
-    // }
+    // const subscriptionDates = getEnrollmentDates(
+    //   args.subscriptionStartDate,
+    //   args.subscriptionFrequency
+    // );
+
+    // console.log(subscriptionDates);
 
     return ctx.db.mutation.createEnrollment(
       {
         data: {
           user: {
-            connect: { id: userId },
+            connect: { id: userId }
           },
           product: {
-            connect: { id: args.id },
+            connect: { id: args.id }
           },
           subscriptionStartDate: args.subscriptionStartDate,
           subscriptionFrequency: args.subscriptionFrequency,
-          quantity: args.quantity
-        },
+          quantity: args.quantity,
+          monthlyPrice: Math.round(amount),
+          charge: charge.id,
+          subscriptionId: charge.items.data[0].id
+        }
       },
       info
     );
@@ -141,7 +193,7 @@ const Mutations = {
 
   async createOverride(parent, args, ctx, info) {
     // 1. Make sure they are signed in
-    let status = 'approved'; 
+    let status = 'approved';
     const { userId } = ctx.request;
     if (!userId) {
       throw new Error('You must be signed in soooon');
@@ -149,8 +201,8 @@ const Mutations = {
 
     const subscription = await ctx.db.query.enrollment({
       where: {
-        id: args.subscriptionId,
-      },
+        id: args.subscriptionId
+      }
     });
 
     if (subscription.quantity === args.quantity) {
@@ -162,8 +214,7 @@ const Mutations = {
         subject: 'Subscription Amendment Review Request',
         html: makeANiceEmail(`Someone Requested more of your delicious produce!
         \n\n
-        <a href="${process.env
-          .FRONTEND_URL}/review?reviewToken=hello">Click here to review the request</a>`),
+        <a href="${process.env.FRONTEND_URL}/review?reviewToken=hello">Click here to review the request</a>`)
       });
       status = 'pending';
     }
@@ -172,21 +223,54 @@ const Mutations = {
       {
         data: {
           subscriptions: {
-            connect: { id: args.subscriptionId },
+            connect: { id: args.subscriptionId }
           },
           startDate: args.startDate,
           endDate: args.endDate,
           quantity: args.quantity,
           status
-        },
+        }
+      },
+      info
+    );
+  },
+
+  async updateOverride(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in');
+    }
+    if (!args.status) {
+      throw new Error('You didnt approve or reject');
+    }
+    hasPermission(ctx.request.user, ['ADMIN', 'FARMER']);
+    const message = ctx.request.body.variables.message
+      ? `<br><p>Message from your farmer: ${ctx.request.body.variables.message}</p>`
+      : '';
+    const mailRes = await transport.sendMail({
+      from: 'info@graceful-designs.co.uk',
+      to: ctx.request.user.email,
+      subject: 'Your Amendment Request Response',
+      html: makeANiceEmail(`Your amendment request is now ${args.status}!
+      \n\n
+      ${message}`)
+    });
+
+    const updates = { ...args };
+    delete updates.id;
+    ctx.db.mutation.updateOverride(
+      {
+        data: updates,
+        where: {
+          id: args.id
+        }
       },
       info
     );
   },
 
   async signin(parent, { email, password }, ctx, info) {
-    const user = await ctx.db.query.user({ where: { email }});
-    if(!user) {
+    const user = await ctx.db.query.user({ where: { email } });
+    if (!user) {
       throw new Error(`No such use found for email ${email}`);
     }
     const valid = await bcrypt.compare(password, user.password);
@@ -196,20 +280,20 @@ const Mutations = {
     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
     ctx.response.cookie('token', token, {
       httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
+      maxAge: 1000 * 60 * 60 * 24 * 365 // 1 year cookie
     });
     return user;
   },
 
   signout(parent, args, ctx, info) {
     ctx.response.clearCookie('token');
-    return { message: "Goodbye" };
+    return { message: 'Goodbye' };
   },
 
   async requestReset(parent, args, ctx, info) {
     const user = await ctx.db.query.user({ where: { email: args.email } });
 
-    if(!user) {
+    if (!user) {
       throw new Error(`No such user found for email ${args.email}`);
     }
     const randomBytesPromiseified = promisify(randomBytes);
@@ -218,7 +302,7 @@ const Mutations = {
     const res = await ctx.db.mutation.updateUser({
       where: { email: args.email },
       data: { resetToken, resetTokenExpiry }
-    })
+    });
 
     const mailRes = await transport.sendMail({
       from: 'info@graceful-designs.co.uk',
@@ -226,16 +310,15 @@ const Mutations = {
       subject: 'Your Password Reset',
       html: makeANiceEmail(`Your Password Reset is here!
       \n\n
-      <a href="${process.env
-        .FRONTEND_URL}/reset?resetToken=${resetToken}">Click Here to Reset your Password</a>`),
+      <a href="${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}">Click Here to Reset your Password</a>`)
     });
 
     return { message: 'Thanks' };
   },
 
   async resetPassword(parent, args, ctx, info) {
-    if(args.password !== args.confirmPassword) {
-      throw new Error('Yo Passwords don\'t match!');
+    if (args.password !== args.confirmPassword) {
+      throw new Error("Yo Passwords don't match!");
     }
 
     const [user] = await ctx.db.query.users({
@@ -245,7 +328,7 @@ const Mutations = {
       }
     });
 
-    if(!user) {
+    if (!user) {
       throw new Error('This token is either invalid or expired!');
     }
 
@@ -256,19 +339,18 @@ const Mutations = {
       data: {
         password,
         resetToken: null,
-        resetTokenExpiry: null,
-      },
+        resetTokenExpiry: null
+      }
     });
 
     const token = jwt.sign({ userId: updatedUser.id }, process.env.APP_SECRET);
 
     ctx.response.cookie('token', token, {
       httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365,
+      maxAge: 1000 * 60 * 60 * 24 * 365
     });
 
     return updatedUser;
-
   }
 };
 
