@@ -27,6 +27,7 @@ export const NavMobile = styled.div`
   position: fixed;
   z-index: 3;
   top: 0;
+  padding-top: 20%;
 
   a {
     &:first-child {

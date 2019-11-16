@@ -12,7 +12,7 @@ const theme = {
   transparentGrey: 'rgba(47, 46, 46, 0.5)',
   offWhite: '#EDEDED',
   maxWidth: '1200px',
-  bs: '0 12px 24px 0 rgba(0, 0, 0, 0.09)',
+  bs: '0 12px 24px 0 rgba(0, 0, 0, 0.09)'
 };
 
 const StyledPage = styled.div`
@@ -41,13 +41,13 @@ injectGlobal`
     margin: 0;
     font-size: 1.5rem;
     line-height: 2;
-    font-family: 'radnika_next';
+    font-family: Helvetica, sans-serif;
   }
   a {
     text-decoration: none;
     color: ${theme.black};
   }
-  button {  font-family: 'radnika_next'; }
+  button {  font-family: Helvetica, sans-serif; }
 `;
 
 class Page extends Component {
