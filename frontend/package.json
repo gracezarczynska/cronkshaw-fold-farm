@@ -38,7 +38,7 @@
   "scripts": {
     "dev": "next -p 8080",
     "build": "next build",
-    "start": "npm run start:prod",
+    "start": "next start",
     "test": "NODE_ENV=test jest --watch",
     "heroku-postbuild": "next build"
   },
