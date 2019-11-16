@@ -139,7 +139,22 @@ const Mutations = {
     try {
       stripeUser = await stripe.customers.retrieve(user.stripeId);
     } catch (e) {
-      console.log(e);
+      try {
+        stripeUser = await stripe.customers.create({
+          email: user.email,
+          name: user.name
+        });
+        ctx.db.mutation.updateUser({
+          data: {
+            stripeId: stripeUser.id
+          },
+          where: {
+            id: user.id
+          }
+        });
+      } catch (e) {
+        throw new Error(e);
+      }
     }
 
     const charge = await stripe.subscriptions.create({
@@ -162,13 +177,6 @@ const Mutations = {
       },
       info
     );
-
-    // const subscriptionDates = getEnrollmentDates(
-    //   args.subscriptionStartDate,
-    //   args.subscriptionFrequency
-    // );
-
-    // console.log(subscriptionDates);
 
     return ctx.db.mutation.createEnrollment(
       {
@@ -305,7 +313,7 @@ const Mutations = {
     });
 
     const mailRes = await transport.sendMail({
-      from: 'info@graceful-designs.co.uk',
+      from: 'do-not-reply@graceful-designs.co.uk',
       to: user.email,
       subject: 'Your Password Reset',
       html: makeANiceEmail(`Your Password Reset is here!

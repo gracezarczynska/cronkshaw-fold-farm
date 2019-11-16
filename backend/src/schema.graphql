@@ -66,12 +66,7 @@ type Query {
   ): [Product]!
   product(where: ProductWhereUniqueInput!): Product
   enrollment(where: EnrollmentWhereUniqueInput!): Enrollment
-  enrollments(
-    where: EnrollmentWhereInput
-    orderBy: EnrollmentOrderByInput
-    skip: Int
-    first: Int
-  ): [Enrollment]!
+  enrollments: [Enrollment]!
   overrides(
     where: OverrideWhereInput
     orderBy: OverrideOrderByInput

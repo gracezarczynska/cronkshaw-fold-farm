@@ -37,9 +37,6 @@ class Nav extends Component {
                   <a>My Subscriptions</a>
                 </Link>
               )}
-              <Link href='/about'>
-                <a>About</a>
-              </Link>
               <Link href='/produce'>
                 <a>Produce</a>
               </Link>
@@ -65,9 +62,6 @@ class Nav extends Component {
                     <a onClick={this.handleClick}>My Subscriptions</a>
                   </Link>
                 )}
-                <Link href='/about'>
-                  <a onClick={this.handleClick}>About</a>
-                </Link>
                 <Link href='/produce'>
                   <a onClick={this.handleClick}>Produce</a>
                 </Link>
