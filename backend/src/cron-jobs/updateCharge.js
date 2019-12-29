@@ -1,35 +1,36 @@
 const stripe = require('../stripe');
 const isItSubscriptionDay = require('../isItSubscriptionDay');
+const alert = require('../alert');
 const moment = require('moment');
 const dateFns = require('date-fns');
 const { transport, makeANiceEmail } = require('../mail');
 
 const updateCharge = async subscriptions => {
   //get all subscriptions
-  const filteredSubscriptions = subscriptions
+  const todaysSubscriptions = subscriptions
     .map(subscription => JSON.parse(JSON.stringify(subscription)))
     .filter(subscription => {
-      return isItSubscriptionDay(
-        subscription,
-        moment('19-11-2019', 'DD-MM-YYYY'),
-        2
-      );
+      return isItSubscriptionDay(subscription, moment(), 2);
     });
-  // .filter(subscription => {
-  //   if (subscription.overrides) {
-  //     subscription.overrides.filter(
-  //       override =>
-  //         dateFns.isWithinRange(
-  //           moment('19-11-2019', 'DD-MM-YYYY'),
-  //           override.startDate,
-  //           override.endDate
-  //         ) && override.quantity === 0
-  //     );
-  //     return subscription.overrides.length() === 0;
-  //   } else {
-  //     return true;
-  //   }
-  // });
+  console.log(todaysSubscriptions);
+
+  const subscriptionsWithoutOverrides = todaysSubscriptions.filter(
+    subscription => {
+      if (subscription.overrides) {
+        const overrides = subscription.overrides.filter(
+          override =>
+            dateFns.isWithinRange(
+              moment(),
+              override.startDate,
+              override.endDate
+            ) && override.quantity === 0
+        );
+        return overrides.length === 0;
+      } else {
+        return true;
+      }
+    }
+  );
 
   let subscriptionMail = `<table><tr>
     <th>Name</th>
@@ -69,14 +70,19 @@ const updateCharge = async subscriptions => {
 
   filteredSubscriptions.map(async subscription => {
     if (subscription.subscriptionId) {
-      // try {
-      //   result = await stripe.usageRecords.create(subscription.subscriptionId, {
-      //     quantity: subscription.quantity,
-      //     timestamp: Math.ceil(Date.now() / 1000)
-      //   });
-      // } catch (e) {
-      //   console.log('error here', e);
-      // }
+      try {
+        result = await stripe.usageRecords.create(subscription.subscriptionId, {
+          quantity: subscription.quantity,
+          timestamp: Math.ceil(Date.now() / 1000)
+        });
+      } catch (e) {
+        sendAlert(
+          e,
+          { subscriptionName: 'stripeSubscriptionId', id: subscriptionId },
+          'Updating charge failed'
+        );
+        console.log('error here', e);
+      }
     }
   });
 };

@@ -39,6 +39,7 @@ type Mutation {
     subscriptionStartDate: DateTime!
     quantity: Int!
   ): Enrollment
+  deleteEnrollment(id: ID!): Enrollment
   createOverride(
     subscriptionId: ID!
     startDate: DateTime

@@ -36,8 +36,6 @@ const isItSubscriptionDay = (values, day, deliveryDays) => {
     .every(2)
     .weeks();
 
-  console.log(weeklyOcurrence.matches(day));
-
   if (subscriptionFrequency === 'weekly' && weeklyOcurrence.matches(day)) {
     return true;
   } else if (

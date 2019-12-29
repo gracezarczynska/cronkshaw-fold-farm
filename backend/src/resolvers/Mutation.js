@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { sendAlert } = require('../alert');
 const { promisify } = require('util');
 const { randomBytes } = require('crypto');
 const { transport, makeANiceEmail } = require('../mail');
@@ -24,7 +25,12 @@ const Mutations = {
         email: args.email
       });
     } catch (e) {
-      console.log(e);
+      sendAlert(
+        e,
+        { subscriptionName: 'email', id: args.email },
+        'Stripe customer creation failed'
+      );
+      throw new Error(e);
     }
     // create the user in the database
     const user = await ctx.db.mutation.createUser(
@@ -135,6 +141,7 @@ const Mutations = {
     // get user from Stripe or create one if doesnt exist
 
     let stripeUser;
+    let charge;
 
     try {
       stripeUser = await stripe.customers.retrieve(user.stripeId);
@@ -153,30 +160,44 @@ const Mutations = {
           }
         });
       } catch (e) {
+        sendAlert(
+          e,
+          { subscriptionName: 'email', id: args.email },
+          'Stripe customer creation failed or updating the user'
+        );
         throw new Error(e);
       }
     }
 
-    const charge = await stripe.subscriptions.create({
-      customer: stripeUser.id,
-      items: [
-        {
-          plan: 'plan_FvkK2GG4B3CX9h'
-        }
-      ]
-    });
+    try {
+      charge = await stripe.subscriptions.create({
+        customer: stripeUser.id,
+        items: [
+          {
+            plan: 'plan_FvkK2GG4B3CX9h'
+          }
+        ]
+      });
 
-    ctx.db.mutation.updateProduct(
-      {
-        data: {
-          availableStock
+      ctx.db.mutation.updateProduct(
+        {
+          data: {
+            availableStock
+          },
+          where: {
+            id: args.id
+          }
         },
-        where: {
-          id: args.id
-        }
-      },
-      info
-    );
+        info
+      );
+    } catch (e) {
+      sendAlert(
+        e,
+        { subscriptionName: 'email', id: args.email },
+        'Stripe subscription failed'
+      );
+      throw new Error(e);
+    }
 
     return ctx.db.mutation.createEnrollment(
       {
@@ -291,6 +312,73 @@ const Mutations = {
       maxAge: 1000 * 60 * 60 * 24 * 365 // 1 year cookie
     });
     return user;
+  },
+
+  async deleteEnrollment(parent, args, ctx, info) {
+    const where = { id: args.id };
+    // 1. find the item
+    let enrollment = await ctx.db.query.enrollment(
+      { where },
+      `{ id user { id } overrides { id } charge }`
+    );
+
+    // 2. Check if they own that item, or have the permissions
+    const ownsEnrollment = enrollment.user.id === ctx.request.userId;
+
+    if (!ownsEnrollment) {
+      throw new Error("You don't have permission to do that!");
+    }
+
+    try {
+      await stripe.subscriptions.update(enrollment.charge, {
+        cancel_at_period_end: true
+      });
+    } catch (e) {
+      sendAlert(
+        e,
+        { subscriptionName: 'enrollmentCharge', id: enrollment.user.id },
+        'Didnt delete subscription!!!'
+      );
+      throw new Error(e);
+    }
+
+    // 3. Delete it!
+    if (enrollment.overrides) {
+      const overrides = JSON.parse(JSON.stringify(enrollment.overrides));
+      try {
+        overrides.map(async override => {
+          await ctx.db.mutation.deleteOverride(
+            { where: { id: override.id } },
+            info,
+            {}
+          );
+        });
+      } catch (e) {
+        sendAlert(
+          e,
+          { subscriptionName: 'userId', id: enrollment.user.id },
+          'deleting override failed'
+        );
+        console.log('CATCH', e);
+      }
+    }
+
+    enrollment = await ctx.db.query.enrollment(
+      { where },
+      `{ id user { id } overrides { id } }`
+    );
+
+    const deleted = await ctx.db.mutation.deleteEnrollment(
+      {
+        where: {
+          id: enrollment.id
+        }
+      },
+      info,
+      {}
+    );
+
+    return deleted;
   },
 
   signout(parent, args, ctx, info) {
