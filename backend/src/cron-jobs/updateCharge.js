@@ -12,22 +12,27 @@ const updateCharge = async subscriptions => {
     .filter(subscription => {
       return isItSubscriptionDay(subscription, moment(), 2);
     });
-  console.log(todaysSubscriptions);
-
-  const subscriptionsWithoutOverrides = todaysSubscriptions.filter(
-    subscription => {
-      if (subscription.overrides) {
-        const overrides = subscription.overrides.filter(
-          override =>
+  
+  const finalSubscriptionSet = [];
+  
+  todaysSubscriptions.forEach(
+    (subscription) => {
+      if (subscription.overrides.length) {
+        for(const override of subscription.overrides) {
+          if (
             dateFns.isWithinRange(
               moment(),
               override.startDate,
               override.endDate
-            ) && override.quantity === 0
-        );
-        return overrides.length === 0;
+            ) &&
+            override.status === 'approved'
+          ) {
+            finalSubscriptionSet.push({ ...subscription, quantity: override.quantity });
+            break;
+          }
+        }
       } else {
-        return true;
+        finalSubscriptionSet.push(subscription);
       }
     }
   );
@@ -44,7 +49,7 @@ const updateCharge = async subscriptions => {
     <th>Quantity (box of 6)</th>
   </tr>`;
 
-  filteredSubscriptions.map(subscription => {
+  finalSubscriptionSet.map(subscription => {
     subscriptionMail =
       subscriptionMail +
       ` <tr>
@@ -68,7 +73,7 @@ const updateCharge = async subscriptions => {
     html: makeANiceEmail(subscriptionMail)
   });
 
-  filteredSubscriptions.map(async subscription => {
+  finalSubscriptionSet.map(async subscription => {
     if (subscription.subscriptionId) {
       try {
         result = await stripe.usageRecords.create(subscription.subscriptionId, {

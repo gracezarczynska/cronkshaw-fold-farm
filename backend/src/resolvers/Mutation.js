@@ -97,9 +97,7 @@ const Mutations = {
 
     // check if they have the right permissions
     //
-    const enrollments = await ctx.db.query.enrollments({
-      where: { user: { id: args.id } }
-    });
+    const enrollments = await ctx.db.query.enrollments({}, `{ id user { email } }`);
     enrollments.map(async enrollment => {
       const email = await transport.sendMail({
         from: 'dot@cronkshawfoldfarm.co.uk',
