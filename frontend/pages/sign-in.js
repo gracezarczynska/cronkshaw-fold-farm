@@ -17,7 +17,6 @@ class SignInPage extends Component {
             <Columns>
                 <SignIn />
                 <Register />
-                <RequestReset />
             </Columns>
         );
     }

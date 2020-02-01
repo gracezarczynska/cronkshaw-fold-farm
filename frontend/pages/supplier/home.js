@@ -118,17 +118,20 @@ class SupplierHome extends Component {
                                         >
                                         {(send, { error, loading, data }) => (
                                             <>
-                                                {data && 
-                                                <p>Success!</p>
-                                                }
-                                                <Error error={error} />
-                                                    <SendEmailStyles>
-                                                        <StyledTextArea disabled={loading} value={this.state.emailText} onChange={this.handleChange('emailText')}></StyledTextArea>
-                                                        <ButtonStyles disabled={loading} onClick={async e => {
-                                                            e.preventDefault();
-                                                            await send();
-                                                        }}>Send!</ButtonStyles>
-                                                    </SendEmailStyles>
+                                                {data ?
+                                                (<p>Success!</p>)
+                                                :
+                                                (   <>
+                                                        <Error error={error} />
+                                                        <SendEmailStyles>
+                                                            <StyledTextArea disabled={loading} value={this.state.emailText} onChange={this.handleChange('emailText')}></StyledTextArea>
+                                                            <ButtonStyles disabled={loading} onClick={async e => {
+                                                                e.preventDefault();
+                                                                await send();
+                                                            }}>Send!</ButtonStyles>
+                                                        </SendEmailStyles>
+                                                    </>
+                                                )}
                                             </>
                                         )}
                                         </Mutation>

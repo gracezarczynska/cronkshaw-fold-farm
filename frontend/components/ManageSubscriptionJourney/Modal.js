@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import dateFns from 'date-fns';
+import { format } from 'date-fns';
 import styled from 'styled-components';
 
 import { NumberInput, ButtonStyles } from '../styles/ButtonStyles';
@@ -105,7 +105,7 @@ class Modal extends Component {
           ) : (
             <h3>
               You are editing your delivery on the{' '}
-              {dateFns.format(day, 'DD MMM YYYY')}
+              {format(day, 'dd mmm yyyy')}
             </h3>
           )}
           {variant === 'request' && (
@@ -125,7 +125,7 @@ class Modal extends Component {
               <label>Start Date</label>
               <DateInput
                 onChange={amendFunctions.handleChange('overrideStartDate')}
-                value={dateFns.format(overrideStartDate, 'YYYY-MM-DD')}
+                value={format(overrideStartDate, 'yyyy-mm-dd')}
                 type='date'
                 placeholder='Starting date'
               />
@@ -134,8 +134,8 @@ class Modal extends Component {
               <label>End Date</label>
               <DateInput
                 onChange={amendFunctions.handleChange('overrideEndDate')}
-                value={dateFns.format(overrideEndDate, 'YYYY-MM-DD')}
-                min={dateFns.format(overrideStartDate, 'YYYY-MM-DD')}
+                value={format(overrideEndDate, 'yyyy-mm-dd')}
+                min={format(overrideStartDate, 'yyyy-mm-dd')}
                 type='date'
                 placeholder='End date'
               />

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import dateFns from "date-fns";
+import { format } from "date-fns";
 import { Mutation } from 'react-apollo';
 import Error from './ErrorMessage';
 import gql from 'graphql-tag';
@@ -39,8 +39,8 @@ export default class farm extends Component {
                             {override.subscriptions.product.name}
                         </td>
                         <td>{override.quantity} {override.quantity <= 1 ? override.subscriptions.product.unit : override.subscriptions.product.pluralUnit }</td>
-                        <td>{dateFns.format(override.startDate, 'DD MM YYYY')}</td>
-                        <td>{dateFns.format(override.endDate, 'DD MM YYYY')}</td>
+                        <td>{format(override.startDate, 'dd mm yyyy')}</td>
+                        <td>{format(override.endDate, 'dd mm yyyy')}</td>
                         <td><input type='checkbox' name="approved" checked={this.state.status === 'approved'} onChange={this.updateValues} /></td>
                         <td><input type='checkbox' name="rejected" checked={this.state.status === 'rejected'} onChange={this.updateValues} /></td>
                         <td><textarea name="message" value={this.state.message} onChange={this.updateValues} /></td>

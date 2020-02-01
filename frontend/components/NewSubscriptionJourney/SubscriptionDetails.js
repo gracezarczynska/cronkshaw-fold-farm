@@ -110,7 +110,7 @@ class SubscriptionDetails extends Component {
                           Your next delivery is{' '}
                           {nextDelivery.map(deliveryDay => (
                             <span>
-                              {moment(deliveryDay).format('Do MMM YYYY')}
+                              {moment(deliveryDay).format('do mmm yyyy')}
                             </span>
                           ))}
                         </p>

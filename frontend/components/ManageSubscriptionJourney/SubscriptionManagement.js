@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import dateFns from 'date-fns';
+import { startOfToday } from 'date-fns';
 
 import Error from '../ErrorMessage';
 import Confirmation from '../NewSubscriptionJourney/Confirmation';
@@ -51,7 +51,7 @@ class SubscriptionManagement extends Component {
     deliveryInstructions: '',
     quantity: 1,
     subscriptionFrequency: '',
-    subscriptionStartDate: dateFns.startOfToday()
+    subscriptionStartDate: startOfToday()
   };
 
   nextStep = (value = 1) => {

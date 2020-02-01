@@ -1,5 +1,5 @@
 import React from "react";
-import dateFns from "date-fns";
+import { isSameDay, format, startOfWeek, addDays, startOfMonth, endOfMonth, endOfWeek, getDay, isAfter, isBefore, isSameMonth, addMonths, subMonths, isEqual } from "date-fns";
 import { isItSubscriptionDay, firstDeliveryAfterStartDate } from '../../lib/subscriptionDates';
 import PopUp from './PopUp';
 
@@ -13,7 +13,7 @@ class AmendCalendar extends React.Component {
   };
 
   openPopUp(day) {
-    if(this.state.day !== '' && !dateFns.isSameDay(this.state.day, day)) {
+    if(this.state.day !== '' && !isSameDay(this.state.day, day)) {
         this.setState({ day, overrideEndDate: day, overrideStartDate: day });
         return;
     }
@@ -21,7 +21,7 @@ class AmendCalendar extends React.Component {
   }
 
   renderHeader() {
-    const dateFormat = "MMMM YYYY";
+    const dateFormat = "MMMM yyyy";
 
     return (
       <div className="header row flex-middle">
@@ -31,7 +31,7 @@ class AmendCalendar extends React.Component {
           </div>
         </div>
         <div className="col col-center">
-          <span>{dateFns.format(this.state.currentMonth, dateFormat)}</span>
+          <span>{format(this.state.currentMonth, dateFormat)}</span>
         </div>
         <div className="col col-end" onClick={this.nextMonth}>
           <div className="icon">&gt;</div>
@@ -41,15 +41,15 @@ class AmendCalendar extends React.Component {
   }
 
   renderDays() {
-    const dateFormat = "dddd";
+    const dateFormat = "EEEEEE";
     const days = [];
 
-    let startDate = dateFns.startOfWeek(this.state.currentMonth);
+    let startDate = startOfWeek(this.state.currentMonth);
 
     for (let i = 0; i < 7; i++) {
       days.push(
         <div className="col col-center" key={i}>
-          {dateFns.format(dateFns.addDays(startDate, i), dateFormat)}
+          {format(addDays(startDate, i), dateFormat)}
         </div>
       );
     }
@@ -69,13 +69,13 @@ class AmendCalendar extends React.Component {
       canceledDates: this.props.canceledDates,
     };
     const { currentMonth, selectedDate } = this.state;
-    const monthStart = dateFns.startOfMonth(currentMonth);
-    const monthEnd = dateFns.endOfMonth(monthStart);
-    const startDate = dateFns.startOfWeek(monthStart);
-    const endDate = dateFns.endOfWeek(monthEnd);
+    const monthStart = startOfMonth(currentMonth);
+    const monthEnd = endOfMonth(monthStart);
+    const startDate = startOfWeek(monthStart);
+    const endDate = endOfWeek(monthEnd);
     const firstDeliveryDate = firstDeliveryAfterStartDate(deliveryDays, values.subscriptionStartDate);
 
-    const dateFormat = "D";
+    const dateFormat = "d";
     const rows = [];
 
     let days = [];
@@ -84,26 +84,26 @@ class AmendCalendar extends React.Component {
 
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
-        formattedDate = dateFns.format(day, dateFormat);
+        formattedDate = format(day, dateFormat);
         const cloneDay = day;
         const subscriptionDay = isItSubscriptionDay(values, day, deliveryDays, firstDeliveryDate);
-        const isBetweenOverrideDates = deliveryDays.indexOf(dateFns.getDay(day)) !== -1 && (dateFns.isAfter(day, overrideStartDate) && dateFns.isBefore(day, overrideEndDate) || dateFns.isEqual(day, overrideEndDate) || dateFns.isEqual(day, overrideStartDate));
+        const isBetweenOverrideDates = deliveryDays.indexOf(getDay(day)) !== -1 && (isAfter(day, overrideStartDate) && isBefore(day, overrideEndDate) || isEqual(day, overrideEndDate) || isEqual(day, overrideStartDate));
         days.push(
           <div
             className={`col cell ${
-              !dateFns.isSameMonth(day, monthStart)
+              !isSameMonth(day, monthStart)
                 ? "disabled"
-                : dateFns.isSameDay(day, selectedDate) ? "selected" : ""
+                : isSameDay(day, selectedDate) ? "selected" : ""
             } ${
-              deliveryDays.indexOf(dateFns.getDay(day)) !== -1 ? "delivery-day" : ""
+              deliveryDays.indexOf(getDay(day)) !== -1 ? "delivery-day" : ""
             } ${
               subscriptionDay ? "subscription-day" : ""
             } 
             ${
-              this.state.popUpOpened && dateFns.isSameDay(this.state.day, day) ? "popup-opened" : ""
+              this.state.popUpOpened && isSameDay(this.state.day, day) ? "popup-opened" : ""
             }
             ${
-              (this.props.canceledDates.indexOf(dateFns.format(day, 'MM/DD/YYYY')) !== -1) ? "canceled-day" : ''
+              (this.props.canceledDates.indexOf(format(day, 'mm/dd/yyyy')) !== -1) ? "canceled-day" : ''
             }
             ${
               isBetweenOverrideDates && values.quantity === 0 ? "override-day--cancel" : ''
@@ -115,12 +115,12 @@ class AmendCalendar extends React.Component {
             onClick={() => this.onDateClick(cloneDay, subscriptionDay)}
           >
             <span className="number">{formattedDate}</span>
-            { this.state.popUpOpened && dateFns.isSameDay(this.state.day, day) &&
+            { this.state.popUpOpened && isSameDay(this.state.day, day) &&
               <PopUp {...popUpProps} />
             }
           </div>
         );
-        day = dateFns.addDays(day, 1);
+        day = addDays(day, 1);
       }
       rows.push(
         <div className="row" key={day}>
@@ -138,13 +138,13 @@ class AmendCalendar extends React.Component {
 
   nextMonth = () => {
     this.setState({
-      currentMonth: dateFns.addMonths(this.state.currentMonth, 1)
+      currentMonth: addMonths(this.state.currentMonth, 1)
     });
   };
 
   prevMonth = () => {
     this.setState({
-      currentMonth: dateFns.subMonths(this.state.currentMonth, 1)
+      currentMonth: subMonths(this.state.currentMonth, 1)
     });
   };
 

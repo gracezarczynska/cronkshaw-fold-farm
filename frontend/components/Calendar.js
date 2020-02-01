@@ -1,5 +1,5 @@
 import React from "react";
-import dateFns from "date-fns";
+import { format, addDays, startOfWeek, startOfMonth, endOfMonth, endOfWeek, isAfter, isBefore, isEqual, isSameMonth, isSameDay, getDay, addMonths, subMonths } from "date-fns";
 import { isItSubscriptionDay, firstDeliveryAfterStartDate } from '../lib/subscriptionDates';
 
 class Calendar extends React.Component {
@@ -9,7 +9,7 @@ class Calendar extends React.Component {
   };
 
   renderHeader() {
-    const dateFormat = "MMMM YYYY";
+    const dateFormat = "MMMM yyyy";
 
     return (
       <div className="header row flex-middle">
@@ -19,7 +19,7 @@ class Calendar extends React.Component {
           </div>
         </div>
         <div className="col col-center">
-          <span>{dateFns.format(this.state.currentMonth, dateFormat)}</span>
+          <span>{format(this.state.currentMonth, dateFormat)}</span>
         </div>
         <div className="col col-end" onClick={this.nextMonth}>
           <div className="icon">&gt;</div>
@@ -29,15 +29,15 @@ class Calendar extends React.Component {
   }
 
   renderDays() {
-    const dateFormat = "dddd";
+    const dateFormat = "EEEEEE";
     const days = [];
 
-    let startDate = dateFns.startOfWeek(this.state.currentMonth);
+    let startDate = startOfWeek(this.state.currentMonth);
 
     for (let i = 0; i < 7; i++) {
       days.push(
         <div className="col col-center" key={i}>
-          {dateFns.format(dateFns.addDays(startDate, i), dateFormat)}
+          {format(addDays(startDate, i), dateFormat)}
         </div>
       );
     }
@@ -47,13 +47,13 @@ class Calendar extends React.Component {
 
   renderCells(deliveryDays, values, overrideStartDate, overrideEndDate) {
     const { currentMonth, selectedDate } = this.state;
-    const monthStart = dateFns.startOfMonth(currentMonth);
-    const monthEnd = dateFns.endOfMonth(monthStart);
-    const startDate = dateFns.startOfWeek(monthStart);
-    const endDate = dateFns.endOfWeek(monthEnd);
+    const monthStart = startOfMonth(currentMonth);
+    const monthEnd = endOfMonth(monthStart);
+    const startDate = startOfWeek(monthStart);
+    const endDate = endOfWeek(monthEnd);
     const firstDeliveryDate = firstDeliveryAfterStartDate(deliveryDays, values.subscriptionStartDate);
 
-    const dateFormat = "D";
+    const dateFormat = "d";
     const rows = [];
 
     let days = [];
@@ -62,18 +62,18 @@ class Calendar extends React.Component {
 
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
-        formattedDate = dateFns.format(day, dateFormat);
+        formattedDate = format(day, dateFormat);
         const cloneDay = day;
         const subscriptionDay = isItSubscriptionDay(values, day, deliveryDays, firstDeliveryDate);
-        const isBetweenOverrideDates = dateFns.isAfter(day, overrideStartDate) && dateFns.isBefore(day, overrideEndDate) || dateFns.isEqual(day, overrideEndDate) || dateFns.isEqual(day, overrideStartDate);
+        const isBetweenOverrideDates = isAfter(day, overrideStartDate) && isBefore(day, overrideEndDate) || isEqual(day, overrideEndDate) || isEqual(day, overrideStartDate);
         days.push(
           <div
             className={`col cell ${
-              !dateFns.isSameMonth(day, monthStart)
+              !isSameMonth(day, monthStart)
                 ? "disabled"
-                : dateFns.isSameDay(day, selectedDate) ? "selected" : ""
+                : isSameDay(day, selectedDate) ? "selected" : ""
             } ${
-              deliveryDays.indexOf(dateFns.getDay(day)) !== -1 ? "delivery-day" : ""
+              deliveryDays.indexOf(getDay(day)) !== -1 ? "delivery-day" : ""
             } ${
               isBetweenOverrideDates ? "override-day" : ""
             } ${
@@ -85,7 +85,7 @@ class Calendar extends React.Component {
             <span className="number">{formattedDate}</span>
           </div>
         );
-        day = dateFns.addDays(day, 1);
+        day = addDays(day, 1);
       }
       rows.push(
         <div className="row" key={day}>
@@ -103,13 +103,13 @@ class Calendar extends React.Component {
 
   nextMonth = () => {
     this.setState({
-      currentMonth: dateFns.addMonths(this.state.currentMonth, 1)
+      currentMonth: addMonths(this.state.currentMonth, 1)
     });
   };
 
   prevMonth = () => {
     this.setState({
-      currentMonth: dateFns.subMonths(this.state.currentMonth, 1)
+      currentMonth: subMonths(this.state.currentMonth, 1)
     });
   };
 

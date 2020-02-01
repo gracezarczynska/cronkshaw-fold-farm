@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import dateFns from "date-fns";
+import { startOfToday } from "date-fns";
 const moment = require('moment');
 require('moment-recur');
 
@@ -49,7 +49,7 @@ class MainForm extends Component {
         deliveryInstructions: '',
         quantity: 1,
         subscriptionFrequency: '',
-        subscriptionStartDate: dateFns.startOfToday(),
+        subscriptionStartDate: startOfToday(),
         deliveryDays: '',
         weeklyOcurrence: '',
         biweeklyOcurrence: ''

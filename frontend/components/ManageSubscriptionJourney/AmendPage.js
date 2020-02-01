@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import dateFns from 'date-fns';
+import { isSameDay, format } from 'date-fns';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Error from '../ErrorMessage';
@@ -10,7 +10,6 @@ import styled from 'styled-components';
 import Modal from './Modal';
 
 const AmendLayout = styled.div`
-  display: flex;
   justify-content: center;
 
   .calendar {
@@ -62,8 +61,7 @@ class AmendPage extends Component {
     });
   amendFunctions = {
     openModal: (day, variant = 'cancel') => {
-      console.log(day);
-      if (this.state.day !== '' && !dateFns.isSameDay(this.state.day, day)) {
+      if (this.state.day !== '' && !isSameDay(this.state.day, day)) {
         this.setState({ day, overrideEndDate: day, overrideStartDate: day });
         return;
       }
@@ -90,7 +88,7 @@ class AmendPage extends Component {
     },
     cancelDelivery: (e, day) => {
       if (
-        this.state.canceledDates.indexOf(dateFns.format(day, 'MM/DD/YYYY')) !==
+        this.state.canceledDates.indexOf(format(day, 'MM/DD/yyyy')) !==
         -1
       )
         return;

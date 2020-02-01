@@ -33,22 +33,26 @@ class RequestReset extends Component {
               await reset();
               this.setState({ email: '' });
             }}
+            className="request-reset"
           >
             <fieldset disabled={loading} aria-busy={loading}>
               <h2>Request a password reset</h2>
               <Error error={error} />
-              {!error && !loading && called && <p>Success! Check your email for the reset</p>}
-              <label htmlFor="email">
-                Email
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="email"
-                  value={this.state.email}
-                  onChange={this.saveToState}
-                />
-              </label>
-              <button type="submit">Request Reset!</button>
+              {!error && !loading && called ? (<p style={{ textAlign: "center" }}>Success! Check your email for the reset</p>) :
+              ( <>
+                  <label htmlFor="email">
+                    Email
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="email"
+                      value={this.state.email}
+                      onChange={this.saveToState}
+                    />
+                  </label>
+                  <button type="submit">Request Reset!</button>
+                </>
+              )}
             </fieldset>
           </Form>
         )}

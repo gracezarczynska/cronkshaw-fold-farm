@@ -60,72 +60,75 @@ class Register extends Component {
               <fieldset disabled={loading} aria-busy={loading}>
                 <h2>Register</h2>
                 <Error error={error} />
-                {!error && !loading && called && (
-                  <p>Success! You have successfully registered</p>
-                )}
-                <label htmlFor='name'>
-                  Name
-                  <input
-                    type='text'
-                    name='name'
-                    placeholder='Name'
-                    value={this.state.name}
-                    onChange={this.saveToState}
-                  />
-                </label>
-                <label htmlFor='name'>
-                  Surname
-                  <input
-                    type='text'
-                    name='surname'
-                    placeholder='Surame'
-                    value={this.state.surname}
-                    onChange={this.saveToState}
-                  />
-                </label>
-                <br></br>
-                <label htmlFor='email'>
-                  Email
-                  <input
-                    type='text'
-                    name='email'
-                    placeholder='Email'
-                    value={this.state.email}
-                    onChange={this.saveToState}
-                  />
-                </label>
-                <label htmlFor='email'>
-                  Confirm Email
-                  <input
-                    type='text'
-                    name='confirmEmail'
-                    placeholder='Confirm Email'
-                    value={this.state.confirmEmail}
-                    onChange={this.saveToState}
-                  />
-                </label>
-                <br></br>
-                <label htmlFor='password'>
-                  Password
-                  <input
-                    type='password'
-                    name='password'
-                    placeholder='Password'
-                    value={this.state.password}
-                    onChange={this.saveToState}
-                  />
-                </label>
-                <label htmlFor='password'>
-                  Confirm Password
-                  <input
-                    type='password'
-                    name='confirmPassword'
-                    placeholder='Password'
-                    value={this.state.confirmPassword}
-                    onChange={this.saveToState}
-                  />
-                </label>
-                <button type='submit'>Register</button>
+                {!error && !loading && called ? (
+                  <p style={{ textAlign: "center" }}>Success! You have successfully registered</p>
+                ) :
+                  (<>
+                    <label htmlFor='name'>
+                      Name
+                      <input
+                        type='text'
+                        name='name'
+                        placeholder='Name'
+                        value={this.state.name}
+                        onChange={this.saveToState}
+                      />
+                    </label>
+                    <label htmlFor='name'>
+                      Surname
+                      <input
+                        type='text'
+                        name='surname'
+                        placeholder='Surame'
+                        value={this.state.surname}
+                        onChange={this.saveToState}
+                      />
+                    </label>
+                    <br></br>
+                    <label htmlFor='email'>
+                      Email
+                      <input
+                        type='text'
+                        name='email'
+                        placeholder='Email'
+                        value={this.state.email}
+                        onChange={this.saveToState}
+                      />
+                    </label>
+                    <label htmlFor='email'>
+                      Confirm Email
+                      <input
+                        type='text'
+                        name='confirmEmail'
+                        placeholder='Confirm Email'
+                        value={this.state.confirmEmail}
+                        onChange={this.saveToState}
+                      />
+                    </label>
+                    <br></br>
+                    <label htmlFor='password'>
+                      Password
+                      <input
+                        type='password'
+                        name='password'
+                        placeholder='Password'
+                        value={this.state.password}
+                        onChange={this.saveToState}
+                      />
+                    </label>
+                    <label htmlFor='password'>
+                      Confirm Password
+                      <input
+                        type='password'
+                        name='confirmPassword'
+                        placeholder='Password'
+                        value={this.state.confirmPassword}
+                        onChange={this.saveToState}
+                      />
+                    </label>
+                    <button type='submit'>Register</button>
+                  </>
+                  )}
               </fieldset>
             </FormStyles>
           );

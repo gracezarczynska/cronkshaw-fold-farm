@@ -46,34 +46,38 @@ class Reset extends Component {
               await reset();
               this.setState({ password: '', confirmPassword: '' });
             }}
+            className="request-reset"
           >
             <fieldset disabled={loading} aria-busy={loading}>
               <h2>Reset Your Password</h2>
               <Error error={error} />
-              {!error && !loading && called && <p>Success! You have successfully changed your password</p>}
-              <label htmlFor="password">
-                Password
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="password"
-                  value={this.state.password}
-                  onChange={this.saveToState}
-                />
-              </label>
+              {!error && !loading && called ? (<p style={{ textAlign: "center" }}>Success! You have successfully changed your password</p>) :
+                (<>
+                  <label htmlFor="password">
+                    Password
+                    <input
+                      type="password"
+                      name="password"
+                      placeholder="password"
+                      value={this.state.password}
+                      onChange={this.saveToState}
+                    />
+                  </label>
 
-              <label htmlFor="confirmPassword">
-                Confirm Your Password
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  placeholder="confirmPassword"
-                  value={this.state.confirmPassword}
-                  onChange={this.saveToState}
-                />
-              </label>
+                  <label htmlFor="confirmPassword">
+                    Confirm Your Password
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      placeholder="confirmPassword"
+                      value={this.state.confirmPassword}
+                      onChange={this.saveToState}
+                    />
+                  </label>
 
-              <button type="submit">Reset Your Password!</button>
+                  <button type="submit">Reset Your Password!</button>
+                </>)
+              }
             </fieldset>
           </Form>
         )}

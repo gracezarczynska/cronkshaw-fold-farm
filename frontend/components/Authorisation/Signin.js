@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
+import Link from 'next/link';
 import gql from 'graphql-tag';
 import FormStyles from '../styles/Form';
 import { CURRENT_USER_QUERY } from '../User';
@@ -41,16 +42,21 @@ class Signin extends Component {
                             <fieldset disabled={loading} aria-busy={loading}>
                                 <h2>Sign In</h2>
                                 <Error error={error} />
-                                { !error && !loading && data  && <p>You have successfuly signed in</p> }
-                                <label htmlFor="email">
-                                    Email
-                                    <input type="text" name="email" placeholder="Email" value={this.state.email} onChange={this.saveToState} />
-                                </label>
-                                <label htmlFor="password">
-                                    Password
-                                    <input type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.saveToState} />
-                                </label>
-                                <button type="submit">Sign In</button>
+                                { !error && !loading && data  ? (<p style={{ textAlign: "center" }}>You have successfuly signed in</p>) :
+                                (
+                                    <>
+                                        <label htmlFor="email">
+                                            Email
+                                            <input type="text" name="email" placeholder="Email" value={this.state.email} onChange={this.saveToState} />
+                                        </label>
+                                        <label htmlFor="password">
+                                            Password
+                                            <input type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.saveToState} />
+                                        </label>
+                                        <Link href="/request-reset">Forgotten your password?</Link>
+                                        <button type="submit">Sign In</button>
+                                    </>
+                                )}
                             </fieldset>
                         </FormStyles>
                     )

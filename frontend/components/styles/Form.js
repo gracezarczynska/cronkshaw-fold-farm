@@ -20,6 +20,17 @@ const Form = styled.form`
   font-size: 1.5rem;
   line-height: 1.5;
   font-weight: 600;
+
+  &.request-reset { 
+    max-width: 400px;
+    margin: 0 auto;
+    min-height: 300px;
+  }
+
+  a {
+    color: white;
+  }
+  
   fieldset {
     display: flex;
   }
@@ -57,11 +68,11 @@ const Form = styled.form`
     padding: 0.5rem 1.2rem;
     width: 100%;
     max-width: 250px;
-    margin: 20px 10px;
+    margin: 20px auto;
 
     &:focus {
       outline: none;
-      background-color: ${props => props.theme.grey};
+      background-color: ${props => props.theme.black};
       color: ${props => props.theme.orange};
     }
   }

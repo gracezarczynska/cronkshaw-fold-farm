@@ -1,13 +1,13 @@
 const moment = require('moment');
 require('moment-recur');
-import dateFns from "date-fns";
+import { startOfToday, getDay, addDays } from "date-fns";
 
 export const isItSubscriptionDay = (values, day, deliveryDays, firstDeliveryDate) => {
     const { subscriptionFrequency, subscriptionStartDate } = values;
     let subStartDate = subscriptionStartDate;
 
     if (subStartDate === undefined) {
-      subStartDate = dateFns.startOfToday()
+      subStartDate = startOfToday()
     }
     let monthWeek = moment(subStartDate).monthWeek();
     if(monthWeek === 4) {
@@ -29,13 +29,13 @@ export const isItSubscriptionDay = (values, day, deliveryDays, firstDeliveryDate
 export const firstDeliveryAfterStartDate = ( deliveryDays, startDate ) => {
   let newDateCheck = startDate;
   if (newDateCheck === undefined) {
-    newDateCheck = dateFns.startOfToday()
+    newDateCheck = startOfToday()
   }
   for(var i = 0; i < 7; i++) {
-    if (dateFns.getDay(newDateCheck) === deliveryDays[0]) {
+    if (getDay(newDateCheck) === deliveryDays[0]) {
       return newDateCheck;
     } else {
-      newDateCheck = dateFns.addDays(newDateCheck, 1);
+      newDateCheck = addDays(newDateCheck, 1);
     }
   }
 }
