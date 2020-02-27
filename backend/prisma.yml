@@ -1,5 +1,6 @@
 #endpoint: https://eu1.prisma.sh/malgorzata-zarczynska/cronkshaw-fold-farm/dev
-endpoint: https://cronkshaw-prod-db85b8a954.herokuapp.com/cronkshaw-prod/cronkshaw-stage
+#endpoint: https://cronkshaw-prod-db85b8a954.herokuapp.com/cronkshaw-prod/cronkshaw-stage
+endpoint: https://cronkshaw-prod-db85b8a954.herokuapp.com/backend/dev
 datamodel: datamodel.prisma
 secret: ${env:PRISMA_SECRET}
 

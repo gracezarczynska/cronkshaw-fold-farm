@@ -46,6 +46,8 @@ type User {
   stripeId: String @unique
   updatedAt: DateTime! @updatedAt
   createdAt: DateTime! @createdAt
+  active: Boolean
+  activationToken: String
 }
 
 type Enrollment {
