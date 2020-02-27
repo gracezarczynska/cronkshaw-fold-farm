@@ -172,7 +172,7 @@ const Mutations = {
         customer: stripeUser.id,
         items: [
           {
-            plan: 'plan_FvkK2GG4B3CX9h'
+            plan: process.env.STRIPE_PLAN
           }
         ]
       });
