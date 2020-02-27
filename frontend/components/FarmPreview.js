@@ -12,7 +12,12 @@ export default class farm extends Component {
         const { farm } = this.props;
         return (
             <FarmStyles>
-                {farm.image && <img src={farm.image} alt ={farm.name} />}
+                <Link href={{
+                    pathname:"farm",
+                    query: { id: farm.id },
+                }}>
+                    {farm.image && <img src={farm.image} alt ={farm.name} />}
+                </Link>
                 <h1>
                     <Link href={{
                         pathname:"farm",

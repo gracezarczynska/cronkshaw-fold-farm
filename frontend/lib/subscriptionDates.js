@@ -27,7 +27,7 @@ export const isItSubscriptionDay = (values, day, deliveryDays, firstDeliveryDate
 }
 
 export const firstDeliveryAfterStartDate = ( deliveryDays, startDate ) => {
-  let newDateCheck = startDate;
+  let newDateCheck = new Date(startDate);
   if (newDateCheck === undefined) {
     newDateCheck = startOfToday()
   }

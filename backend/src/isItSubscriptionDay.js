@@ -54,7 +54,7 @@ const isItSubscriptionDay = (values, day, deliveryDays) => {
 };
 
 const firstDeliveryAfterStartDate = (deliveryDays, startDate) => {
-  let newDateCheck = startDate;
+  let newDateCheck = new Date(startDate);
   if (newDateCheck === undefined) {
     newDateCheck = dateFns.startOfToday();
   }
