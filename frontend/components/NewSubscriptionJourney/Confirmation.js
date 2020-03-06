@@ -54,8 +54,6 @@ const ADD_INFO_USER = gql`
 
 class Confirmation extends Component {
   onToken = async (res, createEnrollment, nextStep) => {
-    console.log('On Token Called!');
-    console.log(res.id);
     // manually call the mutation once we have the stripe token
     await createEnrollment({
       variables: {
