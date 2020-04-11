@@ -107,7 +107,7 @@ class Register extends Component {
                     </label>
                     <br></br>
                     <label htmlFor='password'>
-                      Password
+                      Create Password
                       <input
                         type='password'
                         name='password'

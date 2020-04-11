@@ -4,7 +4,7 @@ const { sendAlert } = require('../alert');
 const { promisify } = require('util');
 const { randomBytes } = require('crypto');
 const { transport, makeANiceEmail } = require('../mail');
-const { hasPermission, calcTotal, getEnrollmentDates } = require('../utils');
+const { hasPermission, calcTotal } = require('../utils');
 const stripe = require('../stripe');
 
 const Mutations = {
@@ -32,6 +32,10 @@ const Mutations = {
       );
       throw new Error(e);
     }
+
+    const randomBytesPromiseified = promisify(randomBytes);
+    const activationToken = (await randomBytesPromiseified(20)).toString('hex');
+
     // create the user in the database
     const user = await ctx.db.mutation.createUser(
       {
@@ -41,7 +45,9 @@ const Mutations = {
           name: args.name,
           password,
           permissions: { set: ['USER'] },
-          stripeId: stripeUser.id
+          stripeId: stripeUser.id,
+          active: false,
+          activationToken
         }
       },
       info
@@ -54,6 +60,16 @@ const Mutations = {
       maxAge: 1000 * 60 * 60 * 24 * 365 // 1 year cookie
     });
     // Finalllllly we return the user to the browser
+
+    const mailRes = await transport.sendMail({
+      from: 'do-not-reply@graceful-designs.co.uk',
+      to: args.email,
+      subject: 'Your activation email',
+      html: makeANiceEmail(`Please confirm your email!
+      \n\n
+      <a href="${process.env.FRONTEND_URL}/activateAccount?activationToken=${activationToken}">Click here to confirm your email address</a>`)
+    });
+
     return user;
   },
 

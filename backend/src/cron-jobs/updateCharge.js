@@ -36,40 +36,51 @@ const updateCharge = async subscriptions => {
       }
     }
   );
+  const headerStyle = `"background-color: #f29d12; padding: 15px;
+  text-align: left; border: 1px solid black; color: #222222"`;
 
-  let subscriptionMail = `<table><tr>
-    <th>Name</th>
-    <th>Address1</th> 
-    <th>Address2</th>
-    <th>Postcode</th>
-    <th>City</th>
-    <th>House Picture</th> 
-    <th>Drop Off Picture</th>
-    <th>Delivery Instructions </th>
-    <th>Quantity (box of 6)</th>
-  </tr>`;
+  let subscriptionMail = `<table style=
+    "width: 100%; 
+    border: 1px solid #222222; 
+    border-collapse: collapse; 
+    color: #EDEDED"
+    >
+    <tr>
+      <th style=${headerStyle}>Name</th>
+      <th style=${headerStyle}>Address1</th> 
+      <th style=${headerStyle}>Address2</th>
+      <th style=${headerStyle}>Postcode</th>
+      <th style=${headerStyle}>City</th>
+      <th style=${headerStyle}>House Picture</th> 
+      <th style=${headerStyle}>Drop Off Picture</th>
+      <th style=${headerStyle}>Delivery Instructions</th>
+      <th style=${headerStyle}>Quantity (box of 6)</th>
+    </tr>`;
+
+  const cellStyle = `"padding: 15px;
+  text-align: left; border: 1px solid black;"`
 
   finalSubscriptionSet.map(subscription => {
     subscriptionMail =
       subscriptionMail +
       ` <tr>
-        <td>${subscription.user.name}</td>
-        <td>${subscription.user.address1}</td>
-        <td>${subscription.user.address2}</td>
+        <td style=${cellStyle}>${subscription.user.name}</td>
+        <td style=${cellStyle}>${subscription.user.address1}</td>
+        <td style=${cellStyle}>${subscription.user.address2}</td>
         <td>${subscription.user.postcode}</td>
-        <td>${subscription.user.city}</td>
-        <td><a href=${subscription.user.housePicture}>Link</a></td>
-        <td><a href=${subscription.user.dropOffPicture}>Link</a></td>
-        <td>${subscription.user.deliveryInstructions}</td>
-        <td>${subscription.quantity} box of 6</td>
+        <td style=${cellStyle}>${subscription.user.city}</td>
+        <td style=${cellStyle}><a style="color: #f29d12" href=${subscription.user.housePicture}>Link</a></td>
+        <td style=${cellStyle}><a style="color: #f29d12" href=${subscription.user.dropOffPicture}>Link</a></td>
+        <td style=${cellStyle}>${subscription.user.deliveryInstructions}</td>
+        <td style=${cellStyle}>${subscription.quantity} box of 6</td>
       </tr> `;
   });
 
   subscriptionMail = subscriptionMail + `</table>`;
   const mailRes = await transport.sendMail({
-    from: 'info@graceful-designs.co.uk',
-    to: 'dot@cronkshawfoldfarm.co.uk',
-    subject: 'Today is delivery day!',
+    from: 'no-reply@cronkshawfoldfarm.co.uk',
+    to: 'm.zarczynska@gmail.com',
+    subject: 'Today\'s deliveries list!',
     html: makeANiceEmail(subscriptionMail)
   });
 

@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/malgorzata-zarczynska/cronkshaw-fold-farm/dev
-# timestamp: Fri Nov 01 2019 16:16:23 GMT+0000 (Greenwich Mean Time)
+# timestamp: Wed Apr 01 2020 20:31:02 GMT+0100 (British Summer Time)
 
 type AggregateEnrollment {
   count: Int!
@@ -2977,6 +2977,8 @@ type User implements Node {
   stripeId: String
   updatedAt: DateTime!
   createdAt: DateTime!
+  active: Boolean
+  activationToken: String
 }
 
 """A connection to a list of items."""
@@ -3005,6 +3007,8 @@ input UserCreateInput {
   dropOffPicture: String
   deliveryInstructions: String
   stripeId: String
+  active: Boolean
+  activationToken: String
   permissions: UserCreatepermissionsInput
   subscriptions: EnrollmentCreateManyWithoutUserInput
 }
@@ -3034,6 +3038,8 @@ input UserCreateWithoutSubscriptionsInput {
   dropOffPicture: String
   deliveryInstructions: String
   stripeId: String
+  active: Boolean
+  activationToken: String
   permissions: UserCreatepermissionsInput
 }
 
@@ -3081,6 +3087,10 @@ enum UserOrderByInput {
   updatedAt_DESC
   createdAt_ASC
   createdAt_DESC
+  active_ASC
+  active_DESC
+  activationToken_ASC
+  activationToken_DESC
 }
 
 type UserPreviousValues {
@@ -3102,6 +3112,8 @@ type UserPreviousValues {
   stripeId: String
   updatedAt: DateTime!
   createdAt: DateTime!
+  active: Boolean
+  activationToken: String
 }
 
 type UserSubscriptionPayload {
@@ -3158,6 +3170,8 @@ input UserUpdateInput {
   dropOffPicture: String
   deliveryInstructions: String
   stripeId: String
+  active: Boolean
+  activationToken: String
   permissions: UserUpdatepermissionsInput
   subscriptions: EnrollmentUpdateManyWithoutUserInput
 }
@@ -3177,6 +3191,8 @@ input UserUpdateManyMutationInput {
   dropOffPicture: String
   deliveryInstructions: String
   stripeId: String
+  active: Boolean
+  activationToken: String
   permissions: UserUpdatepermissionsInput
 }
 
@@ -3206,6 +3222,8 @@ input UserUpdateWithoutSubscriptionsDataInput {
   dropOffPicture: String
   deliveryInstructions: String
   stripeId: String
+  active: Boolean
+  activationToken: String
   permissions: UserUpdatepermissionsInput
 }
 
@@ -3867,6 +3885,50 @@ input UserWhereInput {
 
   """All values greater than or equal the given value."""
   createdAt_gte: DateTime
+  active: Boolean
+
+  """All values that are not equal to given value."""
+  active_not: Boolean
+  activationToken: String
+
+  """All values that are not equal to given value."""
+  activationToken_not: String
+
+  """All values that are contained in given list."""
+  activationToken_in: [String!]
+
+  """All values that are not contained in given list."""
+  activationToken_not_in: [String!]
+
+  """All values less than the given value."""
+  activationToken_lt: String
+
+  """All values less than or equal the given value."""
+  activationToken_lte: String
+
+  """All values greater than the given value."""
+  activationToken_gt: String
+
+  """All values greater than or equal the given value."""
+  activationToken_gte: String
+
+  """All values containing the given string."""
+  activationToken_contains: String
+
+  """All values not containing the given string."""
+  activationToken_not_contains: String
+
+  """All values starting with the given string."""
+  activationToken_starts_with: String
+
+  """All values not starting with the given string."""
+  activationToken_not_starts_with: String
+
+  """All values ending with the given string."""
+  activationToken_ends_with: String
+
+  """All values not ending with the given string."""
+  activationToken_not_ends_with: String
   subscriptions_every: EnrollmentWhereInput
   subscriptions_some: EnrollmentWhereInput
   subscriptions_none: EnrollmentWhereInput
