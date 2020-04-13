@@ -5,7 +5,6 @@ import CURRENT_USER_QUERY from './User';
 const Supplier = props => (
   <Query {...props} query={CURRENT_USER_QUERY}>
     {payload => {
-      console.log(payload);
       return props.children(payload)}
     }
   </Query>

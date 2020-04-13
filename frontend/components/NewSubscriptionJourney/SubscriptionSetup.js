@@ -88,14 +88,6 @@ class SubscriptionSetup extends Component {
 
     return (
       <>
-        <CalendarStyles>
-          <Calendar
-            deliveryDays={deliveryDays}
-            deliveryFrequency={deliveryFrequency}
-            startDate={startDate}
-            values={values}
-          />
-        </CalendarStyles>
         <MoreSpace>
           <div>
             <Select
@@ -128,6 +120,14 @@ class SubscriptionSetup extends Component {
             </div>
           </MapKey>
         </MoreSpace>
+        <CalendarStyles>
+          <Calendar
+            deliveryDays={deliveryDays}
+            deliveryFrequency={deliveryFrequency}
+            startDate={startDate}
+            values={values}
+          />
+        </CalendarStyles>
         <Center>
           <ButtonStyles onClick={this.goBack}>Go Back to Edit </ButtonStyles>
           <ButtonStyles onClick={this.saveAndContinue}>

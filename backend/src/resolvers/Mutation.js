@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const dateFns = require('date-fns');
 const { sendAlert } = require('../alert');
 const { promisify } = require('util');
 const { randomBytes } = require('crypto');
@@ -67,10 +68,35 @@ const Mutations = {
       subject: 'Your activation email',
       html: makeANiceEmail(`Please confirm your email!
       \n\n
-      <a href="${process.env.FRONTEND_URL}/activateAccount?activationToken=${activationToken}">Click here to confirm your email address</a>`)
+      <a href="${process.env.FRONTEND_URL}/activate-account?activationToken=${activationToken}">Click here to confirm your email address</a>`)
     });
 
     return user;
+  },
+
+  async verifyEmail(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error('You must be signed in');
+    }
+
+    const user = await ctx.db.query.user({ where: { id: userId } });
+    if (args.activationToken === user.activationToken) {
+      ctx.db.mutation.updateUser(
+        {
+          data: { 
+            active: true
+          },
+          where: {
+            id: user.id
+          }
+        },
+        info
+      );
+      return { message: 'Successfully verified your email' };
+    } else {
+      throw new Error('Something went wrong');
+    };
   },
 
   updateUser(parent, args, ctx, info) {
@@ -186,6 +212,7 @@ const Mutations = {
     try {
       charge = await stripe.subscriptions.create({
         customer: stripeUser.id,
+        source: args.token,
         items: [
           {
             plan: process.env.STRIPE_PLAN
@@ -212,7 +239,16 @@ const Mutations = {
       );
       throw new Error(e);
     }
-
+    const mailRes = await transport.sendMail({
+      from: 'dot@cronkshawfoldfarm.co.uk',
+      to: 'dot@cronkshawfoldfarm.co.uk',
+      subject: 'New Subscriptions',
+      html: makeANiceEmail(`Someone subscribed to your service!
+      \n\n
+      Just to let you know, someone subscribed to your service from ${dateFns.format(args.subscriptionStartDate, 'DD MM YYYY')},\n
+      ${args.subscriptionFrequency} and they fancy ${args.quantity} box(es) of eggs
+      `)
+    });
     return ctx.db.mutation.createEnrollment(
       {
         data: {

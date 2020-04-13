@@ -48,6 +48,7 @@ type Mutation {
   ): Override
   updateOverride(id: ID!, status: String): Override
   sendEmailAllEnrollments(emailText: String): SuccessMessage
+  verifyEmail(activationToken: String): SuccessMessage
 }
 
 type Query {

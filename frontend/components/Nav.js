@@ -19,9 +19,8 @@ class Nav extends Component {
     this.setState({ navOpened: !this.state.navOpened });
   };
   render() {
+    const { me } = this.props;
     return (
-      <User>
-        {({ data: { me } }) => (
           <>
             <NavStyles>
               {!me && (
@@ -71,8 +70,6 @@ class Nav extends Component {
               </NavMobile>
             </MobNavStyles>
           </>
-        )}
-      </User>
     );
   }
 }

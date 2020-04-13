@@ -117,7 +117,7 @@ class Confirmation extends Component {
                       amount={calculateTotal(this.props.values)}
                       name='Cronkshaw Fold Farm'
                       description={`Your subscription order`}
-                      stripeKey="pk_live_ZLQELKtFUScOcrZLPWxCiJPp00LWEn34Oc"
+                      stripeKey="pk_test_FeA1lrvAqxiyiS2HqZDxFacc00pHc359JW"
                       currency='GBP'
                       email={me.email}
                       token={res =>
