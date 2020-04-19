@@ -18,27 +18,45 @@ export default class ProducePreview extends Component {
             {({ data: { me } }) => {
                 let subscription = [];
                 const alreadySubscribed = me && me.subscriptions && me.subscriptions.filter(existingSubscription => existingSubscription.product.id === product.id).length > 0;
+                const notVerified = me && !me.active;
                 if (alreadySubscribed) {
                     subscription = me.subscriptions.filter(existingSubscription => existingSubscription.product.id === product.id);
                 }
                 return (
             <ProductStyles>
-                <Link href={{
-                    pathname: alreadySubscribed ? 'manage' : 'subscribe',
-                    query: alreadySubscribed ? { id: subscription[0].id } : { id: product.id },
-                }}>
-                    {product.image && <img src={product.image} alt ={product.name} />}
-                </Link>
-                <h1>
-                    <Link href={{
-                        pathname: alreadySubscribed ? 'manage' : 'subscribe',
-                        query: alreadySubscribed ? { id: subscription[0].id } : { id: product.id },
-                    }}>
-                        <a>{product.name}</a>
-                    </Link>
-                </h1>
+                {!notVerified && (
+                    <>
+                        <Link href={{
+                            pathname: alreadySubscribed ? 'manage' : 'subscribe',
+                            query: alreadySubscribed ? { id: subscription[0].id } : { id: product.id },
+                        }}>
+                            {product.image && <img src={product.image} alt ={product.name} />}
+                        </Link>
+                        <h1>
+                            <Link href={{
+                                pathname: alreadySubscribed ? 'manage' : 'subscribe',
+                                query: alreadySubscribed ? { id: subscription[0].id } : { id: product.id },
+                            }}>
+                                <a>{product.name}</a>
+                            </Link>
+                        </h1>
+                    </>
+                )}
+                {notVerified && (
+                    <>
+                        {product.image && <img src={product.image} alt ={product.name} />}
+                        <h1>
+                            {product.name}
+                        </h1>
+                    </>
+                )}
                 <PriceTag>{formatMoney(product.price)} per {product.unit}</PriceTag>
                 <p>{product.description}</p>
+                {me && !alreadySubscribed && notVerified &&  (
+                        <div className="verify">
+                            <p>Verify your account to subscribe</p>
+                        </div>
+                )}
                 <div className="buttonList">
                     {!me && (
                         <Link href="/sign-in">
@@ -53,7 +71,7 @@ export default class ProducePreview extends Component {
                             <a>Manage your subscription</a>
                         </Link>
                     )}
-                    {me && !alreadySubscribed && (
+                    {me && !alreadySubscribed && !notVerified && (
                         <Link href={{
                             pathname:"subscribe",
                             query: { id: product.id }

@@ -232,7 +232,7 @@ const CalendarStyles = styled.div`
   .calendar .body .col {
     flex-grow: 0;
     flex-basis: calc(100% / 7);
-    width: calc(100% / 7);
+    width: calc(99.5% / 7);
     text-align: center;
     display: table;
     vertical-align: middle;

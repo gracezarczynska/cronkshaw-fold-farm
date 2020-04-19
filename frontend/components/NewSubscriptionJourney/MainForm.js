@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import { startOfToday } from "date-fns";
-const moment = require('moment');
-require('moment-recur');
 
 import Error from '../ErrorMessage';
 import UserDetails from './UserDetails';
@@ -12,11 +10,9 @@ import Success from './Success';
 import SubscriptionSetup from './SubscriptionSetup';
 import SubscriptionDetails from './SubscriptionDetails';
 
-let flag = true;
-
-const SINGLE_FARM_QUERY = gql`
-    query SINGLE_FARM_QUERY($id: ID!) {
-        product(where: { id: $id }) {
+const SINGLE_PRODUCT_SUBSCRIPTION_QUERY = gql`
+    query SINGLE_PRODUCT_SUBSCRIPTION_QUERY($id: ID!) {
+        productSubscription(where: { id: $id }) {
             name
             image
             id
@@ -82,14 +78,15 @@ class MainForm extends Component {
         const { address1, address2, postcode, city, phone, housePicture, dropOffPicture, subscriptionFrequency, subscriptionStartDate, deliveryInstructions, quantity } = this.state;
         const values = { address1, address2, postcode, city, phone, housePicture, dropOffPicture, subscriptionFrequency, subscriptionStartDate, deliveryInstructions, quantity };
         return (
-            <Query query={SINGLE_FARM_QUERY} variables={{ id: this.props.produceId }}>
+            <Query query={SINGLE_PRODUCT_SUBSCRIPTION_QUERY} variables={{ id: this.props.produceId }}>
                 {({error, loading, data}) => {
                     if(error) return <Error error={error} />;
                     if(loading) return <p>Loading...</p>;
-                    if(!data.product) return <p>No Item Found</p>;
+                    if(!data.productSubscription) return <p>No Item Found</p>;
+                    const product = data.productSubscription
                     return (
                         <div>
-                            <h2>You are ordering a subscription of {data.product.name} from {data.product.farm.name}</h2>
+                            <h2>You are ordering a subscription of {product.name} from {product.farm.name}</h2>
                             {(() => {
                                 switch(step) {
                                     case 1: 
@@ -114,9 +111,9 @@ class MainForm extends Component {
                                                 handleChange = {this.handleChange}
                                                 values={values}
                                                 produceId={this.props.produceId}
-                                                deliveryDays={data.product.deliveryDays}
-                                                deliveryFrequency={data.product.deliveryFrequency}
-                                                startDate={data.product.startDate}
+                                                deliveryDays={product.deliveryDays}
+                                                deliveryFrequency={product.deliveryFrequency}
+                                                startDate={product.startDate}
                                                 />
                                     case 4:
                                         return <Confirmation 
@@ -124,7 +121,7 @@ class MainForm extends Component {
                                                 prevStep={this.prevStep}
                                                 values={values}
                                                 produceId={this.props.produceId}
-                                                product={data.product}
+                                                product={product}
                                                 />
                                     case 5:
                                         return <Success />

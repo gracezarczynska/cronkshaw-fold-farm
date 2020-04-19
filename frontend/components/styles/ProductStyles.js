@@ -26,6 +26,12 @@ const Item = styled.div`
     padding: 0 3rem;
     font-size: 1.5rem;
   }
+
+  .verify {
+    background: ${props => props.theme.orange};
+    color: ${props => props.theme.black};
+    width: 100%;
+  }
   .buttonList {
     display: grid;
     width: 100%;

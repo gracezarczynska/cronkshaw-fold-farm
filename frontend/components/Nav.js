@@ -5,7 +5,6 @@ import {
   MenuButton,
   NavMobile
 } from './styles/NavStyles';
-import User from './User';
 import Signout from './Authorisation/Signout';
 
 import React, { Component } from 'react';

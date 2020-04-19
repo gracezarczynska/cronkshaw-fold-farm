@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import Link from 'next/link';
-const moment = require('moment');
+import moment from 'moment';
 import gql from 'graphql-tag';
+
 import { ButtonStyles, NumberInput } from '../styles/ButtonStyles';
 import styled from 'styled-components';
 import formatMoney from '../../lib/formatMoney';
@@ -107,10 +108,10 @@ class SubscriptionDetails extends Component {
                             : this.props.subscription.product.unit}
                         </p>
                         <p>
-                          Your next delivery is{' '}
+                           delivery is{' '}
                           {nextDelivery.map(deliveryDay => (
                             <span>
-                              {moment(deliveryDay).format('do mmm yyyy')}
+                              {moment(deliveryDay).format('Do MMM YYYY')}
                             </span>
                           ))}
                         </p>

@@ -67,6 +67,7 @@ type Query {
     first: Int
   ): [Product]!
   product(where: ProductWhereUniqueInput!): Product
+  productSubscription(where: ProductWhereUniqueInput!): Product
   enrollment(where: EnrollmentWhereUniqueInput!): Enrollment
   enrollments: [Enrollment]!
   overrides(

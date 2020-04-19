@@ -15,6 +15,15 @@ const Query = {
     hasPermission(ctx.request.user, ['ADMIN', 'FARMER']);
     return ctx.db.query.overrides({}, info);
   },
+  productSubscription(parent, args, ctx, info) {
+    if(!ctx.request.userId) {
+      throw new Error('You must be logged in');
+    } 
+    if(!ctx.request.user.active) {
+      throw new Error(`You need to activate your account`);
+    }
+    return ctx.db.query.product({ where: { id: args.id } }, info);
+  },
   me(parent, args, ctx, info) {
     // check if there is a current user ID
     if (!ctx.request.userId) {
