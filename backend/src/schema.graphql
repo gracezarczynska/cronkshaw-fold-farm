@@ -1,79 +1,81 @@
 # import * from './generated/prisma.graphql'
 
 type SuccessMessage {
-  message: String
+	message: String
 }
 
 type Mutation {
-  signup(
-    email: String!
-    password: String!
-    name: String!
-    surname: String!
-    confirmPassword: String
-    confirmEmail: String
-  ): User!
-  signin(email: String!, password: String!): User!
-  signout: SuccessMessage
-  requestReset(email: String!): SuccessMessage
-  resetPassword(
-    resetToken: String!
-    password: String!
-    confirmPassword: String!
-  ): User!
-  updateProduct(id: ID!, availableStock: Int): Product
-  updateUser(
-    id: ID!
-    address1: String!
-    address2: String
-    postcode: String!
-    city: String!
-    housePicture: String
-    dropOffPicture: String
-    subscriptions: [ID!]
-    deliveryInstructions: String
-  ): User!
-  createEnrollment(
-    id: ID!
-    subscriptionFrequency: String!
-    subscriptionStartDate: DateTime!
-    quantity: Int!
-  ): Enrollment
-  deleteEnrollment(id: ID!): Enrollment
-  createOverride(
-    subscriptionId: ID!
-    startDate: DateTime
-    endDate: DateTime
-    quantity: Int!
-  ): Override
-  updateOverride(id: ID!, status: String): Override
-  sendEmailAllEnrollments(emailText: String): SuccessMessage
-  verifyEmail(activationToken: String): SuccessMessage
+	signup(
+		email: String!
+		password: String!
+		name: String!
+		surname: String!
+		confirmPassword: String
+		confirmEmail: String
+	): User!
+	signin(email: String!, password: String!): User!
+	signout: SuccessMessage
+	requestReset(email: String!): SuccessMessage
+	resetPassword(
+		resetToken: String!
+		password: String!
+		confirmPassword: String!
+	): User!
+	updateProduct(id: ID!, availableStock: Int): Product
+	updateUser(
+		id: ID!
+		address1: String!
+		address2: String
+		postcode: String!
+		city: String!
+		housePicture: String
+		dropOffPicture: String
+		subscriptions: [ID!]
+		deliveryInstructions: String
+	): User!
+	createEnrollment(
+		id: ID!
+		paymentMethodId: String!
+		subscriptionFrequency: String!
+		subscriptionStartDate: DateTime!
+		quantity: Int!
+	): Enrollment
+	deleteEnrollment(id: ID!): Enrollment
+	createOverride(
+		subscriptionId: ID!
+		startDate: DateTime
+		endDate: DateTime
+		quantity: Int!
+	): Override
+	updateOverride(id: ID!, status: String): Override
+	sendEmailAllEnrollments(emailText: String): SuccessMessage
+	verifyEmail(activationToken: String): SuccessMessage
+	updatePayment(paymentMethodId: String): SuccessMessage
 }
 
 type Query {
-  me: User
-  farms(
-    where: FarmWhereInput
-    orderBy: FarmOrderByInput
-    skip: Int
-    first: Int
-  ): [Farm]!
-  farm(where: FarmWhereUniqueInput!): Farm
-  products(
-    where: ProductWhereInput
-    orderBy: ProductOrderByInput
-    skip: Int
-    first: Int
-  ): [Product]!
-  product(where: ProductWhereUniqueInput!): Product
-  productSubscription(where: ProductWhereUniqueInput!): Product
-  enrollment(where: EnrollmentWhereUniqueInput!): Enrollment
-  enrollments: [Enrollment]!
-  overrides(
-    where: OverrideWhereInput
-    orderBy: OverrideOrderByInput
-    skip: Int
-    first: Int
-  ): [Override]!
+	me: User
+	farms(
+		where: FarmWhereInput
+		orderBy: FarmOrderByInput
+		skip: Int
+		first: Int
+	): [Farm]!
+	farm(where: FarmWhereUniqueInput!): Farm
+	products(
+		where: ProductWhereInput
+		orderBy: ProductOrderByInput
+		skip: Int
+		first: Int
+	): [Product]!
+	product(where: ProductWhereUniqueInput!): Product
+	productSubscription(where: ProductWhereUniqueInput!): Product
+	enrollment(where: EnrollmentWhereUniqueInput!): Enrollment
+	enrollments: [Enrollment]!
+	overrides(
+		where: OverrideWhereInput
+		orderBy: OverrideOrderByInput
+		skip: Int
+		first: Int
+	): [Override]!
 }

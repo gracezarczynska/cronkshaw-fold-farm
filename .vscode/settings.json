@@ -4,5 +4,7 @@
     "titleBar.inactiveForeground": "#000000CC",
     "titleBar.activeBackground": "#f29d12",
     "titleBar.inactiveBackground": "#f29d12"
-  }
+  },
+  "eslint.run": "onSave",
+  "prettier.vueIndentScriptAndStyle": true
 }

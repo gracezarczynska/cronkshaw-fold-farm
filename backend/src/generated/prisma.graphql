@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/malgorzata-zarczynska/cronkshaw-fold-farm/dev
-# timestamp: Wed Apr 01 2020 20:31:02 GMT+0100 (British Summer Time)
+# timestamp: Mon May 18 2020 21:38:15 GMT+0100 (British Summer Time)
 
 type AggregateEnrollment {
   count: Int!
@@ -2979,6 +2979,8 @@ type User implements Node {
   createdAt: DateTime!
   active: Boolean
   activationToken: String
+  updateToken: String
+  updateTokenExpiry: String
 }
 
 """A connection to a list of items."""
@@ -3009,6 +3011,8 @@ input UserCreateInput {
   stripeId: String
   active: Boolean
   activationToken: String
+  updateToken: String
+  updateTokenExpiry: String
   permissions: UserCreatepermissionsInput
   subscriptions: EnrollmentCreateManyWithoutUserInput
 }
@@ -3040,6 +3044,8 @@ input UserCreateWithoutSubscriptionsInput {
   stripeId: String
   active: Boolean
   activationToken: String
+  updateToken: String
+  updateTokenExpiry: String
   permissions: UserCreatepermissionsInput
 }
 
@@ -3091,6 +3097,10 @@ enum UserOrderByInput {
   active_DESC
   activationToken_ASC
   activationToken_DESC
+  updateToken_ASC
+  updateToken_DESC
+  updateTokenExpiry_ASC
+  updateTokenExpiry_DESC
 }
 
 type UserPreviousValues {
@@ -3114,6 +3124,8 @@ type UserPreviousValues {
   createdAt: DateTime!
   active: Boolean
   activationToken: String
+  updateToken: String
+  updateTokenExpiry: String
 }
 
 type UserSubscriptionPayload {
@@ -3172,6 +3184,8 @@ input UserUpdateInput {
   stripeId: String
   active: Boolean
   activationToken: String
+  updateToken: String
+  updateTokenExpiry: String
   permissions: UserUpdatepermissionsInput
   subscriptions: EnrollmentUpdateManyWithoutUserInput
 }
@@ -3193,6 +3207,8 @@ input UserUpdateManyMutationInput {
   stripeId: String
   active: Boolean
   activationToken: String
+  updateToken: String
+  updateTokenExpiry: String
   permissions: UserUpdatepermissionsInput
 }
 
@@ -3224,6 +3240,8 @@ input UserUpdateWithoutSubscriptionsDataInput {
   stripeId: String
   active: Boolean
   activationToken: String
+  updateToken: String
+  updateTokenExpiry: String
   permissions: UserUpdatepermissionsInput
 }
 
@@ -3929,6 +3947,86 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   activationToken_not_ends_with: String
+  updateToken: String
+
+  """All values that are not equal to given value."""
+  updateToken_not: String
+
+  """All values that are contained in given list."""
+  updateToken_in: [String!]
+
+  """All values that are not contained in given list."""
+  updateToken_not_in: [String!]
+
+  """All values less than the given value."""
+  updateToken_lt: String
+
+  """All values less than or equal the given value."""
+  updateToken_lte: String
+
+  """All values greater than the given value."""
+  updateToken_gt: String
+
+  """All values greater than or equal the given value."""
+  updateToken_gte: String
+
+  """All values containing the given string."""
+  updateToken_contains: String
+
+  """All values not containing the given string."""
+  updateToken_not_contains: String
+
+  """All values starting with the given string."""
+  updateToken_starts_with: String
+
+  """All values not starting with the given string."""
+  updateToken_not_starts_with: String
+
+  """All values ending with the given string."""
+  updateToken_ends_with: String
+
+  """All values not ending with the given string."""
+  updateToken_not_ends_with: String
+  updateTokenExpiry: String
+
+  """All values that are not equal to given value."""
+  updateTokenExpiry_not: String
+
+  """All values that are contained in given list."""
+  updateTokenExpiry_in: [String!]
+
+  """All values that are not contained in given list."""
+  updateTokenExpiry_not_in: [String!]
+
+  """All values less than the given value."""
+  updateTokenExpiry_lt: String
+
+  """All values less than or equal the given value."""
+  updateTokenExpiry_lte: String
+
+  """All values greater than the given value."""
+  updateTokenExpiry_gt: String
+
+  """All values greater than or equal the given value."""
+  updateTokenExpiry_gte: String
+
+  """All values containing the given string."""
+  updateTokenExpiry_contains: String
+
+  """All values not containing the given string."""
+  updateTokenExpiry_not_contains: String
+
+  """All values starting with the given string."""
+  updateTokenExpiry_starts_with: String
+
+  """All values not starting with the given string."""
+  updateTokenExpiry_not_starts_with: String
+
+  """All values ending with the given string."""
+  updateTokenExpiry_ends_with: String
+
+  """All values not ending with the given string."""
+  updateTokenExpiry_not_ends_with: String
   subscriptions_every: EnrollmentWhereInput
   subscriptions_some: EnrollmentWhereInput
   subscriptions_none: EnrollmentWhereInput

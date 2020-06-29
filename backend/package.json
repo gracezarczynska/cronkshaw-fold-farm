@@ -1,42 +1,42 @@
 {
-  "name": "sick-fits-backend",
-  "description": "the backend of Cronkshaw Fold Farm",
-  "engines": {
-    "node": "12.13.0"
-  },
-  "scripts": {
-    "start": "nodemon -e js,graphql -x node src/index.js",
-    "dev": "nodemon -e js,graphql -x node --inspect src/index.js",
-    "test": "jest",
-    "deploy": "prisma deploy --env-file variables.env"
-  },
-  "dependencies": {
-    "axios": "^0.19.0",
-    "babel-preset-env": "^1.7.0",
-    "bcryptjs": "2.4.3",
-    "cookie-parser": "^1.4.3",
-    "date-fns": "^1.30.1",
-    "dotenv": "6.0.0",
-    "graphql": "^0.13.2",
-    "graphql-cli": "^2.16.7",
-    "graphql-playground": "^1.3.17",
-    "graphql-tag": "^2.10.0",
-    "graphql-yoga": "1.16.2",
-    "jsonwebtoken": "8.3.0",
-    "moment": "^2.24.0",
-    "moment-recur": "^1.0.7",
-    "node-cron": "^2.0.3",
-    "nodemailer": "^4.6.8",
-    "nodemon": "1.18.4",
-    "npm-run-all": "^4.1.3",
-    "prisma": "^1.7.3",
-    "prisma-binding": "1.5.16",
-    "stripe": "^6.12.1"
-  },
-  "license": "MIT",
-  "babel": {
-    "presets": [
-      "env"
-    ]
-  }
+	"name": "sick-fits-backend",
+	"description": "the backend of Cronkshaw Fold Farm",
+	"engines": {
+		"node": "12.13.0"
+	},
+	"scripts": {
+		"start": "nodemon -e js,graphql -x node src/index.js",
+		"dev": "nodemon -e js,graphql -x node --inspect src/index.js",
+		"test": "jest",
+		"deploy": "prisma deploy --env-file variables.env"
+	},
+	"dependencies": {
+		"axios": "^0.19.0",
+		"babel-preset-env": "^1.7.0",
+		"bcryptjs": "2.4.3",
+		"cookie-parser": "^1.4.3",
+		"date-fns": "^1.30.1",
+		"dotenv": "6.0.0",
+		"graphql": "^0.13.2",
+		"graphql-cli": "^2.16.7",
+		"graphql-playground": "^1.3.17",
+		"graphql-tag": "^2.10.0",
+		"graphql-yoga": "1.16.2",
+		"jsonwebtoken": "8.3.0",
+		"moment": "^2.24.0",
+		"moment-recur": "^1.0.7",
+		"node-cron": "^2.0.3",
+		"nodemailer": "^4.6.8",
+		"nodemon": "1.18.4",
+		"npm-run-all": "^4.1.3",
+		"prisma": "^1.7.3",
+		"prisma-binding": "1.5.16",
+		"stripe": "^6.36.1"
+	},
+	"license": "MIT",
+	"babel": {
+		"presets": [
+			"env"
+		]
+	}
 }

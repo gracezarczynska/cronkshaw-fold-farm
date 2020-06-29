@@ -21,6 +21,11 @@ export const ButtonStyles = styled.button`
   &:focus {
     outline: none;
   }
+
+  &.inverted {
+    color: ${props => props.theme.orange};
+    background: ${props => props.theme.grey};
+  }
 `;
 
 export const NumberInput = styled.select`

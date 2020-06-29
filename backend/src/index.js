@@ -1,10 +1,12 @@
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
+const bodyParser = require('body-parser')
 
 require('dotenv').config({ path: 'variables.env' });
 const cron = require('./cron-jobs');
 const createServer = require('./createServer');
 const db = require('./db');
+const stripeWebhook = require('./stripe-webhook');
 
 const server = createServer();
 
@@ -30,6 +32,10 @@ server.express.use(async (req, res, next) => {
   );
   req.user = user;
   next();
+});
+
+server.express.use('/api/stripe/webhooks', bodyParser.raw({type: 'application/json'}), (req, res) => {
+  stripeWebhook(req, res);
 });
 
 server.start(
