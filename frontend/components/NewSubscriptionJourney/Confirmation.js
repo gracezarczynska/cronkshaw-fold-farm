@@ -9,7 +9,7 @@ import CheckoutForm from '../StripePayment';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
-const stripePromise = loadStripe('pk_test_nCjbZkTimFUKFlBgY0H6ZDD300OOIX13Z4');
+const stripePromise = loadStripe('pk_live_ZLQELKtFUScOcrZLPWxCiJPp00LWEn34Oc');
 
 const ADD_INFO_USER = gql`
 	mutation ADD_INFO_MUTATION(
